@@ -1,0 +1,28 @@
+# Local settings and credentials
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+.vs/
+.idea/
+
+# Dependencies and generated application files
+node_modules/
+dist/
+build/
+bin/
+obj/
+coverage/
+playwright-report/
+test-results/
+*.log
+
+# Private data, reference material, and temporary work
+/data/
+/uploads/
+/references/
+/work/
+/tmp/
+.DS_Store
+Thumbs.db

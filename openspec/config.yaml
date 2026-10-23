@@ -1,0 +1,25 @@
+schema: spec-driven
+
+context: |
+  Project: Nextage Class, a personal learning and portfolio project.
+  Current stage: documentation only; no application behavior is implemented.
+  Read docs/decisions.md for validated decisions and docs/roadmap.md for scope.
+  Frontend: React, TypeScript, Vite. Later backend: C#, ASP.NET Core, PostgreSQL.
+  Initial scope: one teacher, adult students, individual lessons, one reference timezone.
+  First demo uses fictitious data persisted in the browser; real accounts come later.
+  AI assists software development only; AI product features are out of scope.
+  Product documentation and UI text start in Portuguese; technical identifiers use English.
+  Collaboration follows docs/development-workflow.md and AGENTS.md.
+
+rules:
+  proposal:
+    - Keep scope small and identify the roadmap increment.
+    - Separate validated decisions from open questions; do not invent answers.
+  specs:
+    - Use the OpenSpec requirement/scenario structure with verifiable scenarios.
+    - Keep planned behavior in change specs until it is implemented and validated.
+  design:
+    - Explain relevant tradeoffs and avoid infrastructure for distant future features.
+  tasks:
+    - Split work into reviewable outcomes and identify learning slices with Cristian.
+    - Include focused verification and practical acceptance for relevant behavior.
