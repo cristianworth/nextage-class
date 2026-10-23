@@ -23,7 +23,7 @@ Uma professora real valida os fluxos. O sistema que ela utiliza hoje ajuda a ent
 ## Objetivos do projeto
 
 - Construir uma rotina simples, validada por quem ensina.
-- Desenvolver autonomia de Cristian em React e TypeScript, aproveitando sua experiência em C#.
+- Ampliar a compreensão de Cristian sobre React, TypeScript e decisões de desenvolvimento, aproveitando sua experiência em C# enquanto ele guia e acompanha a implementação assistida por IA.
 - Criar evidências de produto, requisitos, implementação e validação para o portfólio.
 - Evoluir de uma demo fictícia local para um piloto com acesso seguro e persistência no servidor.
 
@@ -35,7 +35,7 @@ Não estão previstos recursos de IA no produto, reposição/saldo de aulas, cob
 
 - A professora consegue percorrer os cenários e apontar diferenças da sua rotina.
 - Um fluxo completo pode ser demonstrado sem manipular dados manualmente por fora da interface.
-- Cristian consegue explicar e alterar os recortes que desenvolveu.
+- Cristian consegue acompanhar o fluxo e avaliar as decisões e entregas, com sua participação descrita de forma honesta no portfólio.
 - As próximas entregas partem do uso validado, e não apenas de uma lista crescente de recursos.
 
 As regras aprovadas ficam em [decisions.md](decisions.md); as entregas, em [roadmap.md](roadmap.md).

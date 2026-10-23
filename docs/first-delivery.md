@@ -38,8 +38,8 @@ O recorte inicial não deve impedir essas evoluções: a aula pontual já precis
 - Resolver LATER-01 a LATER-04 na medida necessária ao recorte; não inventar permissões do portal.
 - Esboçar o caminho entre cadastro, agenda e histórico.
 - Escolher mecanismo de persistência, validação e verificações apropriadas.
-- Combinar qual parte Cristian quer implementar e qual faremos juntos.
+- Apresentar as decisões técnicas relevantes e uma sequência de implementação que Cristian consiga acompanhar; a assistência de IA implementa e verifica.
 
 ## Como validar a entrega
 
-A professora percorre uma situação fictícia e aponta diferenças relevantes da rotina. Cristian explica o fluxo de dados e executa os passos acima. Verificações automatizadas devem proteger regras relevantes, principalmente conflitos e preservação de registros; não substituem essa conferência prática.
+A assistência de IA executa e registra as verificações técnicas. A professora pode percorrer uma situação fictícia e apontar diferenças relevantes da rotina; Cristian acompanha o resultado e valida a adequação ao pedido, sem precisar escrever código. Verificações automatizadas devem proteger regras relevantes, principalmente conflitos e preservação de registros; não substituem a conferência prática.

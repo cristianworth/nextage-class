@@ -3,7 +3,7 @@
 ## Collaboration
 
 - Converse em português com Cristian. Use inglês natural para novos identificadores, nomes de arquivos, testes e comentários técnicos. A documentação de produto e os textos da interface começam em português.
-- O modo padrão é pessoal/aprendizado: explique decisões novas com exemplos pequenos, combine recortes que Cristian queira implementar e revise seu trabalho. Tarefas repetitivas podem ser aceleradas por IA.
+- Preferência atual: Cristian guia o produto, acompanha decisões e valida entregas; a assistência de IA implementa e verifica. Não reservar tarefas para Cristian programar, a menos que ele peça. Explique escolhas relevantes para que ele consiga acompanhar o desenvolvimento.
 - IA auxilia o desenvolvimento. Não adicione recursos de IA ao produto.
 - O escopo atual é documentação e planejamento. Não interprete documentos de funcionalidades futuras como autorização para implementá-las.
 
@@ -23,3 +23,4 @@
 - Preserve dados locais, credenciais, acervos privados, imagens de referência e arquivos temporários fora do histórico. A demo usa somente conteúdo fictício ou autorizado para publicação.
 - Valide o comportamento relevante e efeitos plausíveis. Revisão por IA e validação estrutural de OpenSpec não substituem testes ou conferência prática.
 - Não introduza frameworks, serviços ou abstrações extras sem uma necessidade demonstrada. A stack validada está em `docs/architecture.md`.
+- Mantenha nomes claros, responsabilidades coesas e regras fora dos componentes quando houver uma fronteira real. Use Clean Code de forma proporcional, sem camadas, interfaces ou padrões apenas por cerimônia. Trate erros e teste o comportamento relevante.

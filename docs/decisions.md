@@ -9,7 +9,7 @@ Atualizado em 23/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-01 | Nome: Nextage Class. Repositório próprio em `D:\Repo\nextage-class`. |
 | DEC-02 | Projeto pessoal para aprendizado e portfólio, validado com uma professora real. |
 | DEC-03 | IA apenas como assistência ao desenvolvimento. Não há funcionalidades de IA no produto planejado. |
-| DEC-04 | OpenSpec com uso enxuto, desenvolvimento incremental e tarefas divididas entre Cristian e assistência de IA. |
+| DEC-04 | OpenSpec com uso enxuto e desenvolvimento incremental. Cristian guia decisões e valida resultados; a assistência de IA implementa e verifica, explicando escolhas relevantes. Não há tarefas de programação atribuídas a Cristian por padrão. |
 | DEC-05 | Começar com documentação e uma demo fictícia com persistência no navegador. Evoluir para servidor antes do uso cotidiano com dados reais. |
 
 ## Público e acesso

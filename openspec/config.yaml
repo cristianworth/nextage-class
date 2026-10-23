@@ -8,6 +8,8 @@ context: |
   Initial scope: one teacher, adult students, individual lessons, one reference timezone.
   First demo uses fictitious data persisted in the browser; real accounts come later.
   AI assists software development only; AI product features are out of scope.
+  Cristian guides decisions and validates results; the AI assistant implements and verifies.
+  Do not assign programming exercises to Cristian unless he asks for them.
   Product documentation and UI text start in Portuguese; technical identifiers use English.
   Collaboration follows docs/development-workflow.md and AGENTS.md.
 
@@ -21,5 +23,5 @@ rules:
   design:
     - Explain relevant tradeoffs and avoid infrastructure for distant future features.
   tasks:
-    - Split work into reviewable outcomes and identify learning slices with Cristian.
+    - Split work into reviewable outcomes that Cristian can follow; the AI assistant implements and verifies.
     - Include focused verification and practical acceptance for relevant behavior.

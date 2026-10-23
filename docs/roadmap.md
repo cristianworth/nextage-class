@@ -33,7 +33,7 @@ Adicionar acervo em texto por nível, homework passado/corrigido e preparação 
 1. Revisar esta base e manter decisões respondidas fora da lista de pendências.
 2. Preparar a integração OpenSpec e propor a mudança do incremento 1A.
 3. Detalhar somente o cadastro mínimo, a aula pontual e o registro necessários ao primeiro fluxo.
-4. Esboçar navegação e telas mínimas; combinar o primeiro recorte de código de Cristian.
+4. Esboçar navegação e telas mínimas; apresentar decisões técnicas relevantes e a sequência de implementação.
 5. Criar `web/` e implementar o incremento 1A após o planejamento correspondente.
 
 ## Fora deste roadmap

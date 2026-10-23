@@ -2,11 +2,15 @@
 
 ## Responsabilidades
 
-- Cristian define a intenção, decide prioridades e desenvolve recortes escolhidos para praticar.
+- Cristian define a intenção, decide prioridades, acompanha as decisões técnicas e valida o resultado. Não pretende programar pessoalmente nesta etapa.
 - A professora de referência valida o fluxo de uso; não precisa aprovar arquitetura ou ler documentos técnicos.
-- A assistência de IA ajuda a esclarecer requisitos, comparar opções, implementar tarefas combinadas e revisar evidências.
+- A assistência de IA esclarece requisitos, compara opções, implementa os recortes autorizados e executa as verificações necessárias, apresentando evidências e limitações.
 
-Explicar abstrações novas com exemplos pequenos. Alternar implementação conjunta, variações feitas por Cristian e automação de trabalho repetitivo. A divisão é combinada por mudança, sem exigir percentuais fixos de código.
+Explicar abstrações novas com exemplos pequenos quando ajudarem a acompanhar uma decisão. Não transformar o andamento em exercícios obrigatórios ou reservar tarefas para Cristian programar. Ele pode mudar essa preferência a qualquer momento. Decisões rotineiras seguem de forma autônoma; dúvidas que alteram produto ou arquitetura precisam ser esclarecidas antes do trabalho dependente.
+
+## Qualidade do código
+
+Usar nomes claros, responsabilidades coesas e organização proporcional ao problema. Separar apresentação, regras e acesso a dados quando essa divisão trouxer clareza. Evitar abstrações, camadas e padrões sem necessidade concreta. Tratar erros, preservar compatibilidade conforme o projeto evoluir e verificar regras importantes e efeitos colaterais plausíveis. Explicar os trade-offs relevantes sem narrar cada linha de código.
 
 ## Três tipos de documento
 
@@ -21,7 +25,7 @@ Hoje não há comportamento implementado nem mudança funcional aberta. Não pre
 1. Escolher um resultado pequeno e consultar decisões existentes.
 2. Resolver apenas as perguntas que afetam esse resultado.
 3. Descrever intenção, requisitos e cenários verificáveis.
-4. Discutir solução e tarefas proporcionais; combinar o recorte de aprendizado.
+4. Discutir decisões relevantes e organizar tarefas pequenas que Cristian consiga acompanhar.
 5. Implementar em partes, preservando o escopo.
 6. Executar verificações relevantes e conferir o fluxo na interface.
 7. Atualizar especificações entregues e arquivar a mudança, sem promover pendências a comportamento pronto.
@@ -30,6 +34,8 @@ Hoje não há comportamento implementado nem mudança funcional aberta. Não pre
 Não executar uma implementação inteira só porque uma ferramenta produziu uma lista de tarefas. O trabalho deve seguir o recorte combinado. Ajustes pequenos não exigem refazer toda a documentação.
 
 ## Preparação da ferramenta
+
+OpenSpec é uma ferramenta de desenvolvimento orientado por especificações: organiza documentos, mudanças e instruções para a assistência de IA. Sua CLI é um programa de terminal que depende de Node.js. A integração fornece instruções/skills para a ferramenta de desenvolvimento utilizada. OpenSpec não executa a agenda nem define a arquitetura do aplicativo; o usuário final não precisa dele para usar o Nextage Class.
 
 O esqueleto segue o formato documentado do OpenSpec, incluindo `config.yaml`, `specs/` e `changes/`. A CLI e as integrações ainda não foram instaladas; isso fica para preparar a primeira mudança funcional. Não afirmar que comandos estão disponíveis antes de conferir o ambiente.
 
