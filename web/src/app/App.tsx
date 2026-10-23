@@ -6,7 +6,13 @@ import { createDemo } from '../domain/demo'
 import { errorMessage } from '../domain/models'
 import { FormError, Modal } from '../shared/Modal'
 import { saveStudent } from '../domain/students'
-import type { Lesson, Student } from '../domain/models'
+import type { Lesson, ScheduleBlock, Student } from '../domain/models'
+import {
+  addBlock,
+  removeBlock,
+  rescheduleLesson,
+  scheduleWeekly,
+} from '../domain/weekly-scheduling'
 import { StudentForm } from '../features/students/StudentForm'
 import { StudentsPage } from '../features/students/StudentsPage'
 import { scheduleLesson } from '../domain/lessons'
@@ -16,6 +22,9 @@ import { AgendaPage } from '../features/agenda/AgendaPage'
 import { LessonForm } from '../features/agenda/LessonForm'
 import type { LessonPrefill } from '../features/agenda/LessonForm'
 import { LessonDetails } from '../features/agenda/LessonDetails'
+import { BlockForm } from '../features/agenda/BlockForm'
+import { BlockDetails } from '../features/agenda/BlockDetails'
+import { RescheduleForm } from '../features/agenda/RescheduleForm'
 import { RecordForm } from '../features/history/RecordForm'
 import { HistoryPage } from '../features/history/HistoryPage'
 
@@ -28,6 +37,9 @@ export function App() {
   const [lessonPrefill, setLessonPrefill] = useState<LessonPrefill | null>(null)
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null)
   const [recordLesson, setRecordLesson] = useState<Lesson | null>(null)
+  const [blockPrefill, setBlockPrefill] = useState<LessonPrefill | null>(null)
+  const [selectedBlock, setSelectedBlock] = useState<ScheduleBlock | null>(null)
+  const [rescheduleTarget, setRescheduleTarget] = useState<Lesson | null>(null)
   const [historyStudent, setHistoryStudent] = useState('')
   const [notice, setNotice] = useState('')
   const [now, setNow] = useState(() => new Date())
@@ -60,6 +72,9 @@ export function App() {
       setLessonPrefill(null)
       setRecordLesson(null)
       setSelectedLesson(null)
+      setBlockPrefill(null)
+      setSelectedBlock(null)
+      setRescheduleTarget(null)
       setNotice('Demo reiniciada com os exemplos fictícios.')
     } catch (cause) {
       setResetError(errorMessage(cause))
@@ -101,6 +116,8 @@ export function App() {
                 now={now}
                 onNew={setLessonPrefill}
                 onOpen={setSelectedLesson}
+                onBlock={setBlockPrefill}
+                onOpenBlock={setSelectedBlock}
               />
             )}
             {page === 'students' && (
@@ -143,7 +160,7 @@ export function App() {
                 prefill={lessonPrefill}
                 onClose={() => setLessonPrefill(null)}
                 onSave={(input) => {
-                  commit(scheduleLesson(state, input))
+                  commit(input.weekly ? scheduleWeekly(state, input) : scheduleLesson(state, input))
                   setLessonPrefill(null)
                   setNotice('Aula agendada. Seu próximo encontro já tem lugar.')
                 }}
@@ -156,6 +173,47 @@ export function App() {
                 now={now}
                 onClose={() => setSelectedLesson(null)}
                 onRecord={() => openRecord(selectedLesson)}
+                onReschedule={() => {
+                  setRescheduleTarget(selectedLesson)
+                  setSelectedLesson(null)
+                }}
+              />
+            )}
+            {blockPrefill && (
+              <BlockForm
+                prefill={blockPrefill}
+                onClose={() => setBlockPrefill(null)}
+                onSave={(input) => {
+                  commit(addBlock(state, input))
+                  setBlockPrefill(null)
+                  setNotice('Bloqueio salvo na agenda.')
+                }}
+              />
+            )}
+            {selectedBlock && (
+              <BlockDetails
+                block={selectedBlock}
+                onClose={() => setSelectedBlock(null)}
+                onRemove={() => {
+                  commit(removeBlock(state, selectedBlock.id))
+                  setSelectedBlock(null)
+                  setNotice('Bloqueio removido. O período ficou disponível.')
+                }}
+              />
+            )}
+            {rescheduleTarget && (
+              <RescheduleForm
+                lesson={rescheduleTarget}
+                onClose={() => setRescheduleTarget(null)}
+                onSave={(target, scope) => {
+                  commit(rescheduleLesson(state, rescheduleTarget.id, target, scope))
+                  setRescheduleTarget(null)
+                  setNotice(
+                    scope === 'single'
+                      ? 'Aula remarcada.'
+                      : 'Horário atualizado para esta aula e as próximas.',
+                  )
+                }}
               />
             )}
             {recordLesson && (

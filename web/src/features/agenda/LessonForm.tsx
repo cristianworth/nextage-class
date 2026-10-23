@@ -7,6 +7,7 @@ import { FormError, Modal } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
 
 export type LessonPrefill = { date?: string; hour?: number }
+export type NewLessonInput = LessonInput & { weekly: boolean; endDate: string | null }
 
 export function LessonForm({
   students,
@@ -16,10 +17,11 @@ export function LessonForm({
 }: {
   students: Student[]
   prefill: LessonPrefill
-  onSave: (input: LessonInput) => void
+  onSave: (input: NewLessonInput) => void
   onClose: () => void
 }) {
   const [error, setError] = useState('')
+  const [weekly, setWeekly] = useState(false)
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -28,6 +30,8 @@ export function LessonForm({
         studentId: String(data.get('studentId')),
         date: String(data.get('date')),
         hour: Number(data.get('hour')),
+        weekly,
+        endDate: weekly && data.get('endDate') ? String(data.get('endDate')) : null,
       })
     } catch (cause) {
       setError(errorMessage(cause))
@@ -36,7 +40,7 @@ export function LessonForm({
   return (
     <Modal
       title="Uma nova aula na agenda"
-      subtitle="Agende uma aula individual para um aluno cadastrado."
+      subtitle="Agende uma aula individual, uma vez ou toda semana."
       onClose={onClose}
     >
       <form onSubmit={submit}>
@@ -79,6 +83,21 @@ export function LessonForm({
             </select>
           </label>
         </div>
+        <label className="check-field">
+          <input
+            type="checkbox"
+            checked={weekly}
+            onChange={(event) => setWeekly(event.target.checked)}
+          />
+          Repetir toda semana
+        </label>
+        {weekly && (
+          <label className="field">
+            Repetir até
+            <input type="date" name="endDate" />
+            <small className="muted">Deixe em branco para continuar sem data final.</small>
+          </label>
+        )}
         <div className="info-note">
           <Icon name="clock" size={18} />
           <p>

@@ -45,7 +45,7 @@ describe('registros de aula', () => {
       now,
     )
     expect(next.records.at(-1)?.attendance).toBe('student-absent')
-    expect(Object.keys(next).sort()).toEqual(['lessons', 'records', 'students', 'version'])
+    expect(next.lessons).toEqual(createDemo(now).lessons)
   })
   it('edita o mesmo registro preservando criação e atualizando data', () => {
     const state = saveLessonRecord(createDemo(now), 'lesson-0', input, now)

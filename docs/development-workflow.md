@@ -18,7 +18,7 @@ Usar nomes claros, responsabilidades coesas e organização proporcional ao prob
 2. `openspec/changes/`: propostas em andamento; requisitos e tarefas ainda não necessariamente entregues.
 3. `openspec/specs/`: comportamento incorporado ao produto após implementação e validação.
 
-O 1A está implementado e verificado tecnicamente na mudança `deliver-teacher-demo-1a`, aberta para revisão de entrega. Não preencher as especificações atuais com toda a visão futura; consolidar o comportamento ao encerrar a mudança.
+O 1A e o 1B estão implementados e verificados tecnicamente nas mudanças `deliver-teacher-demo-1a` e `deliver-weekly-agenda-1b`, abertas para revisão de uso. A base do 1A foi sincronizada para permitir que o 1B altere requisitos existentes; os deltas do 1B permanecem na mudança até sua consolidação. Não preencher as especificações atuais com toda a visão futura.
 
 ## Ciclo por mudança
 

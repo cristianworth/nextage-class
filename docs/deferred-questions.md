@@ -9,13 +9,16 @@ Esta lista separa respostas incorporadas e detalhes ainda abertos. Os exemplos s
 - LATER-04: lançamentos de hoje ou do passado, após o término (DEC-28).
 - LATER-07: motivo opcional e registro único editável com última atualização (DEC-17/29).
 
+## Resolvidas para o 1B
+
+- LATER-05: horário semanal sem término ou com término opcional; férias/feriados por bloqueios manuais. Conflitos avisam e mantêm as aulas (DEC-31/33).
+- LATER-06: mudar “esta e as próximas” substitui remarcações individuais futuras; preservar aulas iniciadas e registros (DEC-32).
+
 ## Abertas
 
 | ID | Quando resolver | Pergunta |
 | --- | --- | --- |
 | LATER-03 | Portal do aluno | “Que parte do registro o aluno pode ler? Precisamos separar observação privada e resumo compartilhado?” No 1A só a professora consulta. |
-| LATER-05 | Recorrência | “Quando muda o horário fixo, até quando geramos as aulas? Como trata férias e feriados?” |
-| LATER-06 | Remarcação | “Ao trocar esta e as próximas, o que fazemos com aulas futuras que já tinham sido remarcadas individualmente?” |
 | LATER-08 | Homework | “Pode passar mais de um homework? A correção pode ser parcial ou basta marcar como corrigido?” |
 | LATER-09 | Preparação | “Você escolhe o material da próxima aula antes ou costuma decidir na hora?” |
 | LATER-10 | Acervo e demo pública | “Vamos criar material próprio para o projeto, cadastrar links ou usar algum conteúdo que você tem autorização para compartilhar?” Demo usa conteúdo fictício/autoral; não pressupor acesso ao acervo do sistema atual. |

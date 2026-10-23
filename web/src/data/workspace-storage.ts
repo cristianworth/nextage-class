@@ -1,5 +1,6 @@
 import { createDemo } from '../domain/demo'
-import { workspaceSchema } from '../domain/models'
+import { assertAvailable } from '../domain/availability'
+import { legacyWorkspaceSchema, workspaceSchema } from '../domain/models'
 import type { Workspace } from '../domain/models'
 
 export const STORAGE_KEY = 'nextage-class:workspace:v1'
@@ -10,7 +11,12 @@ export function loadWorkspace(storage: StoragePort, now = new Date()): LoadResul
   try {
     const raw = storage.getItem(STORAGE_KEY)
     if (raw === null) return { state: createDemo(now), error: null }
-    return { state: workspaceSchema.parse(JSON.parse(raw)), error: null }
+    const value: unknown = JSON.parse(raw)
+    const legacy = legacyWorkspaceSchema.safeParse(value)
+    const current = legacy.success ? { ...legacy.data, version: 2, series: [], blocks: [] } : value
+    const state = workspaceSchema.parse(current)
+    assertAvailable(state)
+    return { state, error: null }
   } catch {
     return {
       state: null,
@@ -22,6 +28,7 @@ export function loadWorkspace(storage: StoragePort, now = new Date()): LoadResul
 
 export function saveWorkspace(storage: StoragePort, state: Workspace) {
   const validState = workspaceSchema.parse(state)
+  assertAvailable(validState)
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify(validState))
   } catch {

@@ -1,6 +1,6 @@
 # Blocos de entrega da demo do professor
 
-Atualizado em 23/10/2026. 1A está autorizado para implementação; 1B e 1C estão apenas planejados. Cada bloco deve resultar em comportamento conferível. Refinar 1B/1C perto da execução, sem antecipar código.
+Atualizado em 23/10/2026. 1A e 1B implementados e verificados tecnicamente; 1C permanece planejado. Cada bloco resulta em comportamento conferível. Refinar o 1C perto da execução, sem antecipar código.
 
 ## 1A — Primeiro fluxo completo
 
@@ -15,11 +15,13 @@ Blocos A1–A6 implementados e verificados tecnicamente. A revisão de uso conti
 | A5 — Registro | Lançar presença/falta, conteúdo, material em texto e nível; editar o registro existente | A4 | Bloquear aula não ocorrida; manter um registro por aula e preservar snapshots históricos |
 | A6 — Histórico e revisão | Consultar/filtrar histórico; conferir fluxo completo, celular, persistência e documentação | A5 | Testes de regras, armazenamento e navegador; revisão da professora fica registrada separadamente |
 
-## 1B — Agenda de rotina (planejamento)
+## 1B — Agenda de rotina
+
+B1–B5 implementados; verificação técnica de B6 concluída. A revisão da rotina com a professora permanece pendente. Ver [verification-1b.md](verification-1b.md) e a mudança `deliver-weekly-agenda-1b`.
 
 | Bloco | Resultado | Dependência |
 | --- | --- | --- |
-| B1 — Regras de recorrência | Especificar validade da série, feriados/férias e exceções | 1A e respostas de rotina |
+| B1 — Regras de recorrência | Término opcional; feriados/férias por bloqueios; atualizar exceções futuras ao mudar a série | 1A e respostas de rotina |
 | B2 — Horário semanal | Cadastrar série e gerar/consultar ocorrências sem duplicação | B1 |
 | B3 — Bloqueios | Bloqueio pontual e semanal; conflito com aulas existentes | B2 |
 | B4 — Remarcação individual | Mover somente uma ocorrência com verificação de conflito | B2/B3 |

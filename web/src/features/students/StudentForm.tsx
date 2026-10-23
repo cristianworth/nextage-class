@@ -35,12 +35,17 @@ export function StudentForm({
   return (
     <Modal
       title={student ? 'Editar aluno' : 'Conheça seu próximo aluno'}
-      subtitle="Nome e nível são obrigatórios. Complete o restante quando fizer sentido."
+      subtitle="Organize os dados para acompanhar a jornada do aluno."
       onClose={onClose}
     >
       <form onSubmit={submit}>
         <label className="field">
-          Nome do aluno
+          <span>
+            Nome do aluno{' '}
+            <span className="required-marker" aria-hidden="true">
+              *
+            </span>
+          </span>
           <input
             name="name"
             required
@@ -53,7 +58,12 @@ export function StudentForm({
         </label>
         <div className="form-grid">
           <label className="field">
-            Nível
+            <span>
+              Nível{' '}
+              <span className="required-marker" aria-hidden="true">
+                *
+              </span>
+            </span>
             <select name="level" required defaultValue={student?.level ?? ''}>
               <option value="" disabled>
                 Selecione o nível
@@ -64,7 +74,12 @@ export function StudentForm({
             </select>
           </label>
           <label className="field">
-            Início das aulas
+            <span>
+              Início das aulas{' '}
+              <span className="required-marker" aria-hidden="true">
+                *
+              </span>
+            </span>
             <input
               type="date"
               name="startDate"
@@ -75,7 +90,7 @@ export function StudentForm({
         </div>
         <div className="form-grid">
           <label className="field">
-            Telefone <small>Opcional</small>
+            Telefone
             <input
               type="tel"
               name="phone"
@@ -86,7 +101,7 @@ export function StudentForm({
             />
           </label>
           <label className="field">
-            Ocupação <small>Opcional</small>
+            Ocupação
             <input
               name="occupation"
               maxLength={150}
@@ -96,7 +111,7 @@ export function StudentForm({
           </label>
         </div>
         <label className="field">
-          Interesses <small>Opcional</small>
+          Interesses
           <textarea
             name="interests"
             maxLength={1000}

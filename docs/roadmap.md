@@ -2,7 +2,7 @@
 
 Status: direção aprovada; recortes de entrega propostos abaixo. Sem datas estimadas até conhecermos o ritmo de desenvolvimento e validação. Uma fase pode conter várias mudanças OpenSpec.
 
-Execução atual: OpenSpec 1.14.3 instalado e integrado; blocos A1–A6 implementados e verificados tecnicamente. Revisão com Cristian e professora pendente. O fracionamento de 1A, 1B e 1C está em [delivery-chunks.md](delivery-chunks.md).
+Execução atual: OpenSpec 1.14.3 instalado e integrado; 1A e 1B implementados e verificados tecnicamente. Revisão de uso com Cristian e professora pendente. O fracionamento de 1A, 1B e 1C está em [delivery-chunks.md](delivery-chunks.md).
 
 | Fase | Objetivo e escopo | Evidência para concluir |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Este é o primeiro incremento funcional. Ainda não cobre a agenda final.
 
 ### 1B — Agenda de rotina
 
-Adicionar horários recorrentes, bloqueios e remarcação com as duas opções aprovadas. Tornar a agenda adequada ao uso semanal e conferir conflitos e preservação do passado.
+Implementado: horários recorrentes com término opcional, bloqueios manuais e remarcação com ambas as opções aprovadas. Alterar o futuro substitui trocas individuais futuras, preservando aulas iniciadas e registros. Conflitos são verificados além da semana visível. Conferir [verification-1b.md](verification-1b.md).
 
 ### 1C — Preparação e fechamento da demo
 
@@ -32,10 +32,10 @@ Adicionar acervo em texto por nível, homework passado/corrigido e preparação 
 
 ## Próximos passos
 
-1. Conferir a demo do 1A com o [roteiro de verificação](verification-1a.md).
-2. Registrar ajustes e revisão de uso sem confundir testes técnicos com aceitação da professora.
-3. Consolidar as especificações e arquivar a mudança do 1A quando a revisão da entrega estiver satisfeita.
-4. Resolver regras de recorrência/exceções e detalhar o primeiro bloco de 1B antes de implementá-lo.
+1. Conferir agenda, remarcação e bloqueios com o [roteiro do 1B](verification-1b.md).
+2. Registrar ajustes de uso sem confundir testes técnicos com aceitação da professora.
+3. Consolidar as especificações do 1B e arquivar mudanças quando a revisão da entrega estiver satisfeita; a base técnica do 1A já foi sincronizada.
+4. Antes do 1C, definir formato/autoria dos materiais, correção de homework e planejamento de conteúdo. Não iniciar o 1C sem o pedido correspondente.
 
 ## Fora deste roadmap
 

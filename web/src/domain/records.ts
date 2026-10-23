@@ -1,6 +1,7 @@
 import { hasLessonEnded } from './dates'
 import { recordInputSchema } from './models'
 import type { RecordInput, Workspace } from './models'
+import { ensureMaterialized, findLesson } from './agenda'
 
 export function saveLessonRecord(
   state: Workspace,
@@ -8,7 +9,7 @@ export function saveLessonRecord(
   input: RecordInput,
   now = new Date(),
 ): Workspace {
-  const lesson = state.lessons.find((item) => item.id === lessonId)
+  const lesson = findLesson(state, lessonId)
   if (!lesson) throw new Error('Esta aula não foi encontrada.')
   if (!hasLessonEnded(lesson.date, lesson.hour, now))
     throw new Error('Você pode lançar a aula somente após seu término, no horário de Brasília.')
@@ -26,7 +27,7 @@ export function saveLessonRecord(
     updatedAt: now.toISOString(),
   }
   return {
-    ...state,
+    ...ensureMaterialized(state, lesson),
     records: previous
       ? state.records.map((item) => (item.id === record.id ? record : item))
       : [...state.records, record],

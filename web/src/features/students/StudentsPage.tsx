@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Student, Workspace } from '../../domain/models'
-import { formatDate, formatHour, hasLessonEnded } from '../../domain/dates'
+import { formatDate, formatHour } from '../../domain/dates'
+import { upcomingLessons } from '../../domain/agenda'
 import { matchesSearch } from '../../domain/students'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
@@ -69,12 +70,7 @@ export function StudentsPage({
       ) : (
         <div className="student-grid">
           {students.map((student, index) => {
-            const upcoming = state.lessons
-              .filter(
-                (lesson) =>
-                  lesson.studentId === student.id && !hasLessonEnded(lesson.date, lesson.hour),
-              )
-              .sort((a, b) => a.date.localeCompare(b.date) || a.hour - b.hour)[0]
+            const upcoming = upcomingLessons(state, new Date(), student.id, 1)[0]
             const records = state.records.filter((record) =>
               state.lessons.some(
                 (lesson) => lesson.id === record.lessonId && lesson.studentId === student.id,

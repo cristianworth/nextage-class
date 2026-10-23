@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Status: frontend do 1A implementado. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
+Status: frontend do 1A/1B implementado. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
 
 ## Stack
 
@@ -43,6 +43,8 @@ Essa organização é uma direção, não uma lista de pastas vazias a gerar ant
 ## Demo local e aplicação com servidor
 
 A primeira versão salva dados fictícios em um documento versionado no localStorage. Os dados são validados na leitura e antes da gravação. Ela não sincroniza dispositivos/abas nem oferece isolamento seguro por conta. Texto fictício cabe neste mecanismo; reavaliar conforme o acervo evoluir.
+
+No 1B, séries semanais guardam períodos com índice inicial, data e hora. A consulta calcula somente as ocorrências da faixa pedida; cada ocorrência mantém ID de série + índice. Registros e trocas individuais materializam a ocorrência e prevalecem sobre o horário calculado. Mudar o futuro da série substitui exceções futuras e conserva aulas iniciadas. A ocupação é comparada por intervalos e dias semanais sem um horizonte fixo, antes de gravar qualquer mudança. O formato local v2 migra a demo anterior em memória, preservando a chave existente.
 
 A demo deve poder voltar aos exemplos iniciais. No piloto com dados reais, autenticação, autorização no servidor, backup e recuperação fazem parte da entrega. Trocar um perfil na interface não equivale a autenticar uma pessoa.
 

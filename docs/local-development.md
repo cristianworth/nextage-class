@@ -17,6 +17,7 @@ npm --prefix web run build
 npm --prefix web test
 npm --prefix web run test:e2e
 npm run spec -- validate deliver-teacher-demo-1a --strict
+npm run spec -- validate deliver-weekly-agenda-1b --strict
 ```
 
 Os testes de navegador exigem Chromium do Playwright (na pasta `web/`, executar `npx playwright install chromium`). Como alternativa, no Windows com Edge instalado:
@@ -27,3 +28,5 @@ npm run test:e2e
 ```
 
 A variável vale somente para a sessão atual. Os testes sobem um servidor próprio na porta 4177 e usam dados/relógio isolados. O navegador de uso manual continua na porta 5173. Não há publicação ou serviço externo de aplicação nesta etapa; as fontes são servidas localmente.
+
+O formato local atual é v2, mas a chave continua `nextage-class:workspace:v1` para preservar as demos existentes. Dados válidos do 1A são migrados em memória; a próxima alteração salva o formato novo sem exigir reinício. Dados inválidos são preservados e apresentam a recuperação já existente. Não edite o armazenamento para atualizar a aplicação.

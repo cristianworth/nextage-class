@@ -10,7 +10,8 @@ import {
   weekDays,
   weekStart,
 } from '../../domain/dates'
-import type { Lesson, Workspace } from '../../domain/models'
+import type { Lesson, ScheduleBlock, Workspace } from '../../domain/models'
+import { blockAt, lessonsInRange, upcomingLessons } from '../../domain/agenda'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
 import type { LessonPrefill } from './LessonForm'
@@ -20,11 +21,15 @@ export function AgendaPage({
   now,
   onNew,
   onOpen,
+  onBlock,
+  onOpenBlock,
 }: {
   state: Workspace
   now: Date
   onNew: (prefill: LessonPrefill) => void
   onOpen: (lesson: Lesson) => void
+  onBlock: (prefill: LessonPrefill) => void
+  onOpenBlock: (block: ScheduleBlock) => void
 }) {
   const today = referenceClock(now).date
   const [week, setWeek] = useState(weekStart(today))
@@ -32,15 +37,12 @@ export function AgendaPage({
     weekDays(today).includes(today) ? today : weekStart(today),
   )
   const days = weekDays(week)
-  const weekLessons = state.lessons.filter((lesson) => days.includes(lesson.date))
+  const weekLessons = lessonsInRange(state, days[0], days[4])
   const recordsByLesson = new Map(state.records.map((record) => [record.lessonId, record]))
   const pending = weekLessons.filter(
     (lesson) => hasLessonEnded(lesson.date, lesson.hour, now) && !recordsByLesson.has(lesson.id),
   ).length
-  const upcoming = state.lessons
-    .filter((lesson) => !hasLessonEnded(lesson.date, lesson.hour, now))
-    .sort((a, b) => a.date.localeCompare(b.date) || a.hour - b.hour)
-    .slice(0, 3)
+  const upcoming = upcomingLessons(state, now)
 
   function moveWeek(offset: number) {
     const next = addDays(week, offset * 7)
@@ -60,13 +62,18 @@ export function AgendaPage({
           <h1>Sua semana de aulas</h1>
           <p className="muted">Agenda organizada. Mais espaço para ensinar.</p>
         </div>
-        <button
-          className="button primary"
-          onClick={() => onNew({ date: selectedDay })}
-          disabled={!state.students.length}
-        >
-          <Icon name="plus" size={17} /> Nova aula
-        </button>
+        <div className="heading-actions">
+          <button className="button" onClick={() => onBlock({ date: selectedDay })}>
+            Bloquear horário
+          </button>
+          <button
+            className="button primary"
+            onClick={() => onNew({ date: selectedDay })}
+            disabled={!state.students.length}
+          >
+            <Icon name="plus" size={17} /> Nova aula
+          </button>
+        </div>
       </div>
       <div className="stats-grid">
         <Stat icon="calendar" value={weekLessons.length} label="Aulas nesta semana" tone="green" />
@@ -154,6 +161,7 @@ export function AgendaPage({
                       : -1
                     const student = state.students[studentIndex]
                     const record = lesson ? recordsByLesson.get(lesson.id) : undefined
+                    const block = blockAt(state, day, hour)
                     return (
                       <td
                         key={day}
@@ -167,6 +175,7 @@ export function AgendaPage({
                           >
                             <span className="lesson-topline">
                               {student.level}
+                              {lesson.seriesId ? ' · Semanal' : ''}
                               <span>
                                 {record ? (
                                   <Icon name="check" size={12} />
@@ -178,6 +187,20 @@ export function AgendaPage({
                             <strong>{student.name}</strong>
                             <span className="lesson-bottomline">
                               {record ? 'Registrada' : lessonTime(hour)}
+                            </span>
+                          </button>
+                        ) : block ? (
+                          <button
+                            className="lesson-block blocked-block"
+                            onClick={() => onOpenBlock(block)}
+                            aria-label={`${block.title}, ${formatDate(day)} às ${formatHour(hour)}`}
+                          >
+                            <span className="lesson-topline">
+                              {block.repeat === 'weekly' ? 'Bloqueio semanal' : 'Bloqueio'}
+                            </span>
+                            <strong>{block.title}</strong>
+                            <span className="lesson-bottomline">
+                              {formatHour(block.startHour)} – {formatHour(block.endHour)}
                             </span>
                           </button>
                         ) : (

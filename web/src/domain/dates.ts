@@ -34,6 +34,15 @@ export function addDays(value: string, days: number) {
   return date.toISOString().slice(0, 10)
 }
 
+export function daysBetween(start: string, end: string) {
+  return Math.round((civilDate(end).getTime() - civilDate(start).getTime()) / 86_400_000)
+}
+
+export function hasLessonStarted(date: string, hour: number, now = new Date()) {
+  const clock = referenceClock(now)
+  return date < clock.date || (date === clock.date && hour * 60 <= clock.minutes)
+}
+
 export function weekday(value: string) {
   return civilDate(value).getUTCDay()
 }

@@ -50,6 +50,10 @@ Atualizado em 23/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-27 | No 1A, nome e nível são obrigatórios no cadastro; telefone, ocupação e interesses são opcionais. |
 | DEC-28 | Lançar apenas aulas ocorridas: dias anteriores ou hoje após o término da aula. Não permitir registros de aulas futuras. |
 | DEC-29 | Cada aula possui no máximo um registro, que pode ser editado com indicação da última atualização. |
+| DEC-30 | No cadastro de aluno, não exibir a palavra “Opcional” nos campos. Indicar os campos obrigatórios com asterisco vermelho, preservando a indicação nativa de obrigatoriedade para acessibilidade. |
+| DEC-31 | Um horário fixo semanal pode repetir sem data final; o término é opcional. Um aluno pode ter mais de um horário fixo, em séries independentes. |
+| DEC-32 | “Esta e as próximas” substitui também as remarcações individuais futuras da série. Aulas iniciadas/passadas e registros permanecem intactos. Remarcação troca uma aula existente, sem reposição ou crédito. |
+| DEC-33 | Férias e feriados são tratados por bloqueios manuais. Ao atingir uma aula já marcada, o bloqueio informa o conflito e não altera aulas automaticamente. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 

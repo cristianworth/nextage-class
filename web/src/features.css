@@ -1,3 +1,57 @@
+.required-marker {
+  color: #b53d42;
+  font-weight: 700;
+}
+
+.heading-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.check-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+.check-field input,
+.scope-options input {
+  width: 17px;
+  height: 17px;
+  accent-color: #287466;
+  flex-shrink: 0;
+}
+.scope-options {
+  border: 1px solid #dce6e1;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 0 0 22px;
+}
+.scope-options legend {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 5px;
+}
+.scope-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+.blocked-block {
+  --tone-bg: #eff1f2;
+  --tone-color: #59666e;
+}
+.blocked-block:hover {
+  background: #e5e9eb;
+}
+.blocked-block .lesson-topline {
+  font-size: 10px;
+}
+
 .panel {
   background: #fff;
   border: 1px solid var(--border);
@@ -953,6 +1007,16 @@
   .mobile-days .selected {
     background: #e9f2e6;
     color: var(--green);
+  }
+  .page-heading:has(.heading-actions) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .heading-actions {
+    margin-top: 8px;
+  }
+  .heading-actions .button {
+    flex: 1;
   }
   .calendar-scroll {
     max-height: 510px;

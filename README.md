@@ -6,9 +6,9 @@ Projeto pessoal de aprendizado e portfólio, desenvolvido com assistência de IA
 
 ## Estado atual
 
-Incremento **1A implementado e verificado tecnicamente** em 23/10/2026. A demo permite cadastrar/editar alunos, agendar aulas pontuais, lançar/editar registros e consultar o histórico, com persistência local. Há versão para computador e consulta por dia no celular.
+Incrementos **1A e 1B implementados e verificados tecnicamente** em 23/10/2026. A demo permite cadastrar/editar alunos, agendar aulas pontuais ou semanais, bloquear horários, remarcar uma aula ou o futuro da série, lançar/editar registros e consultar o histórico, com persistência local. Há versão para computador e consulta por dia no celular.
 
-OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. A mudança `deliver-teacher-demo-1a` permanece aberta para revisão da entrega. Recorrência/remarcação (1B) e homework/acervo (1C) estão planejados, sem implementação. Não há autenticação, backend ou publicação.
+OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As mudanças `deliver-teacher-demo-1a` e `deliver-weekly-agenda-1b` permanecem abertas para revisão de uso; a base do 1A foi sincronizada em `openspec/specs/`. Homework/acervo (1C) estão planejados, sem implementação. Não há autenticação, backend ou publicação.
 
 ## Executar
 
@@ -31,6 +31,7 @@ Abrir `http://127.0.0.1:5173`. [Instruções e verificações](docs/local-develo
 | [Roadmap](docs/roadmap.md) | Como sair da documentação e chegar ao piloto |
 | [Blocos 1A/1B/1C](docs/delivery-chunks.md) | Resultados, dependências e conferência de cada bloco |
 | [Verificação do 1A](docs/verification-1a.md) | Evidências técnicas, roteiro e limitações |
+| [Verificação do 1B](docs/verification-1b.md) | Recorrência, bloqueios, remarcação e compatibilidade com a demo anterior |
 | [Questões de planejamento](docs/core-questions.md) | O que precisava ser definido agora e quais respostas recebemos |
 | [Detalhes para depois](docs/deferred-questions.md) | Dúvidas que serão tratadas perto da funcionalidade |
 | [Arquitetura inicial](docs/architecture.md) | Stack, limites e estrutura pretendida para o código |
@@ -57,11 +58,11 @@ nextage-class/
     e2e/           fluxos de navegador
 ```
 
-`api/` será criado na etapa com servidor. Visão/roadmap descrevem também recursos futuros; a mudança do 1A identifica o comportamento atualmente entregue para revisão.
+`api/` será criado na etapa com servidor. Visão/roadmap descrevem também recursos futuros; as mudanças do 1A e 1B identificam o comportamento entregue para revisão.
 
 ## Primeira meta
 
-Revisar o fluxo do 1A com Cristian e a professora antes de detalhar o 1B. A validação automatizada não equivale à validação humana da rotina.
+Revisar a agenda semanal com Cristian e a professora usando o [roteiro do 1B](docs/verification-1b.md). Depois, detalhar acervo, homework e preparação de aula do 1C. A validação automatizada não equivale à validação humana da rotina.
 
 ## Referências
 

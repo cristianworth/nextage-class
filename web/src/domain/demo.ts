@@ -74,7 +74,9 @@ export function createDemo(now = new Date()): Workspace {
     createdAt,
   }
   return {
-    version: 1,
+    version: 2,
+    series: [],
+    blocks: [],
     students,
     lessons: [previousLesson, ...lessons],
     records: [

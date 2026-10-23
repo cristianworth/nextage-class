@@ -1,6 +1,6 @@
 import type { Lesson, Workspace } from '../../domain/models'
 import { ATTENDANCE } from '../../domain/models'
-import { formatDate, hasLessonEnded, lessonTime } from '../../domain/dates'
+import { formatDate, hasLessonEnded, hasLessonStarted, lessonTime } from '../../domain/dates'
 import { Modal } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
 
@@ -10,12 +10,14 @@ export function LessonDetails({
   now,
   onClose,
   onRecord,
+  onReschedule,
 }: {
   lesson: Lesson
   state: Workspace
   now: Date
   onClose: () => void
   onRecord: () => void
+  onReschedule: () => void
 }) {
   const student = state.students.find((item) => item.id === lesson.studentId)!
   const record = state.records.find((item) => item.lessonId === lesson.id)
@@ -29,6 +31,7 @@ export function LessonDetails({
       <div className="lesson-detail-tags">
         <span className="level-badge">{student.level}</span>
         <span className="neutral-badge">Aula individual</span>
+        {lesson.seriesId && <span className="neutral-badge">Semanal</span>}
         <span className={`status-badge ${record ? 'done' : ''}`}>
           {record ? ATTENDANCE[record.attendance] : 'Agendada'}
         </span>
@@ -50,6 +53,11 @@ export function LessonDetails({
         </div>
       )}
       <div className="form-actions">
+        {!record && !hasLessonStarted(lesson.date, lesson.hour, now) && (
+          <button className="button" onClick={onReschedule}>
+            Remarcar aula
+          </button>
+        )}
         <button className="button" onClick={onClose}>
           Fechar
         </button>
