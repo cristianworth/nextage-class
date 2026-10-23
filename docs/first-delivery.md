@@ -1,12 +1,12 @@
 # Primeira entrega funcional: fluxo do professor
 
-Status: proposta de incremento 1A do roadmap. Não é uma especificação final nem autorização para iniciar código nesta entrega documental.
+Status: incremento 1A implementado e verificado tecnicamente em 23/10/2026, sob autorização de Cristian. Revisão de uso pendente. Requisitos e tarefas estão na mudança OpenSpec `deliver-teacher-demo-1a`; evidências em [verification-1a.md](verification-1a.md).
 
 ## Resultado esperado
 
 Demonstrar um ciclo completo com um aluno fictício: cadastrar, agendar uma aula pontual, registrar o que aconteceu e reencontrar o histórico depois de recarregar o navegador.
 
-## Casca da aplicação a criar na implementação
+## Estrutura entregue
 
 - Aplicação React + TypeScript + Vite em `web/`.
 - Estrutura visual simples e navegação entre agenda, alunos e histórico do aluno.
@@ -32,13 +32,13 @@ Recorrência, bloqueios e remarcação ficam no incremento 1B. Homework, materia
 
 O recorte inicial não deve impedir essas evoluções: a aula pontual já precisa ter uma data, um aluno e identidade própria, sem se confundir com uma regra semanal.
 
-## Antes de implementar
+## Decisões aplicadas no incremento
 
-- Abrir uma mudança OpenSpec com escopo, cenários e tarefas pequenas.
-- Resolver LATER-01 a LATER-04 na medida necessária ao recorte; não inventar permissões do portal.
-- Esboçar o caminho entre cadastro, agenda e histórico.
-- Escolher mecanismo de persistência, validação e verificações apropriadas.
-- Apresentar as decisões técnicas relevantes e uma sequência de implementação que Cristian consiga acompanhar; a assistência de IA implementa e verifica.
+- Nome/nível obrigatórios; demais dados complementares opcionais.
+- Aula pontual com identidade e data próprias; grade das 07h às 22h e fuso `America/Sao_Paulo`.
+- Lançamento após o término; edição de um único registro por aula.
+- localStorage versionado e validado; falhas não apagam silenciosamente o conteúdo existente.
+- Material em texto livre até o acervo do 1C. Somente o perfil da professora está disponível.
 
 ## Como validar a entrega
 

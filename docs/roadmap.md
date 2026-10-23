@@ -2,6 +2,8 @@
 
 Status: direção aprovada; recortes de entrega propostos abaixo. Sem datas estimadas até conhecermos o ritmo de desenvolvimento e validação. Uma fase pode conter várias mudanças OpenSpec.
 
+Execução atual: OpenSpec 1.14.3 instalado e integrado; blocos A1–A6 implementados e verificados tecnicamente. Revisão com Cristian e professora pendente. O fracionamento de 1A, 1B e 1C está em [delivery-chunks.md](delivery-chunks.md).
+
 | Fase | Objetivo e escopo | Evidência para concluir |
 | --- | --- | --- |
 | 0 — Base do projeto | Visão, decisões, perguntas essenciais, stack, Git e organização OpenSpec. | Documentos consistentes; público inicial definido; primeira entrega identificada. |
@@ -30,11 +32,10 @@ Adicionar acervo em texto por nível, homework passado/corrigido e preparação 
 
 ## Próximos passos
 
-1. Revisar esta base e manter decisões respondidas fora da lista de pendências.
-2. Preparar a integração OpenSpec e propor a mudança do incremento 1A.
-3. Detalhar somente o cadastro mínimo, a aula pontual e o registro necessários ao primeiro fluxo.
-4. Esboçar navegação e telas mínimas; apresentar decisões técnicas relevantes e a sequência de implementação.
-5. Criar `web/` e implementar o incremento 1A após o planejamento correspondente.
+1. Conferir a demo do 1A com o [roteiro de verificação](verification-1a.md).
+2. Registrar ajustes e revisão de uso sem confundir testes técnicos com aceitação da professora.
+3. Consolidar as especificações e arquivar a mudança do 1A quando a revisão da entrega estiver satisfeita.
+4. Resolver regras de recorrência/exceções e detalhar o primeiro bloco de 1B antes de implementá-lo.
 
 ## Fora deste roadmap
 

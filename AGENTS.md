@@ -5,7 +5,7 @@
 - Converse em português com Cristian. Use inglês natural para novos identificadores, nomes de arquivos, testes e comentários técnicos. A documentação de produto e os textos da interface começam em português.
 - Preferência atual: Cristian guia o produto, acompanha decisões e valida entregas; a assistência de IA implementa e verifica. Não reservar tarefas para Cristian programar, a menos que ele peça. Explique escolhas relevantes para que ele consiga acompanhar o desenvolvimento.
 - IA auxilia o desenvolvimento. Não adicione recursos de IA ao produto.
-- O escopo atual é documentação e planejamento. Não interprete documentos de funcionalidades futuras como autorização para implementá-las.
+- Escopo autorizado: instalar/configurar OpenSpec, fracionar os incrementos 1A/1B/1C e implementar o 1A. O planejamento de 1B/1C não autoriza antecipar suas funcionalidades.
 
 ## Sources of truth
 

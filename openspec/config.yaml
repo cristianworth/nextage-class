@@ -2,7 +2,8 @@ schema: spec-driven
 
 context: |
   Project: Nextage Class, a personal learning and portfolio project.
-  Current stage: documentation only; no application behavior is implemented.
+  Current stage: increment 1A implemented and technically verified, awaiting delivery review.
+  The active change deliver-teacher-demo-1a holds its behavior; increments 1B/1C remain planning only.
   Read docs/decisions.md for validated decisions and docs/roadmap.md for scope.
   Frontend: React, TypeScript, Vite. Later backend: C#, ASP.NET Core, PostgreSQL.
   Initial scope: one teacher, adult students, individual lessons, one reference timezone.

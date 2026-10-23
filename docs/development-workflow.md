@@ -18,7 +18,7 @@ Usar nomes claros, responsabilidades coesas e organização proporcional ao prob
 2. `openspec/changes/`: propostas em andamento; requisitos e tarefas ainda não necessariamente entregues.
 3. `openspec/specs/`: comportamento incorporado ao produto após implementação e validação.
 
-Hoje não há comportamento implementado nem mudança funcional aberta. Não preencher as especificações atuais com toda a visão futura.
+O 1A está implementado e verificado tecnicamente na mudança `deliver-teacher-demo-1a`, aberta para revisão de entrega. Não preencher as especificações atuais com toda a visão futura; consolidar o comportamento ao encerrar a mudança.
 
 ## Ciclo por mudança
 
@@ -37,7 +37,7 @@ Não executar uma implementação inteira só porque uma ferramenta produziu uma
 
 OpenSpec é uma ferramenta de desenvolvimento orientado por especificações: organiza documentos, mudanças e instruções para a assistência de IA. Sua CLI é um programa de terminal que depende de Node.js. A integração fornece instruções/skills para a ferramenta de desenvolvimento utilizada. OpenSpec não executa a agenda nem define a arquitetura do aplicativo; o usuário final não precisa dele para usar o Nextage Class.
 
-O esqueleto segue o formato documentado do OpenSpec, incluindo `config.yaml`, `specs/` e `changes/`. A CLI e as integrações ainda não foram instaladas; isso fica para preparar a primeira mudança funcional. Não afirmar que comandos estão disponíveis antes de conferir o ambiente.
+A CLI OpenSpec 1.14.3 está instalada como dependência de desenvolvimento da raiz. A integração gerou seis skills em `.agents/skills/`, preservando `openspec/config.yaml`. Usar `npm run spec -- <comando>` na raiz. Não é necessária instalação global.
 
 Ao configurar a integração, usar uma versão identificada e começar pelo fluxo essencial. Evitar customizar schemas ou alterar configurações globais sem necessidade. A forma de invocar ações varia conforme a ferramenta usada; seguir a ajuda da integração efetivamente instalada.
 

@@ -6,7 +6,21 @@ Projeto pessoal de aprendizado e portfólio, desenvolvido com assistência de IA
 
 ## Estado atual
 
-Base documental criada em 23/10/2026. Ainda não há aplicação, dependências instaladas, autenticação, banco de dados ou publicação. A estrutura do OpenSpec está preparada manualmente; a CLI e suas integrações ainda não foram instaladas.
+Incremento **1A implementado e verificado tecnicamente** em 23/10/2026. A demo permite cadastrar/editar alunos, agendar aulas pontuais, lançar/editar registros e consultar o histórico, com persistência local. Há versão para computador e consulta por dia no celular.
+
+OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. A mudança `deliver-teacher-demo-1a` permanece aberta para revisão da entrega. Recorrência/remarcação (1B) e homework/acervo (1C) estão planejados, sem implementação. Não há autenticação, backend ou publicação.
+
+## Executar
+
+Requer Node.js 24 ou superior. Na raiz:
+
+```powershell
+npm ci
+npm --prefix web ci
+npm run dev
+```
+
+Abrir `http://127.0.0.1:5173`. [Instruções e verificações](docs/local-development.md).
 
 ## Por onde começar
 
@@ -15,6 +29,8 @@ Base documental criada em 23/10/2026. Ainda não há aplicação, dependências 
 | [Visão do produto](docs/product-vision.md) | Para quem estamos construindo e qual problema queremos resolver |
 | [Decisões](docs/decisions.md) | O que Cristian já validou e quais são os limites iniciais |
 | [Roadmap](docs/roadmap.md) | Como sair da documentação e chegar ao piloto |
+| [Blocos 1A/1B/1C](docs/delivery-chunks.md) | Resultados, dependências e conferência de cada bloco |
+| [Verificação do 1A](docs/verification-1a.md) | Evidências técnicas, roteiro e limitações |
 | [Questões de planejamento](docs/core-questions.md) | O que precisava ser definido agora e quais respostas recebemos |
 | [Detalhes para depois](docs/deferred-questions.md) | Dúvidas que serão tratadas perto da funcionalidade |
 | [Arquitetura inicial](docs/architecture.md) | Stack, limites e estrutura pretendida para o código |
@@ -28,27 +44,24 @@ Base documental criada em 23/10/2026. Ainda não há aplicação, dependências 
 nextage-class/
   README.md
   AGENTS.md
-  docs/
-    product-vision.md
-    decisions.md
-    roadmap.md
-    core-questions.md
-    deferred-questions.md
-    architecture.md
-    development-workflow.md
-    first-delivery.md
-  openspec/
-    README.md
-    config.yaml
-    specs/
-    changes/
+  docs/            visão, decisões, roadmap, blocos e verificações
+  openspec/        especificações e mudanças
+  .agents/skills/  integração OpenSpec gerada pela ferramenta
+  web/             aplicação React e testes
+    src/
+      app/         composição e navegação
+      domain/      modelos, operações e datas
+      data/        persistência local
+      features/    agenda, alunos e histórico
+      shared/      componentes compartilhados
+    e2e/           fluxos de navegador
 ```
 
-As pastas `web/` e `api/` serão criadas quando suas etapas começarem. A documentação não representa funcionalidades prontas.
+`api/` será criado na etapa com servidor. Visão/roadmap descrevem também recursos futuros; a mudança do 1A identifica o comportamento atualmente entregue para revisão.
 
 ## Primeira meta
 
-Completar um fluxo com dados fictícios: cadastrar aluno, agendar uma aula, registrar presença/conteúdo e consultar o histórico após recarregar o navegador. A primeira entrega funcional é um recorte da demo do professor, não toda a agenda final.
+Revisar o fluxo do 1A com Cristian e a professora antes de detalhar o 1B. A validação automatizada não equivale à validação humana da rotina.
 
 ## Referências
 

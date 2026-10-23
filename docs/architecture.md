@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Status: stack aprovada; estrutura de código proposta, ainda não criada. Não há modelo físico de banco ou contratos de API definidos.
+Status: frontend do 1A implementado. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
 
 ## Stack
 
@@ -12,7 +12,7 @@ Status: stack aprovada; estrutura de código proposta, ainda não criada. Não h
 
 Versões suportadas e dependências serão verificadas ao iniciar cada etapa. Não instalar ferramentas ou definir autenticação, hospedagem, biblioteca de calendário e gerenciamento de estado sem necessidade atual.
 
-## Estrutura pretendida quando houver código
+## Estrutura do código
 
 ```text
 nextage-class/
@@ -21,6 +21,8 @@ nextage-class/
   web/                   aplicação React, criada na primeira implementação
     src/
       app/               composição, navegação e estrutura da interface
+      domain/            regras, modelos, datas e dados fictícios
+      data/              validação e persistência local
       features/          alunos, agenda, registros e materiais conforme surgirem
       shared/            componentes e funções de uso realmente compartilhado
   api/                   aplicação ASP.NET Core, criada na etapa com servidor
@@ -40,7 +42,7 @@ Essa organização é uma direção, não uma lista de pastas vazias a gerar ant
 
 ## Demo local e aplicação com servidor
 
-A primeira versão salva dados fictícios no navegador. Ela não sincroniza dispositivos nem oferece isolamento seguro por conta. O mecanismo local exato será escolhido no planejamento da primeira entrega, considerando o volume de dados em texto.
+A primeira versão salva dados fictícios em um documento versionado no localStorage. Os dados são validados na leitura e antes da gravação. Ela não sincroniza dispositivos/abas nem oferece isolamento seguro por conta. Texto fictício cabe neste mecanismo; reavaliar conforme o acervo evoluir.
 
 A demo deve poder voltar aos exemplos iniciais. No piloto com dados reais, autenticação, autorização no servidor, backup e recuperação fazem parte da entrega. Trocar um perfil na interface não equivale a autenticar uma pessoa.
 

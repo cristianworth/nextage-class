@@ -47,6 +47,11 @@ Atualizado em 23/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-24 | Materiais começam em texto. Áudio, grids, zoom e apresentação ficam para depois. |
 | DEC-25 | Streak fica adiado até definirmos uma regra coerente com faltas e períodos sem aulas. |
 | DEC-26 | Link de reunião pode ser cadastrado manualmente no começo. Geração automática e estabilidade por aluno dependem de validação da integração Google; não prometer um link permanente antes disso. |
+| DEC-27 | No 1A, nome e nível são obrigatórios no cadastro; telefone, ocupação e interesses são opcionais. |
+| DEC-28 | Lançar apenas aulas ocorridas: dias anteriores ou hoje após o término da aula. Não permitir registros de aulas futuras. |
+| DEC-29 | Cada aula possui no máximo um registro, que pode ser editado com indicação da última atualização. |
+
+Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 
 ## Tecnologia
 
