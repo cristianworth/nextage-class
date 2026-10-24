@@ -34,3 +34,10 @@ O sistema SHALL indicar campos obrigatórios do cadastro com asterisco vermelho 
 #### Scenario: Abrir o cadastro
 - **WHEN** a professora abre criação ou edição de aluno
 - **THEN** os campos obrigatórios mostram asterisco vermelho, os demais não mostram “Opcional” e a validação do cadastro permanece ativa.
+
+### Requirement: Link manual da aula
+O sistema SHALL permitir informar um link HTTP ou HTTPS sem credenciais no cadastro do aluno e abri-lo pelos detalhes de suas aulas em outra aba. Campo vazio SHALL continuar permitido. Outros esquemas SHALL ser recusados.
+
+#### Scenario: Informar link
+- **WHEN** um link válido é salvo no cadastro
+- **THEN** as aulas desse aluno oferecem acesso ao link após recarregar, sem geração automática ou solicitação a serviço externo.

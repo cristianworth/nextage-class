@@ -18,9 +18,9 @@ Usar nomes claros, responsabilidades coesas e organização proporcional ao prob
 2. `openspec/changes/`: propostas em andamento; requisitos e tarefas ainda não necessariamente entregues.
 3. `openspec/specs/`: comportamento incorporado ao produto após implementação e validação.
 
-O 1A, 1B e 1C estão implementados e verificados tecnicamente nas mudanças `deliver-teacher-demo-1a`, `deliver-weekly-agenda-1b` e `deliver-lesson-preparation-1c`, abertas para revisão de uso. A base do 1A/1B foi sincronizada para permitir extensão; os deltas do 1C permanecem na mudança até consolidação. Não preencher as especificações atuais com toda a visão futura.
+O 1A, 1B e 1C e seu refinamento de progresso estão implementados e verificados tecnicamente. As mudanças continuam abertas para revisão de uso. A base do 1A/1B/1C foi sincronizada para permitir extensão; os deltas de `track-student-course-progress` aguardam consolidação. Não preencher as especificações atuais com toda a visão futura.
 
-Ao arquivar 1A/1B após revisão, conferir que a sincronização já está completa e usar `--skip-specs` para não reaplicar deltas antigos sobre requisitos mais recentes. O modo estrito pode informar que um requisito ADDED já existe devido à sincronização prévia; isso não é falha dos testes nem confirmação de aceitação humana.
+Ao arquivar 1A/1B/1C após revisão, conferir que a sincronização já está completa e usar `--skip-specs` para não reaplicar deltas antigos sobre requisitos mais recentes. O modo estrito pode informar que um requisito ADDED já existe devido à sincronização prévia; isso não é falha dos testes nem confirmação de aceitação humana.
 
 ## Ciclo por mudança
 

@@ -74,14 +74,44 @@ export function createDemo(now = new Date()): Workspace {
     createdAt,
   }
   return {
-    version: 3,
+    version: 4,
     materials: [
       {
         id: 'material-a1',
+        lessonNumber: 1,
         title: 'Meeting someone new',
         level: 'A1',
         content:
           'Introduce yourself with your name, city and one interest.\n\nPractice: What is your name? Where are you from? What do you enjoy?',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-a1-2',
+        lessonNumber: 2,
+        title: 'Everyday routines',
+        level: 'A1',
+        content: 'Describe a normal day.\n\nPractice: I wake up at… I work in… In the evening, I…',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-a1-3',
+        lessonNumber: 3,
+        title: 'Around the neighborhood',
+        level: 'A1',
+        content:
+          'Name places near your home and ask where they are.\n\nPractice: Where is the park? The shop is next to the station.',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-a1-4',
+        lessonNumber: 4,
+        title: 'Ordering at a café',
+        level: 'A1',
+        content:
+          'Practice a short conversation at a café.\n\nPractice: I would like a tea, please. How much is it? Thank you.',
         createdAt,
         updatedAt: createdAt,
       },

@@ -5,7 +5,7 @@
 - Converse em português com Cristian. Use inglês natural para novos identificadores, nomes de arquivos, testes e comentários técnicos. A documentação de produto e os textos da interface começam em português.
 - Preferência atual: Cristian guia o produto, acompanha decisões e valida entregas; a assistência de IA implementa e verifica. Não reservar tarefas para Cristian programar, a menos que ele peça. Explique escolhas relevantes para que ele consiga acompanhar o desenvolvimento.
 - IA auxilia o desenvolvimento. Não adicione recursos de IA ao produto.
-- Estado atual: 1A/1B/1C entregues tecnicamente; revisão de uso pendente. Acervo em texto, homework simples, preparação por aula e link manual estão implementados. Portal do aluno, backend e integrações exigem um novo recorte autorizado.
+- Estado atual: 1A/1B/1C e refinamento de sequência/progresso entregues tecnicamente; revisão de uso pendente. Não confundir aula do material com encontro da agenda. Portal do aluno, backend e integrações exigem um novo recorte autorizado.
 
 ## Sources of truth
 

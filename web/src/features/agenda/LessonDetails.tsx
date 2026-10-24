@@ -5,6 +5,8 @@ import { Modal } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
 import { lessonContext } from '../../domain/preparation'
 import { HomeworkItem } from '../history/HomeworkItem'
+import { courseSuggestion } from '../../domain/course-progress'
+import { materialLabel } from '../../domain/materials'
 
 export function LessonDetails({
   lesson,
@@ -31,6 +33,7 @@ export function LessonDetails({
   const plan = state.plans.find((item) => item.lessonId === lesson.id)
   const material = state.materials.find((item) => item.id === plan?.materialId)
   const context = lessonContext(state, lesson)
+  const course = courseSuggestion(state, student.id, student.level, lesson)
   return (
     <Modal
       title={student.name}
@@ -69,6 +72,21 @@ export function LessonDetails({
         </div>
       )}
       <section className="preparation-panel">
+        <div className="course-panel">
+          <p className="eyebrow">CONTEÚDO ATUAL DO ALUNO</p>
+          <p>
+            {course.material
+              ? materialLabel(course.material)
+              : course.finished
+                ? 'Sequência deste nível concluída.'
+                : course.unavailable
+                  ? 'Conteúdo anterior fora da sequência. Confira a seleção no lançamento.'
+                  : 'Nenhuma aula do material numerada neste nível.'}
+          </p>
+          <p className="muted form-hint">
+            O andamento é atualizado ao lançar o que aconteceu no encontro.
+          </p>
+        </div>
         <div className="preparation-heading">
           <h3>Preparação da aula</h3>
           {!record && !canRecord && (

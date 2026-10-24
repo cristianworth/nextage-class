@@ -4,6 +4,8 @@ import { ATTENDANCE, LEVELS, errorMessage } from '../../domain/models'
 import type { Lesson, RecordInput, RecordSubmission, Workspace } from '../../domain/models'
 import { formatDate, formatTimestamp, lessonTime } from '../../domain/dates'
 import { FormError, Modal } from '../../shared/Modal'
+import { compareMaterials, materialLabel } from '../../domain/materials'
+import { courseSuggestion, nextCourseMaterial } from '../../domain/course-progress'
 
 export function RecordForm({
   lesson,
@@ -23,9 +25,31 @@ export function RecordForm({
   )
   const [error, setError] = useState('')
   const plan = state.plans.find((item) => item.lessonId === lesson.id)
+  const [level, setLevel] = useState(record?.level ?? student.level)
+  const suggestion = courseSuggestion(state, student.id, level, lesson)
   const [materialChoice, setMaterialChoice] = useState(
-    record?.materialSnapshot ? 'saved' : !record ? (plan?.materialId ?? '') : '',
+    record?.materialSnapshot
+      ? 'saved'
+      : !record
+        ? (suggestion.material?.id ??
+          (!suggestion.finished && !suggestion.unavailable ? plan?.materialId : undefined) ??
+          '')
+        : '',
   )
+  const [courseCompleted, setCourseCompleted] = useState(record?.courseProgress?.completed ?? false)
+  const selectedMaterial =
+    materialChoice === 'saved'
+      ? record?.materialSnapshot
+      : state.materials.find((material) => material.id === materialChoice)
+  const followsSequence = !!selectedMaterial?.lessonNumber && selectedMaterial.level === level
+  const continuation =
+    materialChoice === 'saved' &&
+    record?.courseProgress &&
+    courseCompleted === record.courseProgress.completed
+      ? record.courseProgress.next
+      : courseCompleted && selectedMaterial
+        ? nextCourseMaterial(state, selectedMaterial)
+        : selectedMaterial
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -33,12 +57,13 @@ export function RecordForm({
     try {
       onSave({
         attendance,
-        level: value('level') as RecordInput['level'],
+        level,
         content: value('content'),
         material: value('material'),
         reason: value('reason'),
         usedMaterialId: materialChoice === 'saved' ? undefined : materialChoice || null,
         homework: value('homework'),
+        courseCompleted: attendance === 'attended' && followsSequence ? courseCompleted : undefined,
       })
     } catch (cause) {
       setError(errorMessage(cause))
@@ -69,7 +94,19 @@ export function RecordForm({
         <div className={attendance === 'attended' ? 'form-grid' : ''}>
           <label className="field">
             Nível nesta aula
-            <select name="level" defaultValue={record?.level ?? student.level} required>
+            <select
+              name="level"
+              value={level}
+              required
+              onChange={(event) => {
+                const nextLevel = event.target.value as RecordInput['level']
+                setLevel(nextLevel)
+                setMaterialChoice(
+                  courseSuggestion(state, student.id, nextLevel, lesson).material?.id ?? '',
+                )
+                setCourseCompleted(false)
+              }}
+            >
               {LEVELS.map((level) => (
                 <option key={level}>{level}</option>
               ))}
@@ -82,7 +119,7 @@ export function RecordForm({
                 name="material"
                 maxLength={300}
                 defaultValue={record?.material}
-                placeholder="Ex.: Travel essentials · Unidade 3"
+                placeholder="Ex.: atividade complementar de conversação"
               />
             </label>
           )}
@@ -91,7 +128,14 @@ export function RecordForm({
           Material do acervo
           <select
             value={materialChoice}
-            onChange={(event) => setMaterialChoice(event.target.value)}
+            onChange={(event) => {
+              setMaterialChoice(event.target.value)
+              setCourseCompleted(
+                event.target.value === 'saved'
+                  ? (record?.courseProgress?.completed ?? false)
+                  : false,
+              )
+            }}
           >
             <option value="">Somente texto livre</option>
             {record?.materialSnapshot && (
@@ -99,15 +143,11 @@ export function RecordForm({
                 Manter versão registrada · {record.materialSnapshot.title}
               </option>
             )}
-            {[...state.materials]
-              .sort(
-                (a, b) => a.level.localeCompare(b.level) || a.title.localeCompare(b.title, 'pt-BR'),
-              )
-              .map((material) => (
-                <option key={material.id} value={material.id}>
-                  {material.level} · {material.title}
-                </option>
-              ))}
+            {[...state.materials].sort(compareMaterials).map((material) => (
+              <option key={material.id} value={material.id}>
+                {material.level} · {materialLabel(material)}
+              </option>
+            ))}
           </select>
           <small>
             {materialChoice === 'saved'
@@ -117,6 +157,47 @@ export function RecordForm({
                 : 'O conteúdo selecionado será guardado com este lançamento.'}
           </small>
         </label>
+        {attendance === 'attended' && followsSequence ? (
+          <div className="course-panel">
+            <p className="eyebrow">AULA DO MATERIAL TRABALHADA</p>
+            <p>{materialLabel(selectedMaterial!)}</p>
+            <label className="check-field">
+              <input
+                type="checkbox"
+                checked={courseCompleted}
+                onChange={(event) => setCourseCompleted(event.target.checked)}
+              />
+              Concluí esta aula do material
+            </label>
+            <p className="course-continuation" role="status">
+              {continuation
+                ? `Próximo encontro: ${materialLabel(continuation)}`
+                : 'Última aula do nível concluída. Nenhum avanço de nível será feito automaticamente.'}
+            </p>
+            <p className="muted form-hint">
+              Se ainda há conteúdo para trabalhar, mantenha sem marcar. O histórico deste encontro
+              guarda a aula trabalhada acima.
+            </p>
+          </div>
+        ) : (
+          attendance === 'attended' && (
+            <p className="muted form-hint">
+              Material complementar ou revisão de outro nível: este lançamento não altera a
+              sequência do aluno.
+            </p>
+          )
+        )}
+        {!record && suggestion.finished && (
+          <p className="info-note">
+            A sequência deste nível foi concluída. Você pode selecionar um material para revisão.
+          </p>
+        )}
+        {!record && suggestion.unavailable && (
+          <p className="info-note">
+            A aula indicada anteriormente mudou de nível ou saiu da sequência. Selecione o conteúdo
+            que foi trabalhado.
+          </p>
+        )}
         {attendance !== 'attended' && (
           <label className="field">
             Motivo da falta <small>Opcional</small>

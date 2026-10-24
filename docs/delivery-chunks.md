@@ -32,6 +32,8 @@ B4 e B5 são blocos internos da mesma funcionalidade: a entrega pública de rema
 
 ## 1C — Preparação e fechamento
 
+Refinamento adicional implementado: sequência e progresso por aluno, organizado em compatibilidade v4, acervo numerado, resultado no lançamento, interface integrada e revisão. Evidências e roteiro em [course-progress.md](course-progress.md).
+
 C1–C5 implementados e revisão técnica integrada de C6 concluída. Conferir [verification-1c.md](verification-1c.md); a semana demonstrável com a professora ainda aguarda revisão de uso.
 
 | Bloco | Resultado | Dependência |

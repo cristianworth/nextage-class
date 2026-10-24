@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { LEVELS } from '../../domain/models'
 import type { Material } from '../../domain/models'
 import { matchesSearch } from '../../domain/students'
+import { compareMaterials } from '../../domain/materials'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
 
@@ -20,9 +21,12 @@ export function MaterialsPage({
     .filter(
       (material) =>
         (!level || material.level === level) &&
-        matchesSearch(`${material.title} ${material.content}`, search),
+        matchesSearch(
+          `${material.title} ${material.content} ${material.lessonNumber ? `Aula ${material.lessonNumber}` : ''}`,
+          search,
+        ),
     )
-    .sort((a, b) => a.level.localeCompare(b.level) || a.title.localeCompare(b.title, 'pt-BR'))
+    .sort(compareMaterials)
   return (
     <>
       <div className="page-heading">
@@ -68,7 +72,10 @@ export function MaterialsPage({
         <div className="material-grid">
           {filtered.map((material) => (
             <article className="material-card panel" key={material.id}>
-              <span className="level-badge">{material.level}</span>
+              <span className="level-badge">
+                {material.level} ·{' '}
+                {material.lessonNumber ? `Aula ${material.lessonNumber}` : 'Complementar'}
+              </span>
               <h2>{material.title}</h2>
               <p className="material-excerpt">{material.content}</p>
               <button

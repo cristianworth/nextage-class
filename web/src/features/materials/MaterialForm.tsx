@@ -22,6 +22,7 @@ export function MaterialForm({
         title: String(data.get('title')),
         level: String(data.get('level')) as MaterialInput['level'],
         content: String(data.get('content')),
+        lessonNumber: data.get('lessonNumber') ? Number(data.get('lessonNumber')) : undefined,
       })
     } catch (cause) {
       setError(errorMessage(cause))
@@ -58,6 +59,18 @@ export function MaterialForm({
               <option key={level}>{level}</option>
             ))}
           </select>
+        </label>
+        <label className="field">
+          Número da aula do material
+          <input
+            name="lessonNumber"
+            type="number"
+            min={1}
+            max={9999}
+            step={1}
+            defaultValue={material?.lessonNumber}
+          />
+          <small>Define a ordem dentro do nível. Deixe vazio para material complementar.</small>
         </label>
         <label className="field">
           <span>

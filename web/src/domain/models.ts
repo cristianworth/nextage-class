@@ -132,6 +132,7 @@ const legacyRecordSchema = recordInputSchema.extend({
 })
 
 export const materialInputSchema = z.object({
+  lessonNumber: z.number().int().min(1, 'O número da aula deve ser positivo.').max(9999).optional(),
   title: z.string().trim().min(1, 'Informe o título do material.').max(150),
   level: z.enum(LEVELS),
   content: z
@@ -153,13 +154,25 @@ export const homeworkSchema = z.object({
   description: z.string().trim().min(1).max(2000),
   correctedAt: timestampSchema.nullable(),
 })
+export const courseReferenceSchema = z.object({
+  id: idSchema,
+  title: z.string().min(1).max(150),
+  level: z.enum(LEVELS),
+  lessonNumber: z.number().int().min(1).max(9999),
+})
+export const courseProgressSchema = z.object({
+  completed: z.boolean(),
+  next: courseReferenceSchema.nullable(),
+})
 export const recordSchema = legacyRecordSchema.extend({
   materialSnapshot: materialSnapshotSchema.optional(),
   homework: homeworkSchema.optional(),
+  courseProgress: courseProgressSchema.optional(),
 })
 export const recordSubmissionSchema = recordInputSchema.safeExtend({
   usedMaterialId: idSchema.nullable().optional(),
   homework: z.string().trim().max(2000, 'Use até 2.000 caracteres no homework.').optional(),
+  courseCompleted: z.boolean().optional(),
 })
 export const planInputSchema = z.object({
   materialId: idSchema.nullable(),
@@ -225,13 +238,13 @@ const weeklyWorkspaceSchema = workspaceDataSchema
   })
 
 export const previousWorkspaceSchema = weeklyWorkspaceSchema.safeExtend({ version: z.literal(2) })
-export const workspaceSchema = weeklyWorkspaceSchema
+const pedagogyWorkspaceSchema = weeklyWorkspaceSchema
   .safeExtend({
-    version: z.literal(3),
     records: z.array(recordSchema),
     materials: z.array(materialSchema),
     plans: z.array(planSchema),
   })
+
   .superRefine((state, context) => {
     const materialIds = new Set(state.materials.map((material) => material.id))
     const lessonIds = new Set(state.lessons.map((lesson) => lesson.id))
@@ -250,6 +263,36 @@ export const workspaceSchema = weeklyWorkspaceSchema
     }
   })
 
+export const pedagogyWorkspaceV3Schema = pedagogyWorkspaceSchema.safeExtend({
+  version: z.literal(3),
+})
+export const workspaceSchema = pedagogyWorkspaceSchema
+  .safeExtend({ version: z.literal(4) })
+  .superRefine((state, context) => {
+    const numbers = state.materials
+      .filter((material) => material.lessonNumber !== undefined)
+      .map((material) => `${material.level}:${material.lessonNumber}`)
+    const validProgress = state.records.every((record) => {
+      const progress = record.courseProgress
+      if (!progress) return true
+      const used = record.materialSnapshot
+      if (record.attendance !== 'attended' || !used?.lessonNumber || used.level !== record.level)
+        return false
+      return progress.completed
+        ? !progress.next ||
+            (progress.next.level === used.level && progress.next.lessonNumber > used.lessonNumber)
+        : !!progress.next &&
+            progress.next.id === used.id &&
+            progress.next.level === used.level &&
+            progress.next.lessonNumber === used.lessonNumber
+    })
+    if (new Set(numbers).size !== numbers.length || !validProgress)
+      context.addIssue({
+        code: 'custom',
+        message: 'A sequência ou os resultados pedagógicos estão inconsistentes.',
+      })
+  })
+
 export type StudentInput = z.infer<typeof studentInputSchema>
 export type Student = z.infer<typeof studentSchema>
 export type LessonInput = z.infer<typeof lessonInputSchema>
@@ -260,6 +303,7 @@ export type RecordSubmission = z.infer<typeof recordSubmissionSchema>
 export type Material = z.infer<typeof materialSchema>
 export type MaterialInput = z.infer<typeof materialInputSchema>
 export type MaterialSnapshot = z.infer<typeof materialSnapshotSchema>
+export type CourseReference = z.infer<typeof courseReferenceSchema>
 export type LessonPlanInput = z.infer<typeof planInputSchema>
 export type Workspace = z.infer<typeof workspaceSchema>
 export type WeeklySeries = z.infer<typeof seriesSchema>

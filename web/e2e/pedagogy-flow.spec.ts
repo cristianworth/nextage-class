@@ -228,7 +228,7 @@ test('link manual é validado e acervo/preparação funcionam no celular', async
   await expect(page.getByRole('dialog')).toContainText('Plan a two-day trip')
 })
 
-test('migra v2 sem reset e salva v3 mantendo agenda e histórico', async ({ page }) => {
+test('migra v2 sem reset e salva v4 mantendo agenda e histórico', async ({ page }) => {
   await schedule(page, '2026-10-27', 8, true)
   const before = await page.evaluate((key) => {
     const data = JSON.parse(localStorage.getItem(key)!)
@@ -244,7 +244,7 @@ test('migra v2 sem reset e salva v3 mantendo agenda e histórico', async ({ page
   await expect(page.getByRole('heading', { name: 'Seu acervo começa com uma ideia' })).toBeVisible()
   await createMaterial(page)
   const after = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key)
-  expect(after.version).toBe(3)
+  expect(after.version).toBe(4)
   expect(after.series).toEqual(before.series)
   expect(after.lessons).toEqual(before.lessons)
   expect(after.records).toEqual(before.records)

@@ -8,7 +8,9 @@ Projeto pessoal de aprendizado e portfólio, desenvolvido com assistência de IA
 
 Incrementos **1A, 1B e 1C implementados e verificados tecnicamente**, com atualização em 24/10/2026. A demo reúne alunos, agenda pontual/semanal, bloqueios/remarcação, preparação por aula, acervo em texto por nível, registros com material histórico e homework passado/corrigido. Há link manual da reunião, persistência local e interface para computador/celular.
 
-OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As três mudanças permanecem abertas para revisão de uso; a base do 1A/1B está sincronizada em `openspec/specs/`, e o 1C está em `deliver-lesson-preparation-1c`. Não há autenticação, backend ou publicação.
+O refinamento do 1C acrescenta **sequência de aulas do material e progresso por aluno**: numeração por nível, retomada automática no lançamento e marcação de conclusão, preservando o conteúdo trabalhado. Ver [o funcionamento e roteiro](docs/course-progress.md).
+
+OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As quatro mudanças permanecem abertas para revisão de uso; a base do 1A/1B/1C está sincronizada em `openspec/specs/`, e o refinamento está em `track-student-course-progress`. Não há autenticação, backend ou publicação.
 
 ## Executar
 
@@ -34,6 +36,7 @@ Abrir `http://127.0.0.1:5173`. [Instruções e verificações](docs/local-develo
 | [Verificação do 1B](docs/verification-1b.md) | Recorrência, bloqueios, remarcação e compatibilidade com a demo anterior |
 | [Verificação do 1C](docs/verification-1c.md) | Acervo, preparação, homework e revisão integrada |
 | [Dados pedagógicos](docs/pedagogy.md) | Modelo e limites do material planejado/utilizado e do homework |
+| [Sequência e progresso](docs/course-progress.md) | Aula do material em vários encontros e continuidade pelo lançamento |
 | [Questões de planejamento](docs/core-questions.md) | O que precisava ser definido agora e quais respostas recebemos |
 | [Detalhes para depois](docs/deferred-questions.md) | Dúvidas que serão tratadas perto da funcionalidade |
 | [Arquitetura inicial](docs/architecture.md) | Stack, limites e estrutura pretendida para o código |

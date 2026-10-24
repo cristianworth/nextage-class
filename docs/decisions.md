@@ -55,12 +55,15 @@ Atualizado em 24/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-32 | “Esta e as próximas” substitui também as remarcações individuais futuras da série. Aulas iniciadas/passadas e registros permanecem intactos. Remarcação troca uma aula existente, sem reposição ou crédito. |
 | DEC-33 | Férias e feriados são tratados por bloqueios manuais. Ao atingir uma aula já marcada, o bloqueio informa o conflito e não altera aulas automaticamente. |
 | DEC-34 | No 1C, homework tem uma descrição por aula, marcada como corrigida de uma vez. Não há tarefas múltiplas com correção individual ou parcial. Confirmado em 24/10/2026. |
+| DEC-35 | As aulas do material seguem uma sequência dentro do nível; uma delas pode ocupar vários encontros da agenda, incluindo assuntos complementares. |
+| DEC-36 | O lançamento retoma a aula do material atual do aluno. A professora informa se continua em andamento ou concluiu, determinando a continuidade. |
+| DEC-37 | Separar a aula do material trabalhada no encontro da próxima aula sugerida: concluir a Aula 3 não muda o registro daquele encontro para Aula 4. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 
 ## Escolhas de implementação do 1C
 
-Acervo com título, nível e texto simples; material/anotação planejados por ocorrência, alteráveis até o término enquanto não houver registro. Essas são escolhas simples e revisáveis adotadas após consulta de preferência, sem resposta específica até a entrega; não equivalem a validação da professora. Histórico guarda cópia do material utilizado, e nova descrição de homework volta a pendente. Detalhes em [pedagogy.md](pedagogy.md).
+O acervo simples e o planejamento opcional por ocorrência foram entregues antes da definição do progresso. Cristian esclareceu a sequência e autorizou seu refinamento em 24/10/2026 (DEC-35/36/37). Número por nível distingue aula do material de complementar; o progresso vem do lançamento, e o planejamento por ocorrência continua como apoio. Detalhes em [course-progress.md](course-progress.md). Isso não representa aceite de uso da professora.
 
 ## Tecnologia
 

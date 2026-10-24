@@ -30,11 +30,15 @@ Implementado: horários recorrentes com término opcional, bloqueios manuais e r
 
 Implementado: acervo em texto por nível, material utilizado com cópia histórica, homework com descrição única/correção inteira reversível e preparação por ocorrência com último conteúdo e pendências. Cadastro inclui link manual da reunião. Migração e interface móvel verificadas; semana fictícia com a professora ainda depende de revisão de uso. Ver [verification-1c.md](verification-1c.md).
 
+### Refinamento do 1C — Sequência e progresso
+
+Implementado após esclarecimento de Cristian: aulas do material numeradas por nível; uma aula pode ocupar vários encontros. O lançamento retoma o ponto do aluno e registra em andamento/concluída, preservando trabalhado e continuidade como dados distintos. Progresso cronológico não regride por edição antiga. Ver [course-progress.md](course-progress.md).
+
 ## Próximos passos
 
 1. Conferir uma semana fictícia completa com o [roteiro do 1C](verification-1c.md), incluindo preparação e fechamento da aula.
-2. Registrar ajustes de uso e revisar as escolhas simples de acervo/planejamento, sem confundir testes técnicos com aceitação da professora.
-3. Consolidar os deltas do 1C e arquivar mudanças após revisão; a base técnica do 1A/1B já está sincronizada.
+2. Revisar também a sequência e conclusão pelo lançamento; não confundir testes técnicos com aceitação da professora.
+3. Consolidar os deltas do progresso e arquivar mudanças após revisão; a base técnica do 1A/1B/1C já está sincronizada.
 4. Quando solicitado, especificar a demo do aluno: visibilidade do histórico, acesso ao acervo ao mudar de nível e solicitação de horário. Backend/contas reais continuam na fase 3.
 
 ## Fora deste roadmap

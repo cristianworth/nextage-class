@@ -6,6 +6,7 @@ import { matchesSearch } from '../../domain/students'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
 import { HomeworkItem } from './HomeworkItem'
+import { materialLabel } from '../../domain/materials'
 
 export function HistoryPage({
   state,
@@ -113,6 +114,21 @@ export function HistoryPage({
                   </p>
                 )}
                 <p className="record-body">{record.content || 'Sem observações adicionais.'}</p>
+                {record.courseProgress && record.materialSnapshot && (
+                  <div className="course-panel">
+                    <p>
+                      {materialLabel(record.materialSnapshot)} ·{' '}
+                      <strong>
+                        {record.courseProgress.completed ? 'Concluída' : 'Em andamento'}
+                      </strong>
+                    </p>
+                    <p className="muted form-hint">
+                      {record.courseProgress.next
+                        ? `Continuidade indicada: ${materialLabel(record.courseProgress.next)}`
+                        : 'Fim da sequência disponível neste nível.'}
+                    </p>
+                  </div>
+                )}
                 {record.materialSnapshot && (
                   <details className="material-disclosure">
                     <summary>

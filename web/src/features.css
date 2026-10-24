@@ -2,6 +2,34 @@
   color: #b53d42;
   font-weight: 700;
 }
+.course-panel {
+  background: #f1f6f0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 14px;
+  margin: 16px 0;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.course-panel .eyebrow {
+  font-size: 9px;
+  margin-bottom: 8px;
+}
+.course-continuation {
+  font-weight: 600;
+  color: var(--green);
+}
+.student-card-footer:has(.student-course) {
+  flex-wrap: wrap;
+}
+.student-course {
+  flex-basis: 100%;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--green);
+  overflow-wrap: anywhere;
+}
 
 .material-grid {
   display: grid;

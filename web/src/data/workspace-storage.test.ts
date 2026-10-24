@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { createDemo } from '../domain/demo'
 import { addBlock, rescheduleLesson, scheduleWeekly } from '../domain/weekly-scheduling'
 import { occurrenceAt } from '../domain/recurrence'
+import { saveLessonRecord } from '../domain/records'
+import { saveLessonPlan } from '../domain/preparation'
 import { loadWorkspace, saveWorkspace, STORAGE_KEY } from './workspace-storage'
 
 function memoryStorage(initial?: string) {
@@ -16,6 +18,40 @@ function memoryStorage(initial?: string) {
 const now = new Date('2026-10-23T15:00:00Z')
 
 describe('persistência da demo', () => {
+  it('migra v3 sem presumir ordem ou conclusão e preserva cópias, homework e plano', () => {
+    let state = createDemo(now)
+    state.materials = state.materials.map(({ lessonNumber: _number, ...material }) => material)
+    state = saveLessonRecord(
+      state,
+      'lesson-0',
+      {
+        attendance: 'attended',
+        level: 'A2',
+        material: '',
+        content: 'Texto anterior',
+        reason: '',
+        usedMaterialId: 'material-a2',
+        homework: 'Tarefa anterior',
+      },
+      now,
+    )
+    state = saveLessonPlan(
+      state,
+      'lesson-9',
+      { materialId: 'material-b1', notes: 'Planejado' },
+      now,
+    )
+    const legacy = { ...state, version: 3 }
+    const raw = JSON.stringify(legacy)
+    const storage = memoryStorage(raw)
+    const migrated = loadWorkspace(storage, now).state!
+    expect(migrated).toEqual({ ...legacy, version: 4 })
+    expect(migrated.materials.every((material) => material.lessonNumber === undefined)).toBe(true)
+    expect(migrated.records.every((record) => !record.courseProgress)).toBe(true)
+    expect(storage.getItem(STORAGE_KEY)).toBe(raw)
+    saveWorkspace(storage, migrated)
+    expect(loadWorkspace(storage, now).state).toEqual(migrated)
+  })
   it('migra v1 sem gravar durante a leitura e conserva histórico na próxima gravação', () => {
     const {
       series: _series,
@@ -30,7 +66,7 @@ describe('persistência da demo', () => {
     const migrated = loadWorkspace(storage, now).state!
     expect(migrated).toEqual({
       ...legacy,
-      version: 3,
+      version: 4,
       series: [],
       blocks: [],
       materials: [],
@@ -74,7 +110,7 @@ describe('persistência da demo', () => {
     const raw = JSON.stringify({ ...data, version: 2 })
     const storage = memoryStorage(raw)
     const migrated = loadWorkspace(storage, now).state!
-    expect(migrated).toEqual({ ...data, version: 3, materials: [], plans: [] })
+    expect(migrated).toEqual({ ...data, version: 4, materials: [], plans: [] })
     expect(storage.getItem(STORAGE_KEY)).toBe(raw)
     saveWorkspace(storage, migrated)
     expect(loadWorkspace(storage, now).state).toEqual(migrated)

@@ -31,7 +31,7 @@ describe('acervo e material utilizado', () => {
     const material = state.materials.at(-1)!
     const later = new Date('2026-10-24T15:00:00Z')
     const next = saveMaterial(state, { ...material, title: 'At the airport' }, material.id, later)
-    expect(next.materials).toHaveLength(7)
+    expect(next.materials).toHaveLength(createDemo(now).materials.length + 1)
     expect(next.materials.at(-1)).toMatchObject({
       title: 'At the airport',
       content: 'Find the gate.',

@@ -5,6 +5,8 @@ import { upcomingLessons } from '../../domain/agenda'
 import { matchesSearch } from '../../domain/students'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
+import { courseSuggestion } from '../../domain/course-progress'
+import { materialLabel } from '../../domain/materials'
 
 export function initials(name: string) {
   return name
@@ -71,6 +73,7 @@ export function StudentsPage({
         <div className="student-grid">
           {students.map((student, index) => {
             const upcoming = upcomingLessons(state, new Date(), student.id, 1)[0]
+            const course = courseSuggestion(state, student.id, student.level)
             const records = state.records.filter((record) =>
               state.lessons.some(
                 (lesson) => lesson.id === record.lessonId && lesson.studentId === student.id,
@@ -108,6 +111,13 @@ export function StudentsPage({
                   </div>
                 </div>
                 <div className="student-card-footer">
+                  <p className="student-course">
+                    {course.material
+                      ? `Conteúdo atual: ${materialLabel(course.material)}`
+                      : course.finished
+                        ? 'Sequência do nível concluída'
+                        : 'Sequência ainda não definida'}
+                  </p>
                   <span>
                     {records.length} {records.length === 1 ? 'registro' : 'registros'}
                   </span>

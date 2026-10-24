@@ -1,6 +1,11 @@
 import { createDemo } from '../domain/demo'
 import { assertAvailable } from '../domain/availability'
-import { legacyWorkspaceSchema, previousWorkspaceSchema, workspaceSchema } from '../domain/models'
+import {
+  legacyWorkspaceSchema,
+  previousWorkspaceSchema,
+  pedagogyWorkspaceV3Schema,
+  workspaceSchema,
+} from '../domain/models'
 import type { Workspace } from '../domain/models'
 
 export const STORAGE_KEY = 'nextage-class:workspace:v1'
@@ -14,12 +19,17 @@ export function loadWorkspace(storage: StoragePort, now = new Date()): LoadResul
     const value: unknown = JSON.parse(raw)
     const legacy = legacyWorkspaceSchema.safeParse(value)
     const previous = previousWorkspaceSchema.safeParse(value)
+    const pedagogy = pedagogyWorkspaceV3Schema.safeParse(value)
     const upgraded = legacy.success
       ? { ...legacy.data, series: [], blocks: [] }
       : previous.success
         ? previous.data
         : null
-    const current = upgraded ? { ...upgraded, version: 3, materials: [], plans: [] } : value
+    const current = upgraded
+      ? { ...upgraded, version: 4, materials: [], plans: [] }
+      : pedagogy.success
+        ? { ...pedagogy.data, version: 4 }
+        : value
     const state = workspaceSchema.parse(current)
     assertAvailable(state)
     return { state, error: null }
