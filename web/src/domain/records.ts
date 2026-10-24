@@ -1,7 +1,7 @@
 import { hasLessonEnded } from './dates'
 import { recordSubmissionSchema } from './models'
 import type { RecordSubmission, Workspace } from './models'
-import { snapshotMaterial } from './materials'
+import { snapshotMaterial, materialLevels } from './materials'
 import { courseReference, nextCourseMaterial } from './course-progress'
 import { ensureMaterialized, findLesson } from './agenda'
 
@@ -29,9 +29,9 @@ export function saveLessonRecord(
   if (usedMaterialId) {
     const material = state.materials.find((item) => item.id === usedMaterialId)
     if (!material) throw new Error('O material selecionado não foi encontrado.')
-    if (material.level !== values.level)
+    if (!materialLevels(material, state.books).includes(values.level))
       throw new Error(`Selecione um livro/material compatível com o nível ${values.level}.`)
-    materialSnapshot = snapshotMaterial(material)
+    materialSnapshot = snapshotMaterial(material, state.books, values.level)
   }
   const homework =
     description === undefined
@@ -47,13 +47,15 @@ export function saveLessonRecord(
         : undefined
   let courseProgress =
     values.attendance === 'attended' &&
-    materialSnapshot?.lessonNumber &&
+    materialSnapshot?.bookId &&
+    materialSnapshot.lessonNumber &&
     materialSnapshot.level === values.level
       ? previous?.courseProgress
       : undefined
   if (
     values.attendance === 'attended' &&
-    materialSnapshot?.lessonNumber &&
+    materialSnapshot?.bookId &&
+    materialSnapshot.lessonNumber &&
     materialSnapshot.level === values.level
   ) {
     if (

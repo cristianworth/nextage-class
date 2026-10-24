@@ -1,20 +1,29 @@
 import { addDays, referenceClock, weekStart } from './dates'
 import type { Workspace } from './models'
+import { migrateCatalog } from './catalog-migration'
 
 export function addDemoMaterials(state: Workspace, now = new Date()): Workspace {
   const materials = [...state.materials]
-  for (const example of createDemo(now).materials) {
+  const examples = createDemo(now)
+  for (const example of examples.materials) {
     const exists = materials.some(
       (material) =>
         material.id === example.id ||
-        (material.level === example.level &&
-          (material.title === example.title ||
-            (example.lessonNumber !== undefined &&
-              material.lessonNumber === example.lessonNumber))),
+        (material.level === example.level && material.title === example.title) ||
+        (example.lessonNumber !== undefined &&
+          material.bookId === example.bookId &&
+          material.lessonNumber === example.lessonNumber),
     )
     if (!exists) materials.push(example)
   }
-  return materials.length === state.materials.length ? state : { ...state, materials }
+  const needed = new Set(materials.map((material) => material.bookId))
+  const books = [
+    ...state.books,
+    ...examples.books.filter(
+      (book) => needed.has(book.id) && !state.books.some((item) => item.id === book.id),
+    ),
+  ]
+  return materials.length === state.materials.length ? state : { ...state, materials, books }
 }
 
 export function createDemo(now = new Date()): Workspace {
@@ -89,7 +98,7 @@ export function createDemo(now = new Date()): Workspace {
     hour: 9,
     createdAt,
   }
-  return {
+  return migrateCatalog({
     version: 4,
     materials: [
       {
@@ -197,5 +206,5 @@ export function createDemo(now = new Date()): Workspace {
         updatedAt: `${previousLesson.date}T13:00:00.000Z`,
       },
     ],
-  }
+  })
 }

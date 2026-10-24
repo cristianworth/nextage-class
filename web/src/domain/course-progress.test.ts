@@ -5,6 +5,7 @@ import { saveLessonRecord } from './records'
 import { compareMaterials, saveMaterial } from './materials'
 import { setHomeworkCorrected } from './homework'
 import { workspaceSchema } from './models'
+import { saveBook } from './books'
 import type { Workspace } from './models'
 
 const now = new Date('2026-10-23T15:00:00Z')
@@ -141,11 +142,17 @@ describe('sequência do aluno', () => {
     )
     expect(courseSuggestion(state, 'student-sofia', 'A1').finished).toBe(true)
     expect(state.students.find((item) => item.id === 'student-sofia')?.level).toBe('A1')
-    expect(courseSuggestion(state, 'student-lara', 'A1').material?.lessonNumber).toBe(1)
+    expect(courseSuggestion(state, 'student-lara', 'A1').material).toBeUndefined()
     expect(courseSuggestion(state, 'student-sofia', 'A2').material).toBeUndefined()
     state = saveMaterial(
       state,
-      { title: 'A new topic', content: 'Practice', level: 'A1', lessonNumber: 5 },
+      {
+        title: 'A new topic',
+        content: 'Practice',
+        level: 'A1',
+        lessonNumber: 5,
+        bookId: state.books[0].id,
+      },
       undefined,
       now,
     )
@@ -159,33 +166,52 @@ describe('sequência do aluno', () => {
       { ...input, usedMaterialId: 'material-a1-3', courseCompleted: true },
       now,
     )
-    const material = state.materials.find((item) => item.id === 'material-a1-4')!
-    state = saveMaterial(state, { ...material, level: 'A2' }, material.id, now)
+    state = saveBook(state, { title: state.books[0].title, levels: ['A2'] }, state.books[0].id, now)
     expect(courseSuggestion(state, 'student-sofia', 'A1')).toMatchObject({
       material: undefined,
       unavailable: true,
     })
   })
-  it('ordena numericamente e recusa duplicados somente no mesmo nível', () => {
+  it('ordena numericamente e recusa duplicados somente no mesmo livro', () => {
     let state = { ...fixture(), materials: [] as ReturnType<typeof createDemo>['materials'] }
     for (const lessonNumber of [10, 2])
       state = saveMaterial(
         state,
-        { title: `Topic ${lessonNumber}`, content: 'Text', level: 'A1', lessonNumber },
+        {
+          title: `Topic ${lessonNumber}`,
+          content: 'Text',
+          level: 'A1',
+          lessonNumber,
+          bookId: state.books[0].id,
+        },
         undefined,
         now,
       )
     state = saveMaterial(state, { title: 'Extra', content: 'Text', level: 'A1' }, undefined, now)
-    expect([...state.materials].sort(compareMaterials).map((item) => item.lessonNumber)).toEqual([
-      2,
-      10,
-      undefined,
-    ])
+    expect(
+      [...state.materials]
+        .filter((item) => item.bookId)
+        .sort(compareMaterials)
+        .map((item) => item.lessonNumber),
+    ).toEqual([2, 10])
     expect(() =>
-      saveMaterial(state, { title: 'Duplicate', content: 'Text', level: 'A1', lessonNumber: 2 }),
+      saveMaterial(state, {
+        title: 'Duplicate',
+        content: 'Text',
+        level: 'A1',
+        lessonNumber: 2,
+        bookId: state.books[0].id,
+      }),
     ).toThrow('Já existe')
+    state = saveBook(state, { title: 'Other book', levels: ['A1'] }, undefined, now)
     expect(() =>
-      saveMaterial(state, { title: 'Other level', content: 'Text', level: 'A2', lessonNumber: 2 }),
+      saveMaterial(state, {
+        title: 'Other book',
+        content: 'Text',
+        level: 'A1',
+        lessonNumber: 2,
+        bookId: state.books[1].id,
+      }),
     ).not.toThrow()
     expect(() =>
       saveMaterial(state, { title: 'Invalid', content: 'Text', level: 'A1', lessonNumber: 0 }),

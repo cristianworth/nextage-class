@@ -23,6 +23,7 @@ export const studentInputSchema = z.object({
   phone: z.string().trim().max(50),
   occupation: z.string().trim().max(150),
   interests: z.string().trim().max(1000),
+  primaryBookId: idSchema.nullable().optional(),
   meetingUrl: z
     .string()
     .trim()
@@ -132,6 +133,8 @@ const legacyRecordSchema = recordInputSchema.extend({
 })
 
 export const materialInputSchema = z.object({
+  bookId: idSchema.optional(),
+  levels: z.array(z.enum(LEVELS)).min(1).optional(),
   lessonNumber: z.number().int().min(1, 'O número da aula deve ser positivo.').max(9999).optional(),
   title: z.string().trim().min(1, 'Informe o título do material.').max(150),
   level: z.enum(LEVELS),
@@ -149,12 +152,15 @@ export const materialSchema = materialInputSchema.extend({
 export const materialSnapshotSchema = materialInputSchema.extend({
   id: idSchema,
   updatedAt: timestampSchema,
+  bookTitle: z.string().min(1).max(150).optional(),
 })
 export const homeworkSchema = z.object({
   description: z.string().trim().min(1).max(2000),
   correctedAt: timestampSchema.nullable(),
 })
 export const courseReferenceSchema = z.object({
+  bookId: idSchema.optional(),
+  bookTitle: z.string().min(1).max(150).optional(),
   id: idSchema,
   title: z.string().min(1).max(150),
   level: z.enum(LEVELS),
@@ -266,7 +272,7 @@ const pedagogyWorkspaceSchema = weeklyWorkspaceSchema
 export const pedagogyWorkspaceV3Schema = pedagogyWorkspaceSchema.safeExtend({
   version: z.literal(3),
 })
-export const workspaceSchema = pedagogyWorkspaceSchema
+export const workspaceV4Schema = pedagogyWorkspaceSchema
   .safeExtend({ version: z.literal(4) })
   .superRefine((state, context) => {
     const numbers = state.materials
@@ -293,6 +299,68 @@ export const workspaceSchema = pedagogyWorkspaceSchema
       })
   })
 
+export const bookInputSchema = z.object({
+  title: z.string().trim().min(1, 'Informe o título do livro.').max(150),
+  levels: z
+    .array(z.enum(LEVELS))
+    .min(1, 'Selecione ao menos um nível.')
+    .refine((levels) => new Set(levels).size === levels.length, 'Não repita níveis no livro.'),
+})
+export const bookSchema = bookInputSchema.extend({
+  id: idSchema,
+  createdAt: timestampSchema,
+  updatedAt: timestampSchema,
+})
+export const workspaceSchema = pedagogyWorkspaceSchema
+  .safeExtend({ version: z.literal(5), books: z.array(bookSchema) })
+  .superRefine((state, context) => {
+    const books = new Map(state.books.map((book) => [book.id, book]))
+    const numbers = state.materials
+      .filter((item) => item.lessonNumber !== undefined)
+      .map((item) => `${item.bookId}:${item.lessonNumber}`)
+    const valid =
+      books.size === state.books.length &&
+      new Set(numbers).size === numbers.length &&
+      state.materials.every((item) =>
+        item.bookId
+          ? books.has(item.bookId) && item.lessonNumber !== undefined
+          : item.lessonNumber === undefined,
+      ) &&
+      state.materials.every(
+        (item) => !item.levels || new Set(item.levels).size === item.levels.length,
+      ) &&
+      state.students.every(
+        (student) => !student.primaryBookId || books.has(student.primaryBookId),
+      ) &&
+      state.records.every((record) => {
+        const progress = record.courseProgress
+        if (!progress) return true
+        const used = record.materialSnapshot
+        if (
+          record.attendance !== 'attended' ||
+          !used?.bookId ||
+          !used.lessonNumber ||
+          used.level !== record.level
+        )
+          return false
+        return progress.completed
+          ? !progress.next ||
+              (progress.next.bookId === used.bookId &&
+                progress.next.lessonNumber > used.lessonNumber)
+          : !!progress.next &&
+              progress.next.id === used.id &&
+              progress.next.bookId === used.bookId &&
+              progress.next.lessonNumber === used.lessonNumber
+      })
+    if (!valid)
+      context.addIssue({
+        code: 'custom',
+        message: 'Os livros, unidades ou progressos estão inconsistentes.',
+      })
+  })
+
+export type Book = z.infer<typeof bookSchema>
+export type BookInput = z.infer<typeof bookInputSchema>
 export type StudentInput = z.infer<typeof studentInputSchema>
 export type Student = z.infer<typeof studentSchema>
 export type LessonInput = z.infer<typeof lessonInputSchema>

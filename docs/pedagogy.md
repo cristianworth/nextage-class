@@ -1,15 +1,14 @@
-# Dados pedagógicos do 1C
+# Dados pedagógicos
 
-Implementado e verificado tecnicamente em 24/10/2026 na mudança `deliver-lesson-preparation-1c`. Não representa validação de uso da professora. Ver [verification-1c.md](verification-1c.md).
+O 1C introduziu material utilizado, preparação e homework; o 1E organiza o acervo por livros e apoios. Ver [book-catalog.md](book-catalog.md) e [verification-1e.md](verification-1e.md). Revisão técnica não representa validação da rotina de Nara.
 
-- Formato local atual v4; a chave continua `nextage-class:workspace:v1`. Leitura aceita v1/v2/v3 validados e não grava até uma alteração válida. Migração de v3 preserva todo o acervo/planejamento; v1/v2 iniciam esses recursos vazios. Demo nova inclui nove textos fictícios próprios, com quatro aulas numeradas de A1.
-- Material: título, nível A1–C2, texto simples, criação e atualização. Limites: título de 150 caracteres e conteúdo de 20.000. Sem uploads, editor rico ou exclusão neste recorte.
-- Material utilizado: o lançamento recebe cópia de ID, título, nível, conteúdo e atualização. Editar o acervo não muda o histórico. Manter versão registrada e selecionar versão atual são ações diferentes.
-- Homework: uma descrição de até 2.000 caracteres por aula registrada, com correção inteira reversível. Alterar o texto deixa pendente; editar outros campos preserva a correção. Limpar explicitamente retira a tarefa.
-- Planejamento: material e anotação de até 5.000 caracteres por ocorrência, sem criar um registro de aula. A identidade acompanha remarcações; o domínio rejeita alterações que eliminariam uma ocorrência planejada pelo término da série.
-- Preparação: último conteúdo com presença anterior à aula consultada e homework pendente anterior do mesmo aluno. A ordenação usa data/hora efetiva, inclusive remarcações.
-- Link manual: campo livre opcional por aluno, validado como HTTP/HTTPS sem credenciais. Nenhuma integração externa é consultada.
+- Formato local atual v5; a chave continua `nextage-class:workspace:v1`. Leitura aceita v1–v4 validados e não grava até uma alteração válida. Sem reset automático.
+- Livro: título e níveis atendidos; sequência única de unidades para esses níveis. Aluno segue um principal e pode trocá-lo/retomá-lo.
+- Unidade: livro, número, título e texto. Apoio: título, níveis próprios e texto. Título tem limite de 150 caracteres e conteúdo de 20.000. Sem uploads, editor rico ou exclusão.
+- Material utilizado: cópia de ID, título, nível do registro, conteúdo, atualização e identificação do livro quando houver. Editar o acervo não altera o histórico. Manter a versão registrada e selecionar a atual são ações distintas.
+- Homework permanece inalterado: descrição de até 2.000 caracteres por aula, com correção inteira reversível. Alterar o texto deixa pendente; editar outros campos preserva a correção. Limpar explicitamente retira a tarefa.
+- Planejamento: material e anotação de até 5.000 caracteres por ocorrência, sem criar registro. Identifica o livro/unidade escolhido. A identidade acompanha remarcações; alterações que eliminariam ocorrência planejada são recusadas.
+- Preparação: último conteúdo com presença anterior e homework pendente anterior do mesmo aluno. Ordenação por data/hora efetiva, incluindo remarcações.
+- Link manual: campo livre por aluno, validado como HTTP/HTTPS sem credenciais; sem integração externa.
 
-Confirmado por Cristian: descrição única de homework e correção inteira. A definição posterior de sequência/progresso complementa o planejamento opcional por encontro: o conteúdo atual vem do lançamento do aluno, conforme [course-progress.md](course-progress.md).
-
-O [1D](verification-1d.md) simplifica o lançamento com nível informativo e seleção única filtrada. Exemplos podem ser acrescentados pelo acervo sem reset. Homework permanece no mesmo formato e fluxo.
+O conteúdo atual vem do lançamento, conforme [course-progress.md](course-progress.md). Planejamento por encontro continua como apoio opcional. A migração preserva cópias, planos, homework, IDs e conteúdo; livros históricos são reconstruídos a partir do catálogo e dos registros numerados.

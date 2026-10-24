@@ -26,3 +26,10 @@ O sistema SHALL permitir informar um número inteiro positivo para ordenar aulas
 #### Scenario: Organizar sequência
 - **WHEN** o acervo contém A1 Aula 2 e Aula 10
 - **THEN** a Aula 2 aparece antes da Aula 10; outra A1 Aula 2 é recusada, mas A2 Aula 2 é permitida.
+
+### Requirement: Identificação de unidades
+O sistema SHALL exibir unidades numeradas como Unidade N — Descrição e manter a ordenação numérica independente do título. Materiais sem número SHALL continuar complementares; nomes e textos históricos livres SHALL ser preservados.
+
+#### Scenario: Ordem numérica
+- **WHEN** o seletor oferece unidades 2 e 10
+- **THEN** Unidade 2 aparece antes de Unidade 10, ainda que a ordem alfabética das descrições seja diferente.

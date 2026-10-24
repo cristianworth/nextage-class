@@ -63,6 +63,8 @@ Atualizado em 24/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-40 | Livro/material será uma seleção única filtrada pelo nível; preservar textos e cópias históricas sem manter novo campo livre duplicado. |
 | DEC-41 | Um aluno segue uma sequência principal e usa outros materiais como apoio. Organização por livro/unidades e níveis atendidos será detalhada no 1E. |
 | DEC-42 | Exibir unidades como Unidade N — Descrição e ordenar numericamente, mantendo número separado do título. |
+| DEC-43 | Cada livro possui uma sequência única de unidades, compartilhada entre todos os seus níveis atendidos. Confirmado para o 1E em 24/10/2026. |
+| DEC-44 | Trocar o livro principal e retornar ao anterior retoma automaticamente o progresso daquele livro, sem reiniciar ou usar o progresso de outro. Confirmado para o 1E em 24/10/2026. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 

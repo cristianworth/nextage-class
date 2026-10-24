@@ -111,7 +111,13 @@ test('migra v3 sem numerar materiais ou inventar conclusão e permite organizar 
   const raw = await page.evaluate((key) => {
     const data = JSON.parse(localStorage.getItem(key)!)
     data.version = 3
-    for (const material of data.materials) delete material.lessonNumber
+    delete data.books
+    for (const material of data.materials) {
+      delete material.lessonNumber
+      delete material.bookId
+      delete material.levels
+    }
+    for (const student of data.students) delete student.primaryBookId
     const raw = JSON.stringify(data)
     localStorage.setItem(key, raw)
     return raw
@@ -119,13 +125,27 @@ test('migra v3 sem numerar materiais ou inventar conclusão e permite organizar 
   await page.reload()
   expect(await page.evaluate((key) => localStorage.getItem(key), key)).toBe(raw)
   await navigate(page, 'Acervo')
+  await page.getByRole('button', { name: 'Novo livro', exact: true }).click()
+  await page.getByRole('textbox', { name: 'Título do livro', exact: true }).fill('Livro migrado')
+  await page.getByRole('checkbox', { name: 'A1', exact: true }).check()
+  await page.getByRole('button', { name: 'Salvar livro', exact: true }).click()
+  const bookId = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!).books[0].id as string,
+    key,
+  )
   await page
     .getByRole('button', { name: 'Ler material Around the neighborhood', exact: true })
     .click()
   await page.getByRole('button', { name: 'Editar material', exact: true }).click()
+  await page.getByRole('combobox', { name: 'Tipo de material', exact: true }).selectOption('unit')
+  await page.getByRole('combobox', { name: 'Livro', exact: true }).selectOption(bookId)
   await page.getByRole('spinbutton', { name: /Número da unidade/ }).fill('3')
   await page.getByRole('button', { name: 'Salvar material', exact: true }).click()
-  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).version, key)).toBe(4)
+  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).version, key)).toBe(5)
+  await navigate(page, 'Alunos')
+  await page.getByRole('button', { name: 'Editar Sofia Lima', exact: true }).click()
+  await page.getByRole('combobox', { name: 'Livro principal', exact: true }).selectOption(bookId)
+  await page.getByRole('button', { name: 'Salvar alterações', exact: true }).click()
   await navigate(page, 'Agenda')
   await launchSofia(page)
   await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('material-a1-3')
@@ -137,7 +157,8 @@ test('numeração duplicada é recusada e sequência cabe no celular', async ({ 
   await navigate(page, 'Acervo')
   await page.getByRole('button', { name: 'Novo material', exact: true }).click()
   await page.getByRole('textbox', { name: 'Título', exact: true }).fill('Outro conteúdo')
-  await page.getByRole('combobox', { name: 'Nível', exact: true }).selectOption('A1')
+  await page.getByRole('combobox', { name: 'Tipo de material', exact: true }).selectOption('unit')
+  await page.getByRole('combobox', { name: 'Livro', exact: true }).selectOption('legacy-book/A1')
   await page
     .getByRole('textbox', { name: 'Conteúdo do material', exact: true })
     .fill('Texto próprio')

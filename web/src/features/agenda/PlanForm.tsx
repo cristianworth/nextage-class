@@ -4,6 +4,7 @@ import type { Lesson, LessonPlanInput, Workspace } from '../../domain/models'
 import { errorMessage } from '../../domain/models'
 import { formatDate, lessonTime } from '../../domain/dates'
 import { FormError, Modal } from '../../shared/Modal'
+import { catalogLabel, compareMaterials } from '../../domain/materials'
 
 export function PlanForm({
   lesson,
@@ -42,15 +43,11 @@ export function PlanForm({
           Material planejado
           <select name="materialId" defaultValue={plan?.materialId ?? ''} autoFocus>
             <option value="">Sem material do acervo</option>
-            {[...state.materials]
-              .sort(
-                (a, b) => a.level.localeCompare(b.level) || a.title.localeCompare(b.title, 'pt-BR'),
-              )
-              .map((material) => (
-                <option key={material.id} value={material.id}>
-                  {material.level} · {material.title}
-                </option>
-              ))}
+            {[...state.materials].sort(compareMaterials).map((material) => (
+              <option key={material.id} value={material.id}>
+                {catalogLabel(material, state.books)}
+              </option>
+            ))}
           </select>
         </label>
         {!state.materials.length && (

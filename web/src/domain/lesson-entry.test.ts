@@ -65,7 +65,14 @@ describe('lançamento consistente', () => {
       [
         { ...material, id: 'ten', title: 'A', lessonNumber: 10 },
         { ...material, id: 'two', title: 'Z', lessonNumber: 2 },
-        { ...material, id: 'other', level: 'A2', lessonNumber: 1 },
+        {
+          ...material,
+          id: 'other',
+          level: 'A2',
+          levels: ['A2'],
+          bookId: undefined,
+          lessonNumber: 1,
+        },
       ],
       'A1',
     )

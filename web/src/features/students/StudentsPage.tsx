@@ -6,7 +6,7 @@ import { matchesSearch } from '../../domain/students'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
 import { courseSuggestion } from '../../domain/course-progress'
-import { materialLabel } from '../../domain/materials'
+import { catalogLabel } from '../../domain/materials'
 
 export function initials(name: string) {
   return name
@@ -113,10 +113,12 @@ export function StudentsPage({
                 <div className="student-card-footer">
                   <p className="student-course">
                     {course.material
-                      ? `Conteúdo atual: ${materialLabel(course.material)}`
+                      ? `Conteúdo atual: ${catalogLabel(course.material, state.books)}`
                       : course.finished
-                        ? 'Sequência do nível concluída'
-                        : 'Sequência ainda não definida'}
+                        ? 'Sequência do livro concluída'
+                        : course.unavailable
+                          ? 'Livro principal incompatível ou unidade indisponível'
+                          : 'Sequência ainda não definida'}
                   </p>
                   <span>
                     {records.length} {records.length === 1 ? 'registro' : 'registros'}

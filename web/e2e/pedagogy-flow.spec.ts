@@ -16,7 +16,7 @@ async function createMaterial(page: Page, title = 'Asking for directions') {
   await navigate(page, 'Acervo')
   await page.getByRole('button', { name: 'Novo material', exact: true }).click()
   await page.getByRole('textbox', { name: 'Título', exact: true }).fill(title)
-  await page.getByRole('combobox', { name: 'Nível', exact: true }).selectOption('A2')
+  await page.getByRole('checkbox', { name: 'A2', exact: true }).check()
   await page
     .getByRole('textbox', { name: 'Conteúdo do material', exact: true })
     .fill('Turn left at the park. Ask for the nearest station.')
@@ -176,7 +176,7 @@ test('falha ao salvar material mantém formulário e permite buscar vazio sem pe
   })
   await page.getByRole('button', { name: 'Novo material', exact: true }).click()
   await page.getByRole('textbox', { name: 'Título', exact: true }).fill('Texto que não foi salvo')
-  await page.getByRole('combobox', { name: 'Nível', exact: true }).selectOption('A2')
+  await page.getByRole('checkbox', { name: 'A2', exact: true }).check()
   await page
     .getByRole('textbox', { name: 'Conteúdo do material', exact: true })
     .fill('Conteúdo preservado no formulário.')
@@ -228,12 +228,13 @@ test('link manual é validado e acervo/preparação funcionam no celular', async
   await expect(page.getByRole('dialog')).toContainText('Plan a two-day trip')
 })
 
-test('migra v2 sem reset e salva v4 mantendo agenda e histórico', async ({ page }) => {
+test('migra v2 sem reset e salva v5 mantendo agenda e histórico', async ({ page }) => {
   await schedule(page, '2026-10-27', 8, true)
   const before = await page.evaluate((key) => {
     const data = JSON.parse(localStorage.getItem(key)!)
     delete data.materials
     delete data.plans
+    delete data.books
     data.version = 2
     localStorage.setItem(key, JSON.stringify(data))
     return data
@@ -244,7 +245,7 @@ test('migra v2 sem reset e salva v4 mantendo agenda e histórico', async ({ page
   await expect(page.getByRole('heading', { name: 'Seu acervo começa com uma ideia' })).toBeVisible()
   await createMaterial(page)
   const after = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key)
-  expect(after.version).toBe(4)
+  expect(after.version).toBe(5)
   expect(after.series).toEqual(before.series)
   expect(after.lessons).toEqual(before.lessons)
   expect(after.records).toEqual(before.records)
@@ -257,7 +258,7 @@ test('conteúdo do acervo aparece como texto sem executar HTML', async ({ page }
   await navigate(page, 'Acervo')
   await page.getByRole('button', { name: 'Novo material', exact: true }).click()
   await page.getByRole('textbox', { name: 'Título', exact: true }).fill('Literal markup')
-  await page.getByRole('combobox', { name: 'Nível', exact: true }).selectOption('B1')
+  await page.getByRole('checkbox', { name: 'B1', exact: true }).check()
   const content = '<img src=x onerror="window.unexpectedScript=true">'
   await page.getByRole('textbox', { name: 'Conteúdo do material', exact: true }).fill(content)
   await page.getByRole('button', { name: 'Salvar material', exact: true }).click()

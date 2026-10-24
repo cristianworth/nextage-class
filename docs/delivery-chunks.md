@@ -26,14 +26,14 @@ Implementado e verificado tecnicamente na mudança `simplify-lesson-entry-1d`. O
 
 ## 1E — Organização do acervo
 
-Planejado; não implementado neste recorte.
+Implementado e verificado tecnicamente em `organize-material-library-1e`. E1–E4 concluídos, com uma sequência compartilhada entre níveis e retomada ao voltar ao livro. Ver [verification-1e.md](verification-1e.md). Revisão de uso pendente.
 
-| Bloco | Resultado esperado | Definir antes de depender |
+| Bloco | Resultado entregue | Decisão incorporada |
 | --- | --- | --- |
-| E1 — Modelo de livro/material | Separar livro, unidades numeradas e apoio; permitir números repetidos em livros diferentes | O que compõe cada sequência e se todos os seus níveis compartilham as mesmas unidades |
-| E2 — Sequência principal | Um livro/sequência principal por aluno, com apoio independente | Como trocar/retomar o livro e preservar progresso anterior |
-| E3 — Compatibilidade e catálogo | Associar um ou vários níveis; filtrar sem duplicar conteúdo | Regras de compatibilidade e migração do acervo simples atual |
-| E4 — Cadastro e revisão | Gerenciar essa organização em texto e selecionar no lançamento | Validar exemplos fictícios e histórico após edição do catálogo |
+| E1 — Modelo de livro/material | Separar livro, unidades numeradas e apoio; permitir números repetidos em livros diferentes | Uma sequência única de unidades por livro, compartilhada entre seus níveis |
+| E2 — Sequência principal | Um livro/sequência principal por aluno, com apoio independente | Trocar e voltar retoma o progresso daquele livro |
+| E3 — Compatibilidade e catálogo | Associar um ou vários níveis; filtrar sem duplicar conteúdo | Níveis herdados do livro para unidades; níveis próprios para apoio; migração v1–v4 sem reset |
+| E4 — Cadastro e revisão | Gerenciar essa organização em texto e selecionar no lançamento | Exemplos fictícios, cópias históricas e nome do livro preservados após edição |
 
 Não incluir uploads, áudio, editor rico ou recursos extras de homework por conveniência.
 

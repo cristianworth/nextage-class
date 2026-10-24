@@ -21,6 +21,7 @@ npm run spec -- validate deliver-weekly-agenda-1b --strict
 npm run spec -- validate deliver-lesson-preparation-1c --strict
 npm run spec -- validate track-student-course-progress --strict
 npm run spec -- validate simplify-lesson-entry-1d --strict
+npm run spec -- validate organize-material-library-1e --strict
 ```
 
 Os testes de navegador exigem Chromium do Playwright (na pasta `web/`, executar `npx playwright install chromium`). Como alternativa, no Windows com Edge instalado:
@@ -32,4 +33,4 @@ npm run test:e2e
 
 A variável vale somente para a sessão atual. Os testes sobem um servidor próprio na porta 4177 e usam dados/relógio isolados. O navegador de uso manual continua na porta 5173. Não há publicação ou serviço externo de aplicação nesta etapa; as fontes são servidas localmente.
 
-O formato local atual é v4, mantendo a chave `nextage-class:workspace:v1`. Dados válidos v1/v2/v3 migram em memória e só são gravados na próxima alteração válida, sem reset. A migração de v3 preserva acervo, planos e histórico sem presumir números ou conclusões; v1/v2 iniciam acervo/planos vazios. Demo nova ou reiniciada traz nove textos próprios, com sequência A1. Para um acervo existente, numerar as unidades pelo formulário do material. Para acrescentar os exemplos ausentes, usar **Acervo → Adicionar exemplos**; a ação não reinicia a demo nem substitui conteúdo já cadastrado. Dados inválidos são preservados. Não edite o armazenamento para atualizar a aplicação.
+O formato local atual é v5, mantendo a chave `nextage-class:workspace:v1`. Dados válidos v1/v2/v3/v4 migram em memória e só são gravados na próxima alteração válida, sem reset. A migração de v3 preserva acervo, planos e histórico sem presumir números ou conclusões; v1/v2 iniciam acervo/planos vazios. Demo nova ou reiniciada traz nove textos próprios, com sequência A1. Unidades numeradas antigas são organizadas em livros por nível. Para novas unidades, criar o livro e informar livro/número no formulário. Ver [book-catalog.md](book-catalog.md). Para acrescentar os exemplos ausentes, usar **Acervo → Adicionar exemplos**; a ação não reinicia a demo nem substitui conteúdo já cadastrado. Dados inválidos são preservados. Não edite o armazenamento para atualizar a aplicação.

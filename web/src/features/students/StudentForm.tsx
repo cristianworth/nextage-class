@@ -1,20 +1,27 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { LEVELS, errorMessage } from '../../domain/models'
-import type { Student, StudentInput } from '../../domain/models'
+import type { Book, Student, StudentInput } from '../../domain/models'
 import { referenceClock } from '../../domain/dates'
 import { FormError, Modal } from '../../shared/Modal'
 
 export function StudentForm({
   student,
+  books,
   onSave,
   onClose,
 }: {
   student?: Student
+  books: Book[]
   onSave: (input: StudentInput) => void
   onClose: () => void
 }) {
   const [error, setError] = useState('')
+  const [level, setLevel] = useState(student?.level ?? '')
+  const [primaryBookId, setPrimaryBookId] = useState(student?.primaryBookId ?? '')
+  const compatible = books.filter((book) => book.levels.some((item) => item === level))
+  const previousBook = books.find((book) => book.id === primaryBookId)
+  const incompatible = !!previousBook && !compatible.includes(previousBook)
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -28,6 +35,7 @@ export function StudentForm({
         occupation: value('occupation'),
         interests: value('interests'),
         meetingUrl: value('meetingUrl'),
+        primaryBookId: primaryBookId || null,
       })
     } catch (cause) {
       setError(errorMessage(cause))
@@ -65,7 +73,21 @@ export function StudentForm({
                 *
               </span>
             </span>
-            <select name="level" required defaultValue={student?.level ?? ''}>
+            <select
+              name="level"
+              required
+              value={level}
+              onChange={(event) => {
+                setLevel(event.target.value)
+                if (
+                  primaryBookId !== student?.primaryBookId &&
+                  !books
+                    .find((book) => book.id === primaryBookId)
+                    ?.levels.some((item) => item === event.target.value)
+                )
+                  setPrimaryBookId('')
+              }}
+            >
               <option value="" disabled>
                 Selecione o nível
               </option>
@@ -89,6 +111,29 @@ export function StudentForm({
             />
           </label>
         </div>
+        <label className="field">
+          Livro principal
+          <select
+            aria-label="Livro principal"
+            value={primaryBookId}
+            onChange={(event) => setPrimaryBookId(event.target.value)}
+          >
+            <option value="">Sem livro principal</option>
+            {incompatible && (
+              <option value={previousBook.id}>{previousBook.title} · não atende este nível</option>
+            )}
+            {compatible.map((book) => (
+              <option key={book.id} value={book.id}>
+                {book.title}
+              </option>
+            ))}
+          </select>
+          <small>
+            {incompatible
+              ? 'O livro atual não atende este nível. O vínculo e o progresso são preservados até você escolher outro.'
+              : 'Um principal por aluno. Trocar e voltar retoma o ponto anterior de cada livro.'}
+          </small>
+        </label>
         <div className="form-grid">
           <label className="field">
             Telefone

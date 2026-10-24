@@ -4,9 +4,11 @@ import {
   legacyWorkspaceSchema,
   previousWorkspaceSchema,
   pedagogyWorkspaceV3Schema,
+  workspaceV4Schema,
   workspaceSchema,
 } from '../domain/models'
 import type { Workspace } from '../domain/models'
+import { migrateCatalog } from '../domain/catalog-migration'
 
 export const STORAGE_KEY = 'nextage-class:workspace:v1'
 export type StoragePort = Pick<Storage, 'getItem' | 'setItem'>
@@ -30,7 +32,8 @@ export function loadWorkspace(storage: StoragePort, now = new Date()): LoadResul
       : pedagogy.success
         ? { ...pedagogy.data, version: 4 }
         : value
-    const state = workspaceSchema.parse(current)
+    const v4 = workspaceV4Schema.safeParse(current)
+    const state = workspaceSchema.parse(v4.success ? migrateCatalog(v4.data) : current)
     assertAvailable(state)
     return { state, error: null }
   } catch {

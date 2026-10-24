@@ -6,7 +6,7 @@ import { Icon } from '../../shared/Icon'
 import { lessonContext } from '../../domain/preparation'
 import { HomeworkItem } from '../history/HomeworkItem'
 import { courseSuggestion } from '../../domain/course-progress'
-import { materialLabel } from '../../domain/materials'
+import { catalogLabel } from '../../domain/materials'
 
 export function LessonDetails({
   lesson,
@@ -76,12 +76,14 @@ export function LessonDetails({
           <p className="eyebrow">CONTEÚDO ATUAL DO ALUNO</p>
           <p>
             {course.material
-              ? materialLabel(course.material)
+              ? catalogLabel(course.material, state.books)
               : course.finished
-                ? 'Sequência deste nível concluída.'
+                ? 'Sequência deste livro concluída.'
                 : course.unavailable
-                  ? 'Conteúdo anterior fora da sequência. Confira a seleção no lançamento.'
-                  : 'Nenhuma unidade numerada neste nível.'}
+                  ? 'Livro principal incompatível ou unidade indisponível. Confira o cadastro e o lançamento.'
+                  : course.book
+                    ? 'Nenhuma unidade neste livro.'
+                    : 'Selecione um livro principal no cadastro do aluno.'}
           </p>
           <p className="muted form-hint">
             O andamento é atualizado ao lançar o que aconteceu no encontro.
@@ -99,9 +101,7 @@ export function LessonDetails({
           <>
             {material && (
               <details className="material-disclosure">
-                <summary>
-                  Material planejado: {material.title} · {material.level}
-                </summary>
+                <summary>Material planejado: {catalogLabel(material, state.books)}</summary>
                 <div className="material-text">{material.content}</div>
               </details>
             )}

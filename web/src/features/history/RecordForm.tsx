@@ -4,7 +4,7 @@ import { ATTENDANCE, errorMessage } from '../../domain/models'
 import type { Lesson, RecordInput, RecordSubmission, Workspace } from '../../domain/models'
 import { formatDate, formatTimestamp, lessonTime } from '../../domain/dates'
 import { FormError, Modal } from '../../shared/Modal'
-import { materialsForLevel, materialLabel } from '../../domain/materials'
+import { materialsForLevel, materialLabel, catalogLabel } from '../../domain/materials'
 import { courseSuggestion, nextCourseMaterial } from '../../domain/course-progress'
 
 export function RecordForm({
@@ -26,7 +26,7 @@ export function RecordForm({
   const [error, setError] = useState('')
   const plan = state.plans.find((item) => item.lessonId === lesson.id)
   const level = record?.level ?? student.level
-  const materials = materialsForLevel(state.materials, level)
+  const materials = materialsForLevel(state.materials, level, state.books)
   const plannedMaterial = materials.find((material) => material.id === plan?.materialId)
   const suggestion = courseSuggestion(state, student.id, level, lesson)
   const [materialChoice, setMaterialChoice] = useState(
@@ -45,7 +45,7 @@ export function RecordForm({
     materialChoice === 'saved'
       ? record?.materialSnapshot
       : state.materials.find((material) => material.id === materialChoice)
-  const followsSequence = !!selectedMaterial?.lessonNumber && selectedMaterial.level === level
+  const followsSequence = !!selectedMaterial?.bookId && !!selectedMaterial.lessonNumber
   const continuation =
     materialChoice === 'saved' &&
     record?.courseProgress &&
@@ -104,6 +104,7 @@ export function RecordForm({
         <label className="field">
           Livro/material
           <select
+            aria-label="Livro/material"
             value={materialChoice}
             onChange={(event) => {
               setMaterialChoice(event.target.value)
@@ -117,7 +118,7 @@ export function RecordForm({
             <option value="">Sem livro/material</option>
             {record?.materialSnapshot && (
               <option value="saved">
-                Manter versão registrada · {materialLabel(record.materialSnapshot)}
+                Manter versão registrada · {catalogLabel(record.materialSnapshot)}
               </option>
             )}
             {!record?.materialSnapshot && record?.material && (
@@ -125,7 +126,7 @@ export function RecordForm({
             )}
             {materials.map((material) => (
               <option key={material.id} value={material.id}>
-                {material.level} · {materialLabel(material)}
+                {catalogLabel(material, state.books)}
               </option>
             ))}
           </select>
@@ -146,7 +147,13 @@ export function RecordForm({
         {attendance === 'attended' && followsSequence ? (
           <div className="course-panel">
             <p className="eyebrow">UNIDADE TRABALHADA</p>
-            <p>{materialLabel(selectedMaterial!)}</p>
+            <p>{catalogLabel(selectedMaterial!, state.books)}</p>
+            {selectedMaterial!.bookId !== student.primaryBookId && (
+              <p className="muted form-hint">
+                Esta unidade pertence a outro livro. O principal do cadastro permanece o mesmo; o
+                resultado fica guardado neste livro.
+              </p>
+            )}
             <label className="check-field">
               <input
                 type="checkbox"
@@ -157,8 +164,8 @@ export function RecordForm({
             </label>
             <p className="course-continuation" role="status">
               {continuation
-                ? `Próximo encontro: ${materialLabel(continuation)}`
-                : 'Última unidade do nível concluída. Nenhum avanço de nível será feito automaticamente.'}
+                ? `${selectedMaterial!.bookId === student.primaryBookId ? 'Próximo encontro' : 'Continuidade neste livro'}: ${materialLabel(continuation)}`
+                : 'Última unidade do livro concluída. Nenhuma mudança de nível ou livro será feita automaticamente.'}
             </p>
             <p className="muted form-hint">
               Se ainda há conteúdo para trabalhar, mantenha sem marcar. O histórico deste encontro
@@ -174,13 +181,13 @@ export function RecordForm({
         )}
         {!record && suggestion.finished && (
           <p className="info-note">
-            A sequência deste nível foi concluída. Você pode selecionar um material para revisão.
+            A sequência deste livro foi concluída. Você pode selecionar um material para revisão.
           </p>
         )}
         {!record && suggestion.unavailable && (
           <p className="info-note">
-            A unidade indicada anteriormente mudou de nível ou saiu da sequência. Selecione o
-            conteúdo que foi trabalhado.
+            O livro principal não atende este nível ou a unidade anterior saiu da sequência. Confira
+            o livro no cadastro do aluno ou selecione o conteúdo trabalhado.
           </p>
         )}
         {attendance !== 'attended' && (

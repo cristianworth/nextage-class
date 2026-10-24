@@ -2,6 +2,37 @@
   color: #b53d42;
   font-weight: 700;
 }
+.level-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.level-picker legend {
+  padding: 0 0.4rem;
+}
+.level-picker .check-field {
+  margin: 0;
+}
+.catalog-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.catalog-tabs [aria-pressed='true'] {
+  background: var(--soft);
+  color: var(--green-dark);
+}
+.catalog-selection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
 .record-level {
   display: flex;
   align-items: center;

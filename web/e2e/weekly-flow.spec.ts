@@ -104,6 +104,7 @@ test('carrega dados 1A e conserva histórico ao salvar a primeira série', async
     delete data.blocks
     delete data.materials
     delete data.plans
+    delete data.books
     data.version = 1
     localStorage.setItem(key, JSON.stringify(data))
     return data
@@ -114,7 +115,7 @@ test('carrega dados 1A e conserva histórico ao salvar a primeira série', async
   ).toBe(1)
   await createWeekly(page)
   const after = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), storageKey)
-  expect(after.version).toBe(4)
+  expect(after.version).toBe(5)
   expect(after.records).toEqual(before.records)
   expect(after.lessons).toEqual(before.lessons)
   await page.reload()

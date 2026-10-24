@@ -6,13 +6,15 @@ Projeto pessoal de aprendizado e portfólio, desenvolvido com assistência de IA
 
 ## Estado atual
 
-Incrementos **1A, 1B, 1C e 1D implementados e verificados tecnicamente**, com atualização em 24/10/2026. A demo reúne alunos, agenda pontual/semanal, bloqueios/remarcação, preparação por aula, acervo em texto por nível, registros com material histórico e homework passado/corrigido. Há link manual da reunião, persistência local e interface para computador/celular.
+Incrementos **1A–1E implementados e verificados tecnicamente**, com atualização em 24/10/2026. A demo reúne alunos, agenda pontual/semanal, bloqueios/remarcação, preparação por aula, acervo em texto por nível, registros com material histórico e homework passado/corrigido. Há link manual da reunião, persistência local e interface para computador/celular.
 
-O refinamento do 1C acrescenta **sequência de aulas do material e progresso por aluno**: numeração por nível, retomada automática no lançamento e marcação de conclusão, preservando o conteúdo trabalhado. Ver [o funcionamento e roteiro](docs/course-progress.md).
+O refinamento do 1C acrescenta **sequência de aulas do material e progresso por aluno**: numeração inicialmente por nível, organizada por livro no 1E, retomada automática no lançamento e marcação de conclusão, preservando o conteúdo trabalhado. Ver [o funcionamento e roteiro](docs/course-progress.md).
 
 O **1D simplifica o lançamento**: nível informativo, seleção única de Livro/material filtrada pelo nível e unidades em ordem numérica. Exemplos podem ser acrescentados ao acervo sem reiniciar a demo. Homework permanece como estava. Ver [evidências e roteiro do 1D](docs/verification-1d.md).
 
-OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As cinco mudanças permanecem abertas para revisão de uso; a base até o progresso está sincronizada em `openspec/specs/`, e o 1D está em `simplify-lesson-entry-1d`. Não há autenticação, backend ou publicação.
+O **1E organiza livros, unidades e apoios**, com níveis atendidos e um principal por aluno. Trocar e voltar retoma o progresso de cada livro. Dados anteriores migram para v5 sem reset. Ver [organização do acervo](docs/book-catalog.md) e [verificação do 1E](docs/verification-1e.md).
+
+OpenSpec **1.14.3** instalado localmente, com seis skills em `.agents/skills/`. As seis mudanças permanecem abertas para revisão de uso; a base até o 1D está sincronizada, e o 1E está em `organize-material-library-1e`. O [repositório é público no GitHub](https://github.com/cristianworth/nextage-class). A aplicação ainda não foi hospedada e não há autenticação ou backend.
 
 ## Executar
 
@@ -38,6 +40,8 @@ Abrir `http://127.0.0.1:5173`. [Instruções e verificações](docs/local-develo
 | [Verificação do 1B](docs/verification-1b.md) | Recorrência, bloqueios, remarcação e compatibilidade com a demo anterior |
 | [Verificação do 1C](docs/verification-1c.md) | Acervo, preparação, homework e revisão integrada |
 | [Verificação do 1D](docs/verification-1d.md) | Lançamento simplificado, filtro, histórico e exemplos sem reset |
+| [Livros e unidades](docs/book-catalog.md) | Principal por aluno, níveis atendidos e retomada por livro |
+| [Verificação do 1E](docs/verification-1e.md) | Catálogo, progresso por livro e migração v5 |
 | [Dados pedagógicos](docs/pedagogy.md) | Modelo e limites do material planejado/utilizado e do homework |
 | [Sequência e progresso](docs/course-progress.md) | Aula do material em vários encontros e continuidade pelo lançamento |
 | [Questões de planejamento](docs/core-questions.md) | O que precisava ser definido agora e quais respostas recebemos |
@@ -70,7 +74,7 @@ nextage-class/
 
 ## Primeira meta
 
-Revisar o [1D](docs/verification-1d.md) e especificar o **1E: livros, unidades, níveis atendidos e uma sequência principal por aluno com materiais de apoio**. Depois, percorrer uma semana fictícia com Nara no 1F, antes da demo do aluno. A validação automatizada não equivale à validação humana da rotina.
+Revisar o [1E](docs/verification-1e.md) e percorrer uma semana fictícia com Nara no **1F**, antes da demo do aluno. A validação automatizada não equivale à validação humana da rotina.
 
 ## Referências
 

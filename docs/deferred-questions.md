@@ -21,6 +21,11 @@ Esta lista separa respostas incorporadas e detalhes ainda abertos. Os exemplos s
 - LATER-10: demo tem nove textos próprios e ação de acrescentar exemplos sem reset. Organização completa e níveis atendidos ficam no 1E; conteúdo real exige autorização antes de inclusão.
 - LATER-16: acompanhar progresso do conteúdo/unidades; uma unidade pode ocupar vários encontros. Streak permanece adiado (DEC-25/35/36).
 
+## Resolvidas para o 1E
+
+- LATER-17: voltar ao livro anterior retoma seu progresso automaticamente (DEC-44).
+- LATER-18: um livro tem sequência única compartilhada entre seus níveis, sem separar unidades por nível (DEC-43).
+
 ## Abertas
 
 | ID | Quando resolver | Pergunta |
@@ -31,7 +36,5 @@ Esta lista separa respostas incorporadas e detalhes ainda abertos. Os exemplos s
 | LATER-13 | Revisão da demo | “A consulta por dia no celular ficou boa? Está faltando alguma informação no bloco da aula?” A primeira interface já está disponível para conferir. |
 | LATER-14 | Piloto real | Confirmar forma de convite/login, recuperação de conta, dados necessários, retenção, backup e recuperação. |
 | LATER-15 | Integração Google | “Qual conta você usa para dar aula? Como organiza os links hoje?” Validar permissões, falhas e a estratégia de criação/manutenção do link. |
-| LATER-17 | Acervo 1E | “Quando trocar o livro principal, você quer poder voltar depois ao ponto em que parou no anterior?” |
-| LATER-18 | Acervo 1E | “Um livro que atende A1 e A2 usa a mesma sequência de unidades para os dois níveis ou cada nível tem um trecho específico?” |
 
 Perguntas resolvidas não devem continuar como pendência: registrar a resposta no requisito da mudança ou em `decisions.md`, conforme o alcance da decisão.

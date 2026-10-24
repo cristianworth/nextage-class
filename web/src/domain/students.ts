@@ -11,8 +11,17 @@ export function saveStudent(
   const previous = state.students.find((student) => student.id === studentId)
   if (studentId && !previous)
     throw new Error('Este aluno não foi encontrado. Atualize a página e tente novamente.')
+  const primaryBookId =
+    values.primaryBookId === undefined ? (previous?.primaryBookId ?? null) : values.primaryBookId
+  if (primaryBookId) {
+    const book = state.books.find((item) => item.id === primaryBookId)
+    if (!book) throw new Error('O livro principal não foi encontrado.')
+    if (primaryBookId !== previous?.primaryBookId && !book.levels.includes(values.level))
+      throw new Error('Escolha um livro principal compatível com o nível do aluno.')
+  }
   const student = {
     ...values,
+    primaryBookId,
     meetingUrl: values.meetingUrl ?? previous?.meetingUrl,
     id: previous?.id ?? crypto.randomUUID(),
     createdAt: previous?.createdAt ?? now.toISOString(),

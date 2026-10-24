@@ -116,6 +116,9 @@ export function HistoryPage({
                 <p className="record-body">{record.content || 'Sem observações adicionais.'}</p>
                 {record.courseProgress && record.materialSnapshot && (
                   <div className="course-panel">
+                    {record.materialSnapshot.bookTitle && (
+                      <p className="eyebrow">{record.materialSnapshot.bookTitle}</p>
+                    )}
                     <p>
                       {materialLabel(record.materialSnapshot)} ·{' '}
                       <strong>
@@ -125,7 +128,7 @@ export function HistoryPage({
                     <p className="muted form-hint">
                       {record.courseProgress.next
                         ? `Continuidade indicada: ${materialLabel(record.courseProgress.next)}`
-                        : 'Fim da sequência disponível neste nível.'}
+                        : 'Fim da sequência disponível neste livro.'}
                     </p>
                   </div>
                 )}

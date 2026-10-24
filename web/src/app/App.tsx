@@ -6,7 +6,9 @@ import { addDemoMaterials, createDemo } from '../domain/demo'
 import { errorMessage } from '../domain/models'
 import { FormError, Modal } from '../shared/Modal'
 import { saveStudent } from '../domain/students'
-import type { Lesson, Material, ScheduleBlock, Student } from '../domain/models'
+import type { Book, Lesson, Material, ScheduleBlock, Student } from '../domain/models'
+import { saveBook } from '../domain/books'
+import { BookForm } from '../features/materials/BookForm'
 import { saveMaterial } from '../domain/materials'
 import { saveLessonPlan } from '../domain/preparation'
 import { setHomeworkCorrected } from '../domain/homework'
@@ -48,6 +50,7 @@ export function App() {
   const [selectedBlock, setSelectedBlock] = useState<ScheduleBlock | null>(null)
   const [rescheduleTarget, setRescheduleTarget] = useState<Lesson | null>(null)
   const [materialEditor, setMaterialEditor] = useState<Material | null | undefined>(undefined)
+  const [bookEditor, setBookEditor] = useState<Book | null | undefined>(undefined)
   const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null)
   const [planLesson, setPlanLesson] = useState<Lesson | null>(null)
   const [historyStudent, setHistoryStudent] = useState('')
@@ -163,6 +166,9 @@ export function App() {
             {page === 'materials' && (
               <MaterialsPage
                 materials={state.materials}
+                books={state.books}
+                onNewBook={() => setBookEditor(null)}
+                onEditBook={setBookEditor}
                 onNew={() => setMaterialEditor(null)}
                 onOpen={setSelectedMaterial}
                 onExamples={() => {
@@ -176,8 +182,20 @@ export function App() {
                 }}
               />
             )}
+            {bookEditor !== undefined && (
+              <BookForm
+                book={bookEditor ?? undefined}
+                onClose={() => setBookEditor(undefined)}
+                onSave={(input) => {
+                  commit(saveBook(state, input, bookEditor?.id))
+                  setBookEditor(undefined)
+                  setNotice('Livro salvo. Os registros anteriores foram preservados.')
+                }}
+              />
+            )}
             {materialEditor !== undefined && (
               <MaterialForm
+                books={state.books}
                 material={materialEditor ?? undefined}
                 onClose={() => setMaterialEditor(undefined)}
                 onSave={(input) => {
@@ -190,6 +208,7 @@ export function App() {
             {selectedMaterial && (
               <MaterialDetails
                 material={selectedMaterial}
+                books={state.books}
                 onClose={() => setSelectedMaterial(null)}
                 onEdit={() => {
                   setMaterialEditor(selectedMaterial)
@@ -199,6 +218,7 @@ export function App() {
             )}
             {studentEditor !== undefined && (
               <StudentForm
+                books={state.books}
                 student={studentEditor ?? undefined}
                 onClose={() => setStudentEditor(undefined)}
                 onSave={(input) => {
