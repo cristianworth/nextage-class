@@ -81,7 +81,7 @@ export function LessonDetails({
                 ? 'Sequência deste nível concluída.'
                 : course.unavailable
                   ? 'Conteúdo anterior fora da sequência. Confira a seleção no lançamento.'
-                  : 'Nenhuma aula do material numerada neste nível.'}
+                  : 'Nenhuma unidade numerada neste nível.'}
           </p>
           <p className="muted form-hint">
             O andamento é atualizado ao lançar o que aconteceu no encontro.

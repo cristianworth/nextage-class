@@ -2,6 +2,13 @@
   color: #b53d42;
   font-weight: 700;
 }
+.record-level {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  margin: 0 0 22px;
+}
 .course-panel {
   background: #f1f6f0;
   border: 1px solid var(--border);

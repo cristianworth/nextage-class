@@ -5,7 +5,7 @@ import { compareMaterials } from './materials'
 export function courseReference(
   material: Pick<MaterialSnapshot, 'id' | 'title' | 'level' | 'lessonNumber'>,
 ): CourseReference {
-  if (!material.lessonNumber) throw new Error('Escolha uma aula numerada do material.')
+  if (!material.lessonNumber) throw new Error('Escolha uma unidade numerada do material.')
   return {
     id: material.id,
     title: material.title,

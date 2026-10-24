@@ -51,7 +51,7 @@ describe('sequência do aluno', () => {
     expect(state.records[1].courseProgress?.next?.lessonNumber).toBe(4)
     expect(workspaceSchema.parse(state)).toEqual(state)
   })
-  it('faltas, complementares e revisões de outro nível não apagam o progresso', () => {
+  it('faltas e complementares compatíveis não apagam o progresso', () => {
     let state = saveLessonRecord(
       fixture(),
       'meeting-0',
@@ -70,16 +70,16 @@ describe('sequência do aluno', () => {
       },
       now,
     )
-    state = saveLessonRecord(
+    state = saveMaterial(
       state,
-      'meeting-2',
-      { ...input, usedMaterialId: 'material-a2', courseCompleted: true },
+      { title: 'Apoio', level: 'A1', content: 'Conversação' },
+      undefined,
       now,
     )
     state = saveLessonRecord(
       state,
-      'meeting-3',
-      { ...input, level: 'A2', usedMaterialId: 'material-a1-4', courseCompleted: true },
+      'meeting-2',
+      { ...input, usedMaterialId: state.materials.at(-1)!.id, courseCompleted: true },
       now,
     )
     expect(courseSuggestion(state, 'student-sofia', 'A1').material?.lessonNumber).toBe(3)

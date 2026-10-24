@@ -2,8 +2,8 @@ schema: spec-driven
 
 context: |
   Project: Nextage Class, a personal learning and portfolio project.
-  Current stage: increments 1A, 1B and 1C implemented and technically verified; usage review pending.
-  Baseline 1A/1B/1C specs are synced. Active change track-student-course-progress adds ordered material lessons and per-student progress through lesson records.
+  Current stage: 1A/1B/1C and course progress implemented and technically verified. 1D is implemented and technically verified; usage review pending.
+  Baseline through course progress is synced. Active change simplify-lesson-entry-1d simplifies level/material selection; homework stays unchanged. 1E books/catalog organization and 1F usage review remain planned.
   Read docs/decisions.md for validated decisions and docs/roadmap.md for scope.
   Frontend: React, TypeScript, Vite. Later backend: C#, ASP.NET Core, PostgreSQL.
   Initial scope: one teacher, adult students, individual lessons, one reference timezone.

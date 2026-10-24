@@ -11,3 +11,5 @@ Implementado e verificado tecnicamente em 24/10/2026 na mudança `deliver-lesson
 - Link manual: campo livre opcional por aluno, validado como HTTP/HTTPS sem credenciais. Nenhuma integração externa é consultada.
 
 Confirmado por Cristian: descrição única de homework e correção inteira. A definição posterior de sequência/progresso complementa o planejamento opcional por encontro: o conteúdo atual vem do lançamento do aluno, conforme [course-progress.md](course-progress.md).
+
+O [1D](verification-1d.md) simplifica o lançamento com nível informativo e seleção única filtrada. Exemplos podem ser acrescentados pelo acervo sem reset. Homework permanece no mesmo formato e fluxo.

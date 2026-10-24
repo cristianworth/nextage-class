@@ -58,6 +58,11 @@ Atualizado em 24/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-35 | As aulas do material seguem uma sequência dentro do nível; uma delas pode ocupar vários encontros da agenda, incluindo assuntos complementares. |
 | DEC-36 | O lançamento retoma a aula do material atual do aluno. A professora informa se continua em andamento ou concluiu, determinando a continuidade. |
 | DEC-37 | Separar a aula do material trabalhada no encontro da próxima aula sugerida: concluir a Aula 3 não muda o registro daquele encontro para Aula 4. |
+| DEC-38 | Homework permanece no comportamento já entregue, sem expansão de recursos ou novo fluxo de correção no lançamento. |
+| DEC-39 | No lançamento, nível é informação sem edição: vem do cadastro em novos registros e permanece o original ao editar um registro antigo. |
+| DEC-40 | Livro/material será uma seleção única filtrada pelo nível; preservar textos e cópias históricas sem manter novo campo livre duplicado. |
+| DEC-41 | Um aluno segue uma sequência principal e usa outros materiais como apoio. Organização por livro/unidades e níveis atendidos será detalhada no 1E. |
+| DEC-42 | Exibir unidades como Unidade N — Descrição e ordenar numericamente, mantendo número separado do título. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 

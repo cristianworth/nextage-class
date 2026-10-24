@@ -61,7 +61,7 @@ export function MaterialForm({
           </select>
         </label>
         <label className="field">
-          Número da aula do material
+          Número da unidade
           <input
             name="lessonNumber"
             type="number"

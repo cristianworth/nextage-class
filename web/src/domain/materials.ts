@@ -20,7 +20,7 @@ export function saveMaterial(
     )
   )
     throw new Error(
-      `Já existe uma Aula ${values.lessonNumber} no nível ${values.level}. Escolha outro número.`,
+      `Já existe a Unidade ${values.lessonNumber} no nível ${values.level}. Escolha outro número.`,
     )
   const material = {
     ...values,
@@ -57,6 +57,10 @@ export function compareMaterials(a: Material, b: Material) {
 
 export function materialLabel(material: Pick<Material, 'title' | 'lessonNumber'>) {
   return material.lessonNumber
-    ? `Aula ${material.lessonNumber} · ${material.title}`
+    ? `Unidade ${material.lessonNumber} — ${material.title}`
     : material.title
+}
+
+export function materialsForLevel(materials: Material[], level: Material['level']) {
+  return materials.filter((material) => material.level === level).sort(compareMaterials)
 }

@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { ATTENDANCE, LEVELS, errorMessage } from '../../domain/models'
+import { ATTENDANCE, errorMessage } from '../../domain/models'
 import type { Lesson, RecordInput, RecordSubmission, Workspace } from '../../domain/models'
 import { formatDate, formatTimestamp, lessonTime } from '../../domain/dates'
 import { FormError, Modal } from '../../shared/Modal'
-import { compareMaterials, materialLabel } from '../../domain/materials'
+import { materialsForLevel, materialLabel } from '../../domain/materials'
 import { courseSuggestion, nextCourseMaterial } from '../../domain/course-progress'
 
 export function RecordForm({
@@ -25,16 +25,20 @@ export function RecordForm({
   )
   const [error, setError] = useState('')
   const plan = state.plans.find((item) => item.lessonId === lesson.id)
-  const [level, setLevel] = useState(record?.level ?? student.level)
+  const level = record?.level ?? student.level
+  const materials = materialsForLevel(state.materials, level)
+  const plannedMaterial = materials.find((material) => material.id === plan?.materialId)
   const suggestion = courseSuggestion(state, student.id, level, lesson)
   const [materialChoice, setMaterialChoice] = useState(
     record?.materialSnapshot
       ? 'saved'
-      : !record
-        ? (suggestion.material?.id ??
-          (!suggestion.finished && !suggestion.unavailable ? plan?.materialId : undefined) ??
-          '')
-        : '',
+      : record?.material
+        ? 'legacy'
+        : !record
+          ? (suggestion.material?.id ??
+            (!suggestion.finished && !suggestion.unavailable ? plannedMaterial?.id : undefined) ??
+            '')
+          : '',
   )
   const [courseCompleted, setCourseCompleted] = useState(record?.courseProgress?.completed ?? false)
   const selectedMaterial =
@@ -59,9 +63,11 @@ export function RecordForm({
         attendance,
         level,
         content: value('content'),
-        material: value('material'),
+        material: materialChoice === 'legacy' ? (record?.material ?? '') : '',
         reason: value('reason'),
-        usedMaterialId: materialChoice === 'saved' ? undefined : materialChoice || null,
+        usedMaterialId: ['saved', 'legacy'].includes(materialChoice)
+          ? undefined
+          : materialChoice || null,
         homework: value('homework'),
         courseCompleted: attendance === 'attended' && followsSequence ? courseCompleted : undefined,
       })
@@ -91,41 +97,12 @@ export function RecordForm({
             </label>
           ))}
         </fieldset>
-        <div className={attendance === 'attended' ? 'form-grid' : ''}>
-          <label className="field">
-            Nível nesta aula
-            <select
-              name="level"
-              value={level}
-              required
-              onChange={(event) => {
-                const nextLevel = event.target.value as RecordInput['level']
-                setLevel(nextLevel)
-                setMaterialChoice(
-                  courseSuggestion(state, student.id, nextLevel, lesson).material?.id ?? '',
-                )
-                setCourseCompleted(false)
-              }}
-            >
-              {LEVELS.map((level) => (
-                <option key={level}>{level}</option>
-              ))}
-            </select>
-          </label>
-          {attendance === 'attended' && !materialChoice && (
-            <label className="field">
-              Livro ou material
-              <input
-                name="material"
-                maxLength={300}
-                defaultValue={record?.material}
-                placeholder="Ex.: atividade complementar de conversação"
-              />
-            </label>
-          )}
+        <div className="record-level">
+          <span>{record ? 'Nível neste registro' : 'Nível do aluno'}</span>
+          <strong className="level-badge">{level}</strong>
         </div>
         <label className="field">
-          Material do acervo
+          Livro/material
           <select
             value={materialChoice}
             onChange={(event) => {
@@ -137,13 +114,16 @@ export function RecordForm({
               )
             }}
           >
-            <option value="">Somente texto livre</option>
+            <option value="">Sem livro/material</option>
             {record?.materialSnapshot && (
               <option value="saved">
-                Manter versão registrada · {record.materialSnapshot.title}
+                Manter versão registrada · {materialLabel(record.materialSnapshot)}
               </option>
             )}
-            {[...state.materials].sort(compareMaterials).map((material) => (
+            {!record?.materialSnapshot && record?.material && (
+              <option value="legacy">Manter material registrado · {record.material}</option>
+            )}
+            {materials.map((material) => (
               <option key={material.id} value={material.id}>
                 {material.level} · {materialLabel(material)}
               </option>
@@ -152,14 +132,20 @@ export function RecordForm({
           <small>
             {materialChoice === 'saved'
               ? 'A versão histórica é preservada. Escolher o material na lista usa a versão atual.'
-              : plan && !record
-                ? 'O material planejado está sugerido; confira o que foi efetivamente utilizado.'
-                : 'O conteúdo selecionado será guardado com este lançamento.'}
+              : materialChoice === 'legacy'
+                ? 'O texto do registro anterior será preservado.'
+                : 'Selecione o que foi efetivamente utilizado. A lista considera o nível deste registro.'}
           </small>
         </label>
+        {!materials.length && (
+          <p className="info-note">
+            Nenhum material cadastrado para este nível. Você pode lançar o conteúdo sem material ou
+            adicionar exemplos pela área Acervo.
+          </p>
+        )}
         {attendance === 'attended' && followsSequence ? (
           <div className="course-panel">
-            <p className="eyebrow">AULA DO MATERIAL TRABALHADA</p>
+            <p className="eyebrow">UNIDADE TRABALHADA</p>
             <p>{materialLabel(selectedMaterial!)}</p>
             <label className="check-field">
               <input
@@ -167,12 +153,12 @@ export function RecordForm({
                 checked={courseCompleted}
                 onChange={(event) => setCourseCompleted(event.target.checked)}
               />
-              Concluí esta aula do material
+              Concluí esta unidade
             </label>
             <p className="course-continuation" role="status">
               {continuation
                 ? `Próximo encontro: ${materialLabel(continuation)}`
-                : 'Última aula do nível concluída. Nenhum avanço de nível será feito automaticamente.'}
+                : 'Última unidade do nível concluída. Nenhum avanço de nível será feito automaticamente.'}
             </p>
             <p className="muted form-hint">
               Se ainda há conteúdo para trabalhar, mantenha sem marcar. O histórico deste encontro
@@ -182,8 +168,7 @@ export function RecordForm({
         ) : (
           attendance === 'attended' && (
             <p className="muted form-hint">
-              Material complementar ou revisão de outro nível: este lançamento não altera a
-              sequência do aluno.
+              Sem unidade principal selecionada: este lançamento não altera a sequência do aluno.
             </p>
           )
         )}
@@ -194,8 +179,8 @@ export function RecordForm({
         )}
         {!record && suggestion.unavailable && (
           <p className="info-note">
-            A aula indicada anteriormente mudou de nível ou saiu da sequência. Selecione o conteúdo
-            que foi trabalhado.
+            A unidade indicada anteriormente mudou de nível ou saiu da sequência. Selecione o
+            conteúdo que foi trabalhado.
           </p>
         )}
         {attendance !== 'attended' && (

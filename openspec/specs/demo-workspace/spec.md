@@ -59,3 +59,10 @@ O sistema SHALL incluir o acervo na navegação existente e permitir completar p
 #### Scenario: Falha ao salvar material
 - **WHEN** o armazenamento recusa a gravação de um material
 - **THEN** o formulário mantém o texto digitado e o acervo anterior permanece intacto.
+
+### Requirement: Migração sem inferir conclusão
+O sistema SHALL carregar os dados válidos do 1C preservando materiais, planejamento, homework e histórico. Materiais antigos sem número SHALL permanecer complementares e registros antigos SHALL continuar sem conclusão presumida. Migração SHALL ocorrer em memória sem sobrescrever o armazenamento durante leitura.
+
+#### Scenario: Atualizar acervo anterior
+- **WHEN** uma demo v3 é carregada
+- **THEN** seus dados continuam íntegros e a professora pode numerar materiais para organizar a sequência, sem reset.

@@ -53,7 +53,7 @@ test('cadastra, agenda, recusa conflito, lança, edita e preserva histórico ap�
   await page
     .getByLabel('Conteúdo trabalhado')
     .fill('Praticamos apresentações e perguntas do cotidiano.')
-  await page.getByLabel('Livro ou material').fill('Conversação · Unidade 1')
+  await page.getByRole('combobox', { name: 'Livro/material' }).selectOption('material-b1')
   await page.getByRole('button', { name: 'Lançar aula', exact: true }).click()
   await navigate(page, 'Histórico')
   await page.getByLabel('Filtrar histórico por aluno').selectOption(studentId)

@@ -1,48 +1,47 @@
-# Blocos de entrega da demo do professor
+# Blocos de entrega
 
-Atualizado em 24/10/2026. 1A, 1B e 1C implementados e verificados tecnicamente. A revisão de rotina com a professora permanece pendente. Cada bloco resulta em comportamento conferível.
+Atualizado em 24/10/2026. A assistência implementa e verifica; Cristian guia as decisões e revisa com Nara. Este documento fraciona a etapa 1; fases posteriores estão no [roadmap](roadmap.md).
 
-## 1A — Primeiro fluxo completo
+## Entregas técnicas existentes
 
-Blocos A1–A6 implementados e verificados tecnicamente. A revisão de uso continua pendente; conferir [verification-1a.md](verification-1a.md).
-
-| Bloco | Resultado | Dependência | Conferência |
-| --- | --- | --- | --- |
-| A1 — Fundação | React/TypeScript/Vite, navegação, layout responsivo, dados fictícios e ferramentas de verificação | OpenSpec configurado | Abrir agenda/alunos/histórico e executar build |
-| A2 — Dados locais | Estado versionado no navegador, exemplos determinísticos, reset confirmado e falhas de armazenamento tratadas | A1 | Recarregar; simular falha/corrupção sem sobrescrever dados silenciosamente |
-| A3 — Alunos | Listar, pesquisar, cadastrar e editar aluno; nome/nível obrigatórios | A2 | Cadastrar e editar; campos opcionais podem ficar vazios |
-| A4 — Aula pontual | Agendar data/aluno/horário na grade; conferir conflitos; abrir detalhes | A3 | Rejeitar conflito e horários fora da grade; manter a aula anterior intacta |
-| A5 — Registro | Lançar presença/falta, conteúdo, material em texto e nível; editar o registro existente | A4 | Bloquear aula não ocorrida; manter um registro por aula e preservar snapshots históricos |
-| A6 — Histórico e revisão | Consultar/filtrar histórico; conferir fluxo completo, celular, persistência e documentação | A5 | Testes de regras, armazenamento e navegador; revisão da professora fica registrada separadamente |
-
-## 1B — Agenda de rotina
-
-B1–B5 implementados; verificação técnica de B6 concluída. A revisão da rotina com a professora permanece pendente. Ver [verification-1b.md](verification-1b.md) e a mudança `deliver-weekly-agenda-1b`.
-
-| Bloco | Resultado | Dependência |
+| Incremento | Blocos concluídos | Evidência |
 | --- | --- | --- |
-| B1 — Regras de recorrência | Término opcional; feriados/férias por bloqueios; atualizar exceções futuras ao mudar a série | 1A e respostas de rotina |
-| B2 — Horário semanal | Cadastrar série e gerar/consultar ocorrências sem duplicação | B1 |
-| B3 — Bloqueios | Bloqueio pontual e semanal; conflito com aulas existentes | B2 |
-| B4 — Remarcação individual | Mover somente uma ocorrência com verificação de conflito | B2/B3 |
-| B5 — Remarcação da série | Oferecer também “esta e as próximas”, preservando passado e tratando exceções | B4; especificação inclui as duas opções e padrão individual |
-| B6 — Revisão semanal | Conferir séries, exceções e persistência com a professora | B5 |
+| 1A — Primeiro ciclo | Fundação, dados locais, alunos, aula pontual, registro, histórico | [verification-1a.md](verification-1a.md) |
+| 1B — Agenda da rotina | Regras, recorrência, bloqueios, remarcação individual/da série e revisão técnica | [verification-1b.md](verification-1b.md) |
+| 1C — Preparação | Acervo em texto, material utilizado com cópia, homework, preparação, link manual e revisão técnica | [verification-1c.md](verification-1c.md) |
+| Refinamento do 1C | Numeração, progresso por aluno e conclusão no lançamento, sem reescrever o passado | [course-progress.md](course-progress.md) |
 
-B4 e B5 são blocos internos da mesma funcionalidade: a entrega pública de remarcação terá ambas as opções, com “somente esta aula” selecionada por padrão.
+Essas entregas continuam sujeitas à revisão de uso. Homework fica estabilizado no comportamento atual, sem novos blocos de desenvolvimento.
 
-## 1C — Preparação e fechamento
+## 1D — Lançamento simples e consistente
 
-Refinamento adicional implementado: sequência e progresso por aluno, organizado em compatibilidade v4, acervo numerado, resultado no lançamento, interface integrada e revisão. Evidências e roteiro em [course-progress.md](course-progress.md).
+Implementado e verificado tecnicamente na mudança `simplify-lesson-entry-1d`. Os quatro blocos abaixo estão concluídos; revisão de uso pendente. Ver [verification-1d.md](verification-1d.md).
 
-C1–C5 implementados e revisão técnica integrada de C6 concluída. Conferir [verification-1c.md](verification-1c.md); a semana demonstrável com a professora ainda aguarda revisão de uso.
-
-| Bloco | Resultado | Dependência |
+| Bloco | Resultado | Conferência |
 | --- | --- | --- |
-| C1 — Acervo em texto | Cadastrar, editar e consultar título/nível/conteúdo; exemplos fictícios próprios | 1A |
-| C2 — Material utilizado | Relacionar material cadastrado ao registro preservando o conteúdo histórico | C1 e A5 |
-| C3 — Homework | Descrição única por aula e correção inteira reversível, sem arquivos | Confirmação de Cristian em 24/10/2026 |
-| C4 — Preparação | Mostrar último conteúdo, homework e material planejado na próxima aula | C2/C3 |
-| C5 — Perfil e acabamento | Link manual por aluno e estados vazios/erro; preservar cadastro simples | Campos já validados |
-| C6 — Semana demonstrável | Revisão integrada, acessibilidade, celular e documentação da demo | 1B e C1–C5 |
+| D1 — Planejamento | Roadmap revisto e distinção entre sequência principal e apoio | Documentos sem antecipar livros/portal como prontos |
+| D2 — Nível e compatibilidade | Nível determinado pelo cadastro em novos registros e preservado na edição; rejeitar novas seleções incompatíveis | Testar tentativa de override, promoção de nível e histórico antigo |
+| D3 — Interface e exemplos | Seleção única, filtrada; Unidade N; exemplos sem reset | Testar ordem 2/10, vazio, histórico, idempotência e falha ao salvar |
+| D4 — Revisão integrada | Conferir progressão, homework inalterado, recarga e celular | Regressões, build, OpenSpec e roteiro de revisão |
 
-O portal do aluno, backend, contas reais e integrações permanecem nas fases posteriores do [roadmap](roadmap.md).
+## 1E — Organização do acervo
+
+Planejado; não implementado neste recorte.
+
+| Bloco | Resultado esperado | Definir antes de depender |
+| --- | --- | --- |
+| E1 — Modelo de livro/material | Separar livro, unidades numeradas e apoio; permitir números repetidos em livros diferentes | O que compõe cada sequência e se todos os seus níveis compartilham as mesmas unidades |
+| E2 — Sequência principal | Um livro/sequência principal por aluno, com apoio independente | Como trocar/retomar o livro e preservar progresso anterior |
+| E3 — Compatibilidade e catálogo | Associar um ou vários níveis; filtrar sem duplicar conteúdo | Regras de compatibilidade e migração do acervo simples atual |
+| E4 — Cadastro e revisão | Gerenciar essa organização em texto e selecionar no lançamento | Validar exemplos fictícios e histórico após edição do catálogo |
+
+Não incluir uploads, áudio, editor rico ou recursos extras de homework por conveniência.
+
+## 1F — Revisão com a professora
+
+| Bloco | Resultado esperado | Evidência |
+| --- | --- | --- |
+| F1 — Semana fictícia | Percorrer o fluxo do professor com unidade longa e materiais de apoio | Nara identifica diferenças de sua rotina |
+| F2 — Ajustes e consolidação | Corrigir o que impede o fluxo e registrar decisões | Requisitos entregues coerentes e pendências explícitas antes da etapa 2 |
+
+A revisão humana não é marcada como feita por uma execução de testes.

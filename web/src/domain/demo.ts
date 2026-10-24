@@ -1,6 +1,22 @@
 import { addDays, referenceClock, weekStart } from './dates'
 import type { Workspace } from './models'
 
+export function addDemoMaterials(state: Workspace, now = new Date()): Workspace {
+  const materials = [...state.materials]
+  for (const example of createDemo(now).materials) {
+    const exists = materials.some(
+      (material) =>
+        material.id === example.id ||
+        (material.level === example.level &&
+          (material.title === example.title ||
+            (example.lessonNumber !== undefined &&
+              material.lessonNumber === example.lessonNumber))),
+    )
+    if (!exists) materials.push(example)
+  }
+  return materials.length === state.materials.length ? state : { ...state, materials }
+}
+
 export function createDemo(now = new Date()): Workspace {
   const today = referenceClock(now).date
   const monday = weekStart(today)

@@ -6,11 +6,13 @@ Projeto pessoal de aprendizado e portfólio, desenvolvido com assistência de IA
 
 ## Estado atual
 
-Incrementos **1A, 1B e 1C implementados e verificados tecnicamente**, com atualização em 24/10/2026. A demo reúne alunos, agenda pontual/semanal, bloqueios/remarcação, preparação por aula, acervo em texto por nível, registros com material histórico e homework passado/corrigido. Há link manual da reunião, persistência local e interface para computador/celular.
+Incrementos **1A, 1B, 1C e 1D implementados e verificados tecnicamente**, com atualização em 24/10/2026. A demo reúne alunos, agenda pontual/semanal, bloqueios/remarcação, preparação por aula, acervo em texto por nível, registros com material histórico e homework passado/corrigido. Há link manual da reunião, persistência local e interface para computador/celular.
 
 O refinamento do 1C acrescenta **sequência de aulas do material e progresso por aluno**: numeração por nível, retomada automática no lançamento e marcação de conclusão, preservando o conteúdo trabalhado. Ver [o funcionamento e roteiro](docs/course-progress.md).
 
-OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As quatro mudanças permanecem abertas para revisão de uso; a base do 1A/1B/1C está sincronizada em `openspec/specs/`, e o refinamento está em `track-student-course-progress`. Não há autenticação, backend ou publicação.
+O **1D simplifica o lançamento**: nível informativo, seleção única de Livro/material filtrada pelo nível e unidades em ordem numérica. Exemplos podem ser acrescentados ao acervo sem reiniciar a demo. Homework permanece como estava. Ver [evidências e roteiro do 1D](docs/verification-1d.md).
+
+OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As cinco mudanças permanecem abertas para revisão de uso; a base até o progresso está sincronizada em `openspec/specs/`, e o 1D está em `simplify-lesson-entry-1d`. Não há autenticação, backend ou publicação.
 
 ## Executar
 
@@ -31,10 +33,11 @@ Abrir `http://127.0.0.1:5173`. [Instruções e verificações](docs/local-develo
 | [Visão do produto](docs/product-vision.md) | Para quem estamos construindo e qual problema queremos resolver |
 | [Decisões](docs/decisions.md) | O que Cristian já validou e quais são os limites iniciais |
 | [Roadmap](docs/roadmap.md) | Como sair da documentação e chegar ao piloto |
-| [Blocos 1A/1B/1C](docs/delivery-chunks.md) | Resultados, dependências e conferência de cada bloco |
+| [Blocos da etapa 1](docs/delivery-chunks.md) | Resultados, dependências e conferência de cada bloco |
 | [Verificação do 1A](docs/verification-1a.md) | Evidências técnicas, roteiro e limitações |
 | [Verificação do 1B](docs/verification-1b.md) | Recorrência, bloqueios, remarcação e compatibilidade com a demo anterior |
 | [Verificação do 1C](docs/verification-1c.md) | Acervo, preparação, homework e revisão integrada |
+| [Verificação do 1D](docs/verification-1d.md) | Lançamento simplificado, filtro, histórico e exemplos sem reset |
 | [Dados pedagógicos](docs/pedagogy.md) | Modelo e limites do material planejado/utilizado e do homework |
 | [Sequência e progresso](docs/course-progress.md) | Aula do material em vários encontros e continuidade pelo lançamento |
 | [Questões de planejamento](docs/core-questions.md) | O que precisava ser definido agora e quais respostas recebemos |
@@ -63,11 +66,11 @@ nextage-class/
     e2e/           fluxos de navegador
 ```
 
-`api/` será criado na etapa com servidor. Visão/roadmap descrevem também recursos futuros; as mudanças do 1A/1B/1C identificam o comportamento entregue para revisão.
+`api/` será criado na etapa com servidor. Visão/roadmap descrevem também recursos futuros; as mudanças OpenSpec identificam o comportamento entregue para revisão.
 
 ## Primeira meta
 
-Revisar uma semana fictícia com Cristian e a professora usando o [roteiro do 1C](docs/verification-1c.md). Registrar ajustes antes de planejar a demo do aluno. A validação automatizada não equivale à validação humana da rotina.
+Revisar o [1D](docs/verification-1d.md) e especificar o **1E: livros, unidades, níveis atendidos e uma sequência principal por aluno com materiais de apoio**. Depois, percorrer uma semana fictícia com Nara no 1F, antes da demo do aluno. A validação automatizada não equivale à validação humana da rotina.
 
 ## Referências
 

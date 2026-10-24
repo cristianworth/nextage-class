@@ -193,9 +193,16 @@ describe('preparação por ocorrência', () => {
       { materialId: 'material-a2', notes: 'Planejado' },
       early,
     )
-    state = saveLessonRecord(state, 'lesson-0', { ...input, usedMaterialId: 'material-a1' }, now)
+    state = saveMaterial(
+      state,
+      { title: 'Outro material A2', level: 'A2', content: 'Texto alternativo' },
+      undefined,
+      now,
+    )
+    const alternativeId = state.materials.at(-1)!.id
+    state = saveLessonRecord(state, 'lesson-0', { ...input, usedMaterialId: alternativeId }, now)
     expect(state.plans[0].materialId).toBe('material-a2')
-    expect(state.records.at(-1)!.materialSnapshot?.id).toBe('material-a1')
+    expect(state.records.at(-1)!.materialSnapshot?.id).toBe(alternativeId)
   })
 })
 

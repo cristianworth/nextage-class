@@ -19,15 +19,18 @@ export function saveLessonRecord(
     usedMaterialId,
     homework: description,
     courseCompleted,
-    ...values
+    ...submitted
   } = recordSubmissionSchema.parse(input)
   const student = state.students.find((item) => item.id === lesson.studentId)
   if (!student) throw new Error('O aluno desta aula não foi encontrado.')
   const previous = state.records.find((record) => record.lessonId === lessonId)
+  const values = { ...submitted, level: previous?.level ?? student.level }
   let materialSnapshot = usedMaterialId === undefined ? previous?.materialSnapshot : undefined
   if (usedMaterialId) {
     const material = state.materials.find((item) => item.id === usedMaterialId)
     if (!material) throw new Error('O material selecionado não foi encontrado.')
+    if (material.level !== values.level)
+      throw new Error(`Selecione um livro/material compatível com o nível ${values.level}.`)
     materialSnapshot = snapshotMaterial(material)
   }
   const homework =

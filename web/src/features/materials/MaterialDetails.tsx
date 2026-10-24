@@ -14,7 +14,7 @@ export function MaterialDetails({
   return (
     <Modal
       title={material.title}
-      subtitle={`${material.level} · ${material.lessonNumber ? `Aula ${material.lessonNumber}` : 'Complementar'} · Última atualização: ${formatTimestamp(material.updatedAt)}`}
+      subtitle={`${material.level} · ${material.lessonNumber ? `Unidade ${material.lessonNumber}` : 'Complementar'} · Última atualização: ${formatTimestamp(material.updatedAt)}`}
       onClose={onClose}
     >
       <div className="material-text">{material.content}</div>

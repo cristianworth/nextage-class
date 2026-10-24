@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Shell } from './Shell'
 import type { Page } from './Shell'
 import { useWorkspace } from '../data/useWorkspace'
-import { createDemo } from '../domain/demo'
+import { addDemoMaterials, createDemo } from '../domain/demo'
 import { errorMessage } from '../domain/models'
 import { FormError, Modal } from '../shared/Modal'
 import { saveStudent } from '../domain/students'
@@ -165,6 +165,15 @@ export function App() {
                 materials={state.materials}
                 onNew={() => setMaterialEditor(null)}
                 onOpen={setSelectedMaterial}
+                onExamples={() => {
+                  const next = addDemoMaterials(state)
+                  if (next !== state) commit(next)
+                  setNotice(
+                    next === state
+                      ? 'Os exemplos já estão disponíveis no acervo.'
+                      : 'Exemplos adicionados. Seus dados anteriores foram preservados.',
+                  )
+                }}
               />
             )}
             {materialEditor !== undefined && (
