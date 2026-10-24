@@ -92,6 +92,31 @@ export function rescheduleLesson(
   if (series.endDate && values.date > series.endDate)
     throw new Error('O novo horário está depois do término desta série.')
   const recordIds = new Set(state.records.map((record) => record.lessonId))
+  const updatedSeries = {
+    ...series,
+    segments: [
+      ...series.segments.filter((segment) => segment.fromIndex < index),
+      { fromIndex: index, date: values.date, hour: values.hour },
+    ],
+  }
+  const plannedIds = new Set(state.plans.map((plan) => plan.lessonId))
+  const plannedOccurrences = state.lessons
+    .filter(
+      (item) =>
+        item.seriesId === series.id &&
+        item.occurrenceIndex! >= index &&
+        plannedIds.has(item.id) &&
+        !recordIds.has(item.id) &&
+        !hasLessonStarted(item.date, item.hour, now),
+    )
+    .map((item) => {
+      const updated = occurrenceAt(updatedSeries, item.occurrenceIndex!)
+      if (!updated)
+        throw new Error(
+          'A mudança deixaria uma aula com planejamento fora do término da série. Escolha uma data anterior.',
+        )
+      return { ...updated, createdAt: item.createdAt, rescheduledAt: now.toISOString() }
+    })
   const materializedIds = new Set(state.lessons.map((item) => item.id))
   // A postponed early occurrence can be selected after later occurrences have happened.
   const pastOccurrences = occurrencesInRange(
@@ -106,19 +131,10 @@ export function rescheduleLesson(
   )
   return checked({
     ...state,
-    series: state.series.map((item) =>
-      item.id !== series.id
-        ? item
-        : {
-            ...item,
-            segments: [
-              ...item.segments.filter((segment) => segment.fromIndex < index),
-              { fromIndex: index, date: values.date, hour: values.hour },
-            ],
-          },
-    ),
+    series: state.series.map((item) => (item.id !== series.id ? item : updatedSeries)),
     lessons: [
       ...pastOccurrences,
+      ...plannedOccurrences,
       ...state.lessons.filter(
         (item) =>
           item.seriesId !== series.id ||

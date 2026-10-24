@@ -6,9 +6,9 @@ Projeto pessoal de aprendizado e portfólio, desenvolvido com assistência de IA
 
 ## Estado atual
 
-Incrementos **1A e 1B implementados e verificados tecnicamente** em 23/10/2026. A demo permite cadastrar/editar alunos, agendar aulas pontuais ou semanais, bloquear horários, remarcar uma aula ou o futuro da série, lançar/editar registros e consultar o histórico, com persistência local. Há versão para computador e consulta por dia no celular.
+Incrementos **1A, 1B e 1C implementados e verificados tecnicamente**, com atualização em 24/10/2026. A demo reúne alunos, agenda pontual/semanal, bloqueios/remarcação, preparação por aula, acervo em texto por nível, registros com material histórico e homework passado/corrigido. Há link manual da reunião, persistência local e interface para computador/celular.
 
-OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As mudanças `deliver-teacher-demo-1a` e `deliver-weekly-agenda-1b` permanecem abertas para revisão de uso; a base do 1A foi sincronizada em `openspec/specs/`. Homework/acervo (1C) estão planejados, sem implementação. Não há autenticação, backend ou publicação.
+OpenSpec **1.14.3** instalado localmente, com seis skills da integração de desenvolvimento em `.agents/skills/`. As três mudanças permanecem abertas para revisão de uso; a base do 1A/1B está sincronizada em `openspec/specs/`, e o 1C está em `deliver-lesson-preparation-1c`. Não há autenticação, backend ou publicação.
 
 ## Executar
 
@@ -32,6 +32,8 @@ Abrir `http://127.0.0.1:5173`. [Instruções e verificações](docs/local-develo
 | [Blocos 1A/1B/1C](docs/delivery-chunks.md) | Resultados, dependências e conferência de cada bloco |
 | [Verificação do 1A](docs/verification-1a.md) | Evidências técnicas, roteiro e limitações |
 | [Verificação do 1B](docs/verification-1b.md) | Recorrência, bloqueios, remarcação e compatibilidade com a demo anterior |
+| [Verificação do 1C](docs/verification-1c.md) | Acervo, preparação, homework e revisão integrada |
+| [Dados pedagógicos](docs/pedagogy.md) | Modelo e limites do material planejado/utilizado e do homework |
 | [Questões de planejamento](docs/core-questions.md) | O que precisava ser definido agora e quais respostas recebemos |
 | [Detalhes para depois](docs/deferred-questions.md) | Dúvidas que serão tratadas perto da funcionalidade |
 | [Arquitetura inicial](docs/architecture.md) | Stack, limites e estrutura pretendida para o código |
@@ -53,16 +55,16 @@ nextage-class/
       app/         composição e navegação
       domain/      modelos, operações e datas
       data/        persistência local
-      features/    agenda, alunos e histórico
+      features/    agenda, alunos, histórico e materiais
       shared/      componentes compartilhados
     e2e/           fluxos de navegador
 ```
 
-`api/` será criado na etapa com servidor. Visão/roadmap descrevem também recursos futuros; as mudanças do 1A e 1B identificam o comportamento entregue para revisão.
+`api/` será criado na etapa com servidor. Visão/roadmap descrevem também recursos futuros; as mudanças do 1A/1B/1C identificam o comportamento entregue para revisão.
 
 ## Primeira meta
 
-Revisar a agenda semanal com Cristian e a professora usando o [roteiro do 1B](docs/verification-1b.md). Depois, detalhar acervo, homework e preparação de aula do 1C. A validação automatizada não equivale à validação humana da rotina.
+Revisar uma semana fictícia com Cristian e a professora usando o [roteiro do 1C](docs/verification-1c.md). Registrar ajustes antes de planejar a demo do aluno. A validação automatizada não equivale à validação humana da rotina.
 
 ## Referências
 

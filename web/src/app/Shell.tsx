@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../shared/Icon'
 
-export type Page = 'agenda' | 'students' | 'history'
+export type Page = 'agenda' | 'students' | 'history' | 'materials'
 const navigation = [
   { page: 'agenda', label: 'Agenda', icon: 'calendar' },
   { page: 'students', label: 'Alunos', icon: 'users' },
   { page: 'history', label: 'Histórico', icon: 'book' },
+  { page: 'materials', label: 'Acervo', icon: 'library' },
 ] as const
 
 export function Shell({

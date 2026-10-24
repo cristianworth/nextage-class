@@ -18,7 +18,7 @@ O sistema SHALL agendar aulas para um aluno existente, em uma data válida de se
 - **THEN** a operação é recusada com uma mensagem clara.
 
 ### Requirement: Prevenção de conflito
-O sistema SHALL impedir sobreposição de aulas do professor considerando também o intervalo, preservando o estado anterior ao rejeitar a solicitação.
+O sistema SHALL impedir sobreposição entre aulas pontuais, séries e bloqueios durante toda sua validade, considerando o intervalo e preservando o estado anterior ao rejeitar a solicitação.
 
 #### Scenario: Duas aulas no mesmo horário
 - **WHEN** uma nova aula tenta ocupar um bloco já agendado na mesma data
@@ -27,6 +27,10 @@ O sistema SHALL impedir sobreposição de aulas do professor considerando també
 #### Scenario: Bloco seguinte
 - **WHEN** há aula às 09h e uma nova é marcada às 10h na mesma data
 - **THEN** ambas são aceitas porque a primeira aula e seu intervalo terminam às 10h.
+
+#### Scenario: Conflito fora da semana visível
+- **WHEN** uma série sem término atingiria uma aula pontual ou série em semana distante
+- **THEN** a criação é rejeitada com a data do conflito, sem salvar parcialmente.
 
 ### Requirement: Consulta da agenda
 O sistema SHALL permitir navegar entre semanas, retornar à semana atual e consultar aluno, data, horário e situação de cada aula. No celular SHALL oferecer consulta por dia.

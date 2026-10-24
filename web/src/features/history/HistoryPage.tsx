@@ -5,17 +5,20 @@ import { formatDate, formatTimestamp, lessonTime } from '../../domain/dates'
 import { matchesSearch } from '../../domain/students'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
+import { HomeworkItem } from './HomeworkItem'
 
 export function HistoryPage({
   state,
   studentFilter,
   onFilter,
   onEdit,
+  onHomework,
 }: {
   state: Workspace
   studentFilter: string
   onFilter: (id: string) => void
   onEdit: (lesson: Lesson) => void
+  onHomework: (id: string, corrected: boolean) => void
 }) {
   const [search, setSearch] = useState('')
   const entries = state.records
@@ -27,7 +30,7 @@ export function HistoryPage({
       ({ record, lesson }) =>
         (!studentFilter || lesson.studentId === studentFilter) &&
         matchesSearch(
-          `${record.studentName} ${record.content} ${record.material} ${record.reason}`,
+          `${record.studentName} ${record.content} ${record.material} ${record.reason} ${record.homework?.description ?? ''} ${record.materialSnapshot?.content ?? ''}`,
           search,
         ),
     )
@@ -110,6 +113,15 @@ export function HistoryPage({
                   </p>
                 )}
                 <p className="record-body">{record.content || 'Sem observações adicionais.'}</p>
+                {record.materialSnapshot && (
+                  <details className="material-disclosure">
+                    <summary>
+                      Conteúdo do material utilizado · {record.materialSnapshot.level}
+                    </summary>
+                    <div className="material-text">{record.materialSnapshot.content}</div>
+                  </details>
+                )}
+                <HomeworkItem record={record} onToggle={onHomework} />
                 {record.reason && <p className="record-reason">Motivo: {record.reason}</p>}
                 <p className="record-updated">
                   Última atualização: {formatTimestamp(record.updatedAt)}

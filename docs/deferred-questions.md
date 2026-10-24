@@ -14,14 +14,17 @@ Esta lista separa respostas incorporadas e detalhes ainda abertos. Os exemplos s
 - LATER-05: horário semanal sem término ou com término opcional; férias/feriados por bloqueios manuais. Conflitos avisam e mantêm as aulas (DEC-31/33).
 - LATER-06: mudar “esta e as próximas” substitui remarcações individuais futuras; preservar aulas iniciadas e registros (DEC-32).
 
+## Resolvidas ou delimitadas para o 1C
+
+- LATER-08: confirmado homework com descrição única por aula e correção inteira (DEC-34).
+- LATER-09: implementado planejamento por ocorrência, alterável antes ou durante a aula até o término, sem obrigar planejamento antecipado. Escolha revisável, sem resposta específica.
+- LATER-10: demo nova usa seis textos fictícios próprios, organizados por título/nível/conteúdo. Autorização de materiais reais será tratada antes de trazê-los ao projeto.
+
 ## Abertas
 
 | ID | Quando resolver | Pergunta |
 | --- | --- | --- |
 | LATER-03 | Portal do aluno | “Que parte do registro o aluno pode ler? Precisamos separar observação privada e resumo compartilhado?” No 1A só a professora consulta. |
-| LATER-08 | Homework | “Pode passar mais de um homework? A correção pode ser parcial ou basta marcar como corrigido?” |
-| LATER-09 | Preparação | “Você escolhe o material da próxima aula antes ou costuma decidir na hora?” |
-| LATER-10 | Acervo e demo pública | “Vamos criar material próprio para o projeto, cadastrar links ou usar algum conteúdo que você tem autorização para compartilhar?” Demo usa conteúdo fictício/autoral; não pressupor acesso ao acervo do sistema atual. |
 | LATER-11 | Portal do aluno | “Se o aluno mudar de nível, ele continua vendo o material do nível anterior?” |
 | LATER-12 | Solicitação de horário | “Aluno pede uma aula avulsa ou um horário semanal? Você sempre confirma antes de entrar na agenda?” |
 | LATER-13 | Revisão da demo | “A consulta por dia no celular ficou boa? Está faltando alguma informação no bloco da aula?” A primeira interface já está disponível para conferir. |

@@ -27,6 +27,7 @@ export function StudentForm({
         phone: value('phone'),
         occupation: value('occupation'),
         interests: value('interests'),
+        meetingUrl: value('meetingUrl'),
       })
     } catch (cause) {
       setError(errorMessage(cause))
@@ -119,6 +120,17 @@ export function StudentForm({
             placeholder="Viagens, conversação, interesses profissionais…"
             rows={3}
           />
+        </label>
+        <label className="field">
+          Link da aula
+          <input
+            name="meetingUrl"
+            type="url"
+            maxLength={2000}
+            defaultValue={student?.meetingUrl}
+            placeholder="https://…"
+          />
+          <small>Link manual da reunião para as aulas deste aluno.</small>
         </label>
         {student && (
           <p className="muted form-hint">

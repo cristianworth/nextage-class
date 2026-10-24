@@ -6,7 +6,14 @@ import { createDemo } from '../domain/demo'
 import { errorMessage } from '../domain/models'
 import { FormError, Modal } from '../shared/Modal'
 import { saveStudent } from '../domain/students'
-import type { Lesson, ScheduleBlock, Student } from '../domain/models'
+import type { Lesson, Material, ScheduleBlock, Student } from '../domain/models'
+import { saveMaterial } from '../domain/materials'
+import { saveLessonPlan } from '../domain/preparation'
+import { setHomeworkCorrected } from '../domain/homework'
+import { MaterialsPage } from '../features/materials/MaterialsPage'
+import { MaterialForm } from '../features/materials/MaterialForm'
+import { MaterialDetails } from '../features/materials/MaterialDetails'
+import { PlanForm } from '../features/agenda/PlanForm'
 import {
   addBlock,
   removeBlock,
@@ -40,6 +47,9 @@ export function App() {
   const [blockPrefill, setBlockPrefill] = useState<LessonPrefill | null>(null)
   const [selectedBlock, setSelectedBlock] = useState<ScheduleBlock | null>(null)
   const [rescheduleTarget, setRescheduleTarget] = useState<Lesson | null>(null)
+  const [materialEditor, setMaterialEditor] = useState<Material | null | undefined>(undefined)
+  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null)
+  const [planLesson, setPlanLesson] = useState<Lesson | null>(null)
   const [historyStudent, setHistoryStudent] = useState('')
   const [notice, setNotice] = useState('')
   const [now, setNow] = useState(() => new Date())
@@ -62,6 +72,13 @@ export function App() {
     setSelectedLesson(null)
     setRecordLesson(lesson)
   }
+  function toggleHomework(recordId: string, corrected: boolean) {
+    if (!state) return
+    commit(setHomeworkCorrected(state, recordId, corrected))
+    setNotice(
+      corrected ? 'Homework marcado como corrigido.' : 'Homework voltou para as pendências.',
+    )
+  }
   function reset() {
     try {
       commit(createDemo())
@@ -75,6 +92,9 @@ export function App() {
       setBlockPrefill(null)
       setSelectedBlock(null)
       setRescheduleTarget(null)
+      setMaterialEditor(undefined)
+      setSelectedMaterial(null)
+      setPlanLesson(null)
       setNotice('Demo reiniciada com os exemplos fictícios.')
     } catch (cause) {
       setResetError(errorMessage(cause))
@@ -137,6 +157,35 @@ export function App() {
                 studentFilter={historyStudent}
                 onFilter={setHistoryStudent}
                 onEdit={openRecord}
+                onHomework={toggleHomework}
+              />
+            )}
+            {page === 'materials' && (
+              <MaterialsPage
+                materials={state.materials}
+                onNew={() => setMaterialEditor(null)}
+                onOpen={setSelectedMaterial}
+              />
+            )}
+            {materialEditor !== undefined && (
+              <MaterialForm
+                material={materialEditor ?? undefined}
+                onClose={() => setMaterialEditor(undefined)}
+                onSave={(input) => {
+                  commit(saveMaterial(state, input, materialEditor?.id))
+                  setMaterialEditor(undefined)
+                  setNotice('Material salvo no acervo.')
+                }}
+              />
+            )}
+            {selectedMaterial && (
+              <MaterialDetails
+                material={selectedMaterial}
+                onClose={() => setSelectedMaterial(null)}
+                onEdit={() => {
+                  setMaterialEditor(selectedMaterial)
+                  setSelectedMaterial(null)
+                }}
               />
             )}
             {studentEditor !== undefined && (
@@ -176,6 +225,24 @@ export function App() {
                 onReschedule={() => {
                   setRescheduleTarget(selectedLesson)
                   setSelectedLesson(null)
+                }}
+                onPlan={() => {
+                  setPlanLesson(selectedLesson)
+                  setSelectedLesson(null)
+                }}
+                onHomework={toggleHomework}
+              />
+            )}
+            {planLesson && (
+              <PlanForm
+                lesson={planLesson}
+                state={state}
+                onClose={() => setPlanLesson(null)}
+                onSave={(input) => {
+                  commit(saveLessonPlan(state, planLesson.id, input))
+                  setPlanLesson(null)
+                  setSelectedLesson(planLesson)
+                  setNotice('Preparação salva para esta aula.')
                 }}
               />
             )}

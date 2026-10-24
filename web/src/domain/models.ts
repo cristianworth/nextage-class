@@ -23,6 +23,20 @@ export const studentInputSchema = z.object({
   phone: z.string().trim().max(50),
   occupation: z.string().trim().max(150),
   interests: z.string().trim().max(1000),
+  meetingUrl: z
+    .string()
+    .trim()
+    .max(2000)
+    .refine((value) => {
+      if (!value) return true
+      try {
+        const url = new URL(value)
+        return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password
+      } catch {
+        return false
+      }
+    }, 'Informe um link HTTP ou HTTPS válido, sem usuário ou senha.')
+    .optional(),
 })
 
 export const studentSchema = studentInputSchema.extend({ id: idSchema, createdAt: timestampSchema })
@@ -109,7 +123,7 @@ export const recordInputSchema = z
     path: ['content'],
   })
 
-export const recordSchema = recordInputSchema.extend({
+const legacyRecordSchema = recordInputSchema.extend({
   id: idSchema,
   lessonId: idSchema,
   studentName: z.string().min(1),
@@ -117,11 +131,47 @@ export const recordSchema = recordInputSchema.extend({
   updatedAt: timestampSchema,
 })
 
+export const materialInputSchema = z.object({
+  title: z.string().trim().min(1, 'Informe o título do material.').max(150),
+  level: z.enum(LEVELS),
+  content: z
+    .string()
+    .trim()
+    .min(1, 'Informe o conteúdo do material.')
+    .max(20000, 'Use até 20.000 caracteres no material.'),
+})
+export const materialSchema = materialInputSchema.extend({
+  id: idSchema,
+  createdAt: timestampSchema,
+  updatedAt: timestampSchema,
+})
+export const materialSnapshotSchema = materialInputSchema.extend({
+  id: idSchema,
+  updatedAt: timestampSchema,
+})
+export const homeworkSchema = z.object({
+  description: z.string().trim().min(1).max(2000),
+  correctedAt: timestampSchema.nullable(),
+})
+export const recordSchema = legacyRecordSchema.extend({
+  materialSnapshot: materialSnapshotSchema.optional(),
+  homework: homeworkSchema.optional(),
+})
+export const recordSubmissionSchema = recordInputSchema.safeExtend({
+  usedMaterialId: idSchema.nullable().optional(),
+  homework: z.string().trim().max(2000, 'Use até 2.000 caracteres no homework.').optional(),
+})
+export const planInputSchema = z.object({
+  materialId: idSchema.nullable(),
+  notes: z.string().trim().max(5000),
+})
+export const planSchema = planInputSchema.extend({ lessonId: idSchema, updatedAt: timestampSchema })
+
 const workspaceDataSchema = z
   .object({
     students: z.array(studentSchema),
     lessons: z.array(lessonSchema),
-    records: z.array(recordSchema),
+    records: z.array(legacyRecordSchema),
   })
   .strict()
   .superRefine((state, context) => {
@@ -145,9 +195,8 @@ const workspaceDataSchema = z
 
 export const legacyWorkspaceSchema = workspaceDataSchema.safeExtend({ version: z.literal(1) })
 
-export const workspaceSchema = workspaceDataSchema
+const weeklyWorkspaceSchema = workspaceDataSchema
   .safeExtend({
-    version: z.literal(2),
     series: z.array(seriesSchema),
     blocks: z.array(blockSchema),
   })
@@ -175,12 +224,43 @@ export const workspaceSchema = workspaceDataSchema
       })
   })
 
+export const previousWorkspaceSchema = weeklyWorkspaceSchema.safeExtend({ version: z.literal(2) })
+export const workspaceSchema = weeklyWorkspaceSchema
+  .safeExtend({
+    version: z.literal(3),
+    records: z.array(recordSchema),
+    materials: z.array(materialSchema),
+    plans: z.array(planSchema),
+  })
+  .superRefine((state, context) => {
+    const materialIds = new Set(state.materials.map((material) => material.id))
+    const lessonIds = new Set(state.lessons.map((lesson) => lesson.id))
+    if (
+      materialIds.size !== state.materials.length ||
+      new Set(state.plans.map((plan) => plan.lessonId)).size !== state.plans.length ||
+      !state.plans.every(
+        (plan) =>
+          lessonIds.has(plan.lessonId) && (!plan.materialId || materialIds.has(plan.materialId)),
+      )
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'As referências de materiais ou preparação estão inconsistentes.',
+      })
+    }
+  })
+
 export type StudentInput = z.infer<typeof studentInputSchema>
 export type Student = z.infer<typeof studentSchema>
 export type LessonInput = z.infer<typeof lessonInputSchema>
 export type Lesson = z.infer<typeof lessonSchema>
 export type RecordInput = z.infer<typeof recordInputSchema>
 export type LessonRecord = z.infer<typeof recordSchema>
+export type RecordSubmission = z.infer<typeof recordSubmissionSchema>
+export type Material = z.infer<typeof materialSchema>
+export type MaterialInput = z.infer<typeof materialInputSchema>
+export type MaterialSnapshot = z.infer<typeof materialSnapshotSchema>
+export type LessonPlanInput = z.infer<typeof planInputSchema>
 export type Workspace = z.infer<typeof workspaceSchema>
 export type WeeklySeries = z.infer<typeof seriesSchema>
 export type SeriesInput = z.infer<typeof seriesInputSchema>

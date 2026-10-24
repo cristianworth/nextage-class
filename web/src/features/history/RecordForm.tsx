@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { ATTENDANCE, LEVELS, errorMessage } from '../../domain/models'
-import type { Lesson, RecordInput, Workspace } from '../../domain/models'
+import type { Lesson, RecordInput, RecordSubmission, Workspace } from '../../domain/models'
 import { formatDate, formatTimestamp, lessonTime } from '../../domain/dates'
 import { FormError, Modal } from '../../shared/Modal'
 
@@ -13,7 +13,7 @@ export function RecordForm({
 }: {
   lesson: Lesson
   state: Workspace
-  onSave: (input: RecordInput) => void
+  onSave: (input: RecordSubmission) => void
   onClose: () => void
 }) {
   const record = state.records.find((item) => item.lessonId === lesson.id)
@@ -22,6 +22,10 @@ export function RecordForm({
     record?.attendance ?? 'attended',
   )
   const [error, setError] = useState('')
+  const plan = state.plans.find((item) => item.lessonId === lesson.id)
+  const [materialChoice, setMaterialChoice] = useState(
+    record?.materialSnapshot ? 'saved' : !record ? (plan?.materialId ?? '') : '',
+  )
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -33,6 +37,8 @@ export function RecordForm({
         content: value('content'),
         material: value('material'),
         reason: value('reason'),
+        usedMaterialId: materialChoice === 'saved' ? undefined : materialChoice || null,
+        homework: value('homework'),
       })
     } catch (cause) {
       setError(errorMessage(cause))
@@ -69,9 +75,9 @@ export function RecordForm({
               ))}
             </select>
           </label>
-          {attendance === 'attended' && (
+          {attendance === 'attended' && !materialChoice && (
             <label className="field">
-              Livro ou material <small>Opcional</small>
+              Livro ou material
               <input
                 name="material"
                 maxLength={300}
@@ -81,6 +87,36 @@ export function RecordForm({
             </label>
           )}
         </div>
+        <label className="field">
+          Material do acervo
+          <select
+            value={materialChoice}
+            onChange={(event) => setMaterialChoice(event.target.value)}
+          >
+            <option value="">Somente texto livre</option>
+            {record?.materialSnapshot && (
+              <option value="saved">
+                Manter versão registrada · {record.materialSnapshot.title}
+              </option>
+            )}
+            {[...state.materials]
+              .sort(
+                (a, b) => a.level.localeCompare(b.level) || a.title.localeCompare(b.title, 'pt-BR'),
+              )
+              .map((material) => (
+                <option key={material.id} value={material.id}>
+                  {material.level} · {material.title}
+                </option>
+              ))}
+          </select>
+          <small>
+            {materialChoice === 'saved'
+              ? 'A versão histórica é preservada. Escolher o material na lista usa a versão atual.'
+              : plan && !record
+                ? 'O material planejado está sugerido; confira o que foi efetivamente utilizado.'
+                : 'O conteúdo selecionado será guardado com este lançamento.'}
+          </small>
+        </label>
         {attendance !== 'attended' && (
           <label className="field">
             Motivo da falta <small>Opcional</small>
@@ -102,6 +138,20 @@ export function RecordForm({
             placeholder="O que foi estudado? O que vale retomar na próxima aula?"
             rows={5}
           />
+        </label>
+        <label className="field">
+          Homework passado
+          <textarea
+            name="homework"
+            maxLength={2000}
+            rows={3}
+            defaultValue={record?.homework?.description}
+            placeholder="Ex.: exercícios 1 a 5, página 12"
+          />
+          <small>
+            Uma descrição por aula. Alterar o texto deixa o homework pendente; limpar retira a
+            tarefa.
+          </small>
         </label>
         {record && (
           <p className="muted form-hint">

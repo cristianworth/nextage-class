@@ -13,6 +13,7 @@ export function saveStudent(
     throw new Error('Este aluno não foi encontrado. Atualize a página e tente novamente.')
   const student = {
     ...values,
+    meetingUrl: values.meetingUrl ?? previous?.meetingUrl,
     id: previous?.id ?? crypto.randomUUID(),
     createdAt: previous?.createdAt ?? now.toISOString(),
   }

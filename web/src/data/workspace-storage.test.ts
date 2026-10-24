@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createDemo } from '../domain/demo'
-import { scheduleWeekly } from '../domain/weekly-scheduling'
+import { addBlock, rescheduleLesson, scheduleWeekly } from '../domain/weekly-scheduling'
+import { occurrenceAt } from '../domain/recurrence'
 import { loadWorkspace, saveWorkspace, STORAGE_KEY } from './workspace-storage'
 
 function memoryStorage(initial?: string) {
@@ -16,12 +17,25 @@ const now = new Date('2026-10-23T15:00:00Z')
 
 describe('persistência da demo', () => {
   it('migra v1 sem gravar durante a leitura e conserva histórico na próxima gravação', () => {
-    const { series: _series, blocks: _blocks, ...data } = createDemo(now)
+    const {
+      series: _series,
+      blocks: _blocks,
+      materials: _materials,
+      plans: _plans,
+      ...data
+    } = createDemo(now)
     const legacy = { ...data, version: 1 }
     const raw = JSON.stringify(legacy)
     const storage = memoryStorage(raw)
     const migrated = loadWorkspace(storage, now).state!
-    expect(migrated).toEqual({ ...legacy, version: 2, series: [], blocks: [] })
+    expect(migrated).toEqual({
+      ...legacy,
+      version: 3,
+      series: [],
+      blocks: [],
+      materials: [],
+      plans: [],
+    })
     expect(storage.getItem(STORAGE_KEY)).toBe(raw)
     saveWorkspace(storage, migrated)
     expect(loadWorkspace(storage, now).state).toEqual(migrated)
@@ -30,6 +44,62 @@ describe('persistência da demo', () => {
     const storage = memoryStorage()
     expect(loadWorkspace(storage, now).state?.students).toHaveLength(4)
     expect(storage.getItem(STORAGE_KEY)).toBeNull()
+  })
+  it('migra v2 com série, bloqueio e remarcação sem alterar agenda ou gravar ao ler', () => {
+    let state = scheduleWeekly(
+      createDemo(now),
+      { studentId: 'student-lara', date: '2026-10-27', hour: 8, endDate: null },
+      now,
+    )
+    state = addBlock(
+      state,
+      {
+        date: '2026-10-26',
+        startHour: 7,
+        endHour: 8,
+        repeat: 'weekly',
+        endDate: null,
+        title: 'Pausa',
+      },
+      now,
+    )
+    state = rescheduleLesson(
+      state,
+      occurrenceAt(state.series[0], 0)!.id,
+      { date: '2026-10-29', hour: 11 },
+      'single',
+      now,
+    )
+    const { materials: _materials, plans: _plans, ...data } = state
+    const raw = JSON.stringify({ ...data, version: 2 })
+    const storage = memoryStorage(raw)
+    const migrated = loadWorkspace(storage, now).state!
+    expect(migrated).toEqual({ ...data, version: 3, materials: [], plans: [] })
+    expect(storage.getItem(STORAGE_KEY)).toBe(raw)
+    saveWorkspace(storage, migrated)
+    expect(loadWorkspace(storage, now).state).toEqual(migrated)
+  })
+  it('recusa plano órfão e versões desconhecidas sem sobrescrever dados brutos', () => {
+    const state = createDemo(now)
+    for (const data of [
+      { ...state, version: 99 },
+      {
+        ...state,
+        plans: [
+          {
+            lessonId: 'missing',
+            materialId: 'material-a2',
+            notes: '',
+            updatedAt: now.toISOString(),
+          },
+        ],
+      },
+    ]) {
+      const raw = JSON.stringify(data)
+      const storage = memoryStorage(raw)
+      expect(loadWorkspace(storage, now).state).toBeNull()
+      expect(storage.getItem(STORAGE_KEY)).toBe(raw)
+    }
   })
   it('preserva estado válido em uma nova leitura', () => {
     const storage = memoryStorage()

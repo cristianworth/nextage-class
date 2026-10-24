@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Status: frontend do 1A/1B implementado. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
+Status: frontend do 1A/1B/1C implementado. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
 
 ## Stack
 
@@ -49,6 +49,8 @@ No 1B, séries semanais guardam períodos com índice inicial, data e hora. A co
 A demo deve poder voltar aos exemplos iniciais. No piloto com dados reais, autenticação, autorização no servidor, backup e recuperação fazem parte da entrega. Trocar um perfil na interface não equivale a autenticar uma pessoa.
 
 Preservar a demo fictícia para o portfólio após a evolução do produto. Isso não obriga a reusar todos os detalhes internos nem a prometer uma migração automática do armazenamento local.
+
+O formato local v3 acrescenta acervo e preparação. O material utilizado fica copiado no registro; homework simples pertence à aula registrada. Planejamentos materializam apenas a ocorrência escolhida e acompanham a remarcação por identidade. Ver [pedagogy.md](pedagogy.md) para os contratos e limites concretos.
 
 ## O que não vamos antecipar
 

@@ -1,6 +1,6 @@
 # Decisões validadas
 
-Atualizado em 23/10/2026. Estas decisões orientam o planejamento; não significam que o sistema já foi implementado. Alterações futuras devem registrar o motivo e atualizar as especificações afetadas.
+Atualizado em 24/10/2026. Estas decisões orientam o planejamento; não significam que o sistema já foi implementado. Alterações futuras devem registrar o motivo e atualizar as especificações afetadas.
 
 ## Identidade e processo
 
@@ -54,8 +54,13 @@ Atualizado em 23/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-31 | Um horário fixo semanal pode repetir sem data final; o término é opcional. Um aluno pode ter mais de um horário fixo, em séries independentes. |
 | DEC-32 | “Esta e as próximas” substitui também as remarcações individuais futuras da série. Aulas iniciadas/passadas e registros permanecem intactos. Remarcação troca uma aula existente, sem reposição ou crédito. |
 | DEC-33 | Férias e feriados são tratados por bloqueios manuais. Ao atingir uma aula já marcada, o bloqueio informa o conflito e não altera aulas automaticamente. |
+| DEC-34 | No 1C, homework tem uma descrição por aula, marcada como corrigida de uma vez. Não há tarefas múltiplas com correção individual ou parcial. Confirmado em 24/10/2026. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
+
+## Escolhas de implementação do 1C
+
+Acervo com título, nível e texto simples; material/anotação planejados por ocorrência, alteráveis até o término enquanto não houver registro. Essas são escolhas simples e revisáveis adotadas após consulta de preferência, sem resposta específica até a entrega; não equivalem a validação da professora. Histórico guarda cópia do material utilizado, e nova descrição de homework volta a pendente. Detalhes em [pedagogy.md](pedagogy.md).
 
 ## Tecnologia
 

@@ -1,6 +1,6 @@
 # Blocos de entrega da demo do professor
 
-Atualizado em 23/10/2026. 1A e 1B implementados e verificados tecnicamente; 1C permanece planejado. Cada bloco resulta em comportamento conferível. Refinar o 1C perto da execução, sem antecipar código.
+Atualizado em 24/10/2026. 1A, 1B e 1C implementados e verificados tecnicamente. A revisão de rotina com a professora permanece pendente. Cada bloco resulta em comportamento conferível.
 
 ## 1A — Primeiro fluxo completo
 
@@ -30,15 +30,17 @@ B1–B5 implementados; verificação técnica de B6 concluída. A revisão da ro
 
 B4 e B5 são blocos internos da mesma funcionalidade: a entrega pública de remarcação terá ambas as opções, com “somente esta aula” selecionada por padrão.
 
-## 1C — Preparação e fechamento (planejamento)
+## 1C — Preparação e fechamento
+
+C1–C5 implementados e revisão técnica integrada de C6 concluída. Conferir [verification-1c.md](verification-1c.md); a semana demonstrável com a professora ainda aguarda revisão de uso.
 
 | Bloco | Resultado | Dependência |
 | --- | --- | --- |
-| C1 — Acervo em texto | Cadastrar/consultar materiais por nível, com conteúdo autorizado/fictício | 1A; confirmar autoria/formato |
+| C1 — Acervo em texto | Cadastrar, editar e consultar título/nível/conteúdo; exemplos fictícios próprios | 1A |
 | C2 — Material utilizado | Relacionar material cadastrado ao registro preservando o conteúdo histórico | C1 e A5 |
-| C3 — Homework | Registrar o que foi passado e corrigido, sem submissão de arquivos | Definir múltiplas tarefas/correção parcial |
+| C3 — Homework | Descrição única por aula e correção inteira reversível, sem arquivos | Confirmação de Cristian em 24/10/2026 |
 | C4 — Preparação | Mostrar último conteúdo, homework e material planejado na próxima aula | C2/C3 |
-| C5 — Perfil e acabamento | Completar campos úteis do aluno, link manual da aula e estados de interface | Validar necessidades concretas |
+| C5 — Perfil e acabamento | Link manual por aluno e estados vazios/erro; preservar cadastro simples | Campos já validados |
 | C6 — Semana demonstrável | Revisão integrada, acessibilidade, celular e documentação da demo | 1B e C1–C5 |
 
 O portal do aluno, backend, contas reais e integrações permanecem nas fases posteriores do [roadmap](roadmap.md).

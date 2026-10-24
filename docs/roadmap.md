@@ -2,7 +2,7 @@
 
 Status: direção aprovada; recortes de entrega propostos abaixo. Sem datas estimadas até conhecermos o ritmo de desenvolvimento e validação. Uma fase pode conter várias mudanças OpenSpec.
 
-Execução atual: OpenSpec 1.14.3 instalado e integrado; 1A e 1B implementados e verificados tecnicamente. Revisão de uso com Cristian e professora pendente. O fracionamento de 1A, 1B e 1C está em [delivery-chunks.md](delivery-chunks.md).
+Execução atual em 24/10/2026: OpenSpec 1.14.3 instalado e integrado; 1A, 1B e 1C implementados e verificados tecnicamente. Revisão de uso da demo do professor pendente. O fracionamento está em [delivery-chunks.md](delivery-chunks.md).
 
 | Fase | Objetivo e escopo | Evidência para concluir |
 | --- | --- | --- |
@@ -28,14 +28,14 @@ Implementado: horários recorrentes com término opcional, bloqueios manuais e r
 
 ### 1C — Preparação e fechamento da demo
 
-Adicionar acervo em texto por nível, homework passado/corrigido e preparação da próxima aula. Conferir cadastro completo, estados vazios/erro, navegação no celular e semana fictícia com a professora. Campos e comportamentos serão detalhados nas mudanças correspondentes.
+Implementado: acervo em texto por nível, material utilizado com cópia histórica, homework com descrição única/correção inteira reversível e preparação por ocorrência com último conteúdo e pendências. Cadastro inclui link manual da reunião. Migração e interface móvel verificadas; semana fictícia com a professora ainda depende de revisão de uso. Ver [verification-1c.md](verification-1c.md).
 
 ## Próximos passos
 
-1. Conferir agenda, remarcação e bloqueios com o [roteiro do 1B](verification-1b.md).
-2. Registrar ajustes de uso sem confundir testes técnicos com aceitação da professora.
-3. Consolidar as especificações do 1B e arquivar mudanças quando a revisão da entrega estiver satisfeita; a base técnica do 1A já foi sincronizada.
-4. Antes do 1C, definir formato/autoria dos materiais, correção de homework e planejamento de conteúdo. Não iniciar o 1C sem o pedido correspondente.
+1. Conferir uma semana fictícia completa com o [roteiro do 1C](verification-1c.md), incluindo preparação e fechamento da aula.
+2. Registrar ajustes de uso e revisar as escolhas simples de acervo/planejamento, sem confundir testes técnicos com aceitação da professora.
+3. Consolidar os deltas do 1C e arquivar mudanças após revisão; a base técnica do 1A/1B já está sincronizada.
+4. Quando solicitado, especificar a demo do aluno: visibilidade do histórico, acesso ao acervo ao mudar de nível e solicitação de horário. Backend/contas reais continuam na fase 3.
 
 ## Fora deste roadmap
 

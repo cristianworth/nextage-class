@@ -2,8 +2,8 @@ schema: spec-driven
 
 context: |
   Project: Nextage Class, a personal learning and portfolio project.
-  Current stage: increments 1A and 1B implemented and technically verified; usage review pending.
-  Baseline 1A specs are synced. Active change deliver-weekly-agenda-1b covers weekly scheduling, blocks and rescheduling. 1C remains planned.
+  Current stage: increments 1A, 1B and 1C implemented and technically verified; usage review pending.
+  Baseline 1A/1B specs are synced. Active change deliver-lesson-preparation-1c covers text materials, simple homework and lesson preparation.
   Read docs/decisions.md for validated decisions and docs/roadmap.md for scope.
   Frontend: React, TypeScript, Vite. Later backend: C#, ASP.NET Core, PostgreSQL.
   Initial scope: one teacher, adult students, individual lessons, one reference timezone.

@@ -27,3 +27,10 @@ O sistema SHALL permitir pesquisar alunos por nome e editar seu cadastro sem mod
 #### Scenario: Alterar nível após uma aula
 - **WHEN** o nível do aluno muda depois de um lançamento
 - **THEN** o cadastro mostra o novo nível e o registro anterior mantém o nível lançado.
+
+### Requirement: Indicação de obrigatoriedade
+O sistema SHALL indicar campos obrigatórios do cadastro com asterisco vermelho e manter sua obrigatoriedade acessível, sem escrever “Opcional” nos demais campos.
+
+#### Scenario: Abrir o cadastro
+- **WHEN** a professora abre criação ou edição de aluno
+- **THEN** os campos obrigatórios mostram asterisco vermelho, os demais não mostram “Opcional” e a validação do cadastro permanece ativa.

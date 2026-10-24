@@ -74,7 +74,64 @@ export function createDemo(now = new Date()): Workspace {
     createdAt,
   }
   return {
-    version: 2,
+    version: 3,
+    materials: [
+      {
+        id: 'material-a1',
+        title: 'Meeting someone new',
+        level: 'A1',
+        content:
+          'Introduce yourself with your name, city and one interest.\n\nPractice: What is your name? Where are you from? What do you enjoy?',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-a2',
+        title: 'Planning a weekend trip',
+        level: 'A2',
+        content:
+          'Plan a two-day trip with a friend. Choose transport, a place to stay and three activities.\n\nPractice: We are going to visit… How much does it cost? What time does it leave?',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-b1',
+        title: 'Sharing an experience',
+        level: 'B1',
+        content:
+          'Describe a challenge you faced and what you learned.\n\nInclude: what happened, how you felt, the steps you took and the result.',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-b2',
+        title: 'A better working week',
+        level: 'B2',
+        content:
+          'Discuss the advantages and drawbacks of a four-day working week.\n\nSupport your opinion with examples and respond to an opposing view.',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-c1',
+        title: 'How cities change',
+        level: 'C1',
+        content:
+          'Explore how urban design influences everyday decisions.\n\nCompare two approaches, acknowledge limitations and propose a balanced recommendation.',
+        createdAt,
+        updatedAt: createdAt,
+      },
+      {
+        id: 'material-c2',
+        title: 'The art of disagreement',
+        level: 'C2',
+        content:
+          'Reframe a disputed idea for audiences with different priorities.\n\nConsider nuance, implied assumptions, tone and the strongest counterargument.',
+        createdAt,
+        updatedAt: createdAt,
+      },
+    ],
+    plans: [],
     series: [],
     blocks: [],
     students,
