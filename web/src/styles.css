@@ -625,3 +625,18 @@ small {
     gap: 0 12px;
   }
 }
+
+.teacher-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+@media (max-width: 700px) {
+  .teacher-topbar-actions {
+    gap: 6px;
+  }
+  .teacher-topbar-actions .button {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+}

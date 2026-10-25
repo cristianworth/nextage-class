@@ -13,11 +13,13 @@ export function Shell({
   page,
   onNavigate,
   onReset,
+  onStudentPreview,
   children,
 }: {
   page: Page
   onNavigate: (page: Page) => void
   onReset: () => void
+  onStudentPreview?: () => void
   children: ReactNode
 }) {
   return (
@@ -79,9 +81,18 @@ export function Shell({
             Seu espaço de ensino <span className="topbar-slash">/</span>{' '}
             <strong>{navigation.find((item) => item.page === page)?.label}</strong>
           </span>
-          <span className="demo-badge">
-            <span /> DEMO LOCAL
-          </span>
+          <div className="teacher-topbar-actions">
+            <button
+              className="button small"
+              disabled={!onStudentPreview}
+              onClick={onStudentPreview}
+            >
+              Ver como aluno
+            </button>
+            <span className="demo-badge">
+              <span /> DEMO LOCAL
+            </span>
+          </div>
         </header>
         {children}
       </main>

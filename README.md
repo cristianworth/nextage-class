@@ -11,8 +11,9 @@ Projeto pessoal de portfólio, construído com assistência de IA e decisões de
 - Lançamento com histórico preservado, continuidade por aluno/sequência e escolha flexível do conteúdo.
 - Homework simples: o que foi passado e sua correção inteira.
 - Interface para computador/celular e persistência local validada, com migração sem reset.
+- Consulta simulada do aluno: próximas aulas, link próprio, material histórico e homework em leitura.
 
-**Etapa 1 aprovada por Nara**, conforme relato de Cristian em 24/10/2026. O fechamento esclarece sequências autorais e a seleção de apoio. Próxima etapa: especificar a demo do aluno. [Roadmap](docs/roadmap.md).
+**Etapa 1 aprovada por Nara**, conforme relato de Cristian em 24/10/2026. O fechamento esclarece sequências autorais e a seleção de apoio. O **2A da demo do aluno está entregue tecnicamente**; acervo para leitura (2B) e solicitações (2C) são os próximos recortes planejados. [Roadmap](docs/roadmap.md).
 
 A demo usa dados fictícios no navegador. Contas reais, API ASP.NET Core/C# e PostgreSQL pertencem à etapa do piloto com servidor. A aplicação ainda não está hospedada.
 
@@ -27,6 +28,8 @@ npm run dev
 ```
 
 Abrir `http://127.0.0.1:5173`. Para acrescentar os exemplos novos aos dados existentes, usar **Acervo → Adicionar exemplos**. Não é necessário reiniciar a demo.
+
+Para experimentar a consulta do aluno, use **Ver como aluno** e escolha um perfil fictício. O aluno consulta material e homework; conteúdo/observações livres ficam com a professora. [Roteiro e limites do 2A](docs/verification-2a.md).
 
 ## Qualidade e organização
 
@@ -48,6 +51,7 @@ npm run test:e2e
 | `web/src/data/` | Persistência local e compatibilidade |
 | `web/e2e/` | Cenários completos no navegador |
 | `openspec/specs/` | Comportamento entregue |
+| `openspec/changes/` | Recortes atuais em implementação ou revisão |
 | `openspec/changes/archive/` | Histórico das mudanças concluídas |
 | `docs/` | Produto, decisões, roadmap e evidências |
 

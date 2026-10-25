@@ -43,3 +43,5 @@ O aceite do 1F se refere ao fluxo informado por Cristian. Os ajustes posteriores
 2. **Vários conteúdos no mesmo encontro:** unidade principal e vários apoios com cópias históricas. Alteraria o registro e a consulta; deve ser especificado antes de implementar.
 
 Ambos permanecem propostas para evolução pedagógica, sem adiar a próxima etapa já planejada: a demo do aluno.
+
+Em 25/10/2026, Cristian confirmou que as duas evoluções acima não são necessárias agora. Permanecem apenas possibilidades futuras; o fluxo atual é suficiente (DEC-48).

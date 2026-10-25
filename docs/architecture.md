@@ -50,8 +50,14 @@ A demo deve poder voltar aos exemplos iniciais. No piloto com dados reais, auten
 
 Preservar a demo fictícia para o portfólio após a evolução do produto. Isso não obriga a reusar todos os detalhes internos nem a prometer uma migração automática do armazenamento local.
 
-O formato local v4 mantém acervo e preparação e acrescenta numeração e resultado pedagógico no registro. O progresso é consultado pela cronologia dos encontros, por aluno/nível; não há ponteiro alterado por ordem de gravação. Material utilizado e continuidade guardam contexto histórico. Planejamentos continuam por ocorrência. Ver [pedagogy.md](pedagogy.md) e [course-progress.md](course-progress.md).
+O formato local atual v5 mantém sequências, níveis atendidos, preparação e resultado pedagógico. O progresso é consultado pela cronologia dos encontros, por aluno/sequência; não há ponteiro alterado por ordem de gravação. Material utilizado e continuidade preservam contexto histórico. Planejamentos continuam por ocorrência. Ver [pedagogy.md](pedagogy.md) e [course-progress.md](course-progress.md).
 
 ## O que não vamos antecipar
 
 Microserviços, múltiplas organizações, infraestrutura de cobrança, editor de apresentações e integrações Google não são necessários para validar o primeiro fluxo. `api/` não será criado apenas para reservar uma arquitetura.
+
+## Consulta do aluno — 2A
+
+A função de domínio studentOverview produz um contrato explícito de leitura por aluno, reutilizando as consultas públicas da agenda. Exclui texto livre do lançamento, motivo de falta, planejamento e dados complementares do cadastro. A tela StudentPortal recebe somente esse contrato e nenhum callback de gravação. StudentPreview controla as ferramentas da simulação, com seleção apenas em memória. O documento v5 e o fluxo da professora são preservados.
+
+A redução de campos permite verificar o que a interface recebe, mas não oferece autorização real: a demo ainda mantém o documento completo no navegador e pode simular qualquer aluno fictício. O piloto exigirá identidade e política de acesso no servidor. Acervo completo e solicitações permanecem recortes posteriores.

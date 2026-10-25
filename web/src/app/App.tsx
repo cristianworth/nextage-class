@@ -36,9 +36,11 @@ import { BlockDetails } from '../features/agenda/BlockDetails'
 import { RescheduleForm } from '../features/agenda/RescheduleForm'
 import { RecordForm } from '../features/history/RecordForm'
 import { HistoryPage } from '../features/history/HistoryPage'
+import { StudentPreview } from '../features/student-portal/StudentPreview'
 
 export function App() {
   const [page, setPage] = useState<Page>('agenda')
+  const [studentPreview, setStudentPreview] = useState(false)
   const { state, error, commit } = useWorkspace()
   const [resetOpen, setResetOpen] = useState(false)
   const [resetError, setResetError] = useState('')
@@ -104,9 +106,13 @@ export function App() {
     }
   }
 
+  if (state && studentPreview)
+    return <StudentPreview state={state} now={now} onBack={() => setStudentPreview(false)} />
+
   return (
     <Shell
       page={page}
+      onStudentPreview={state ? () => setStudentPreview(true) : undefined}
       onNavigate={navigate}
       onReset={() => {
         setResetError('')

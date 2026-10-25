@@ -1,0 +1,302 @@
+.student-preview {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 34px 28px;
+}
+.student-preview-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 90px;
+  border-bottom: 1px solid var(--border);
+}
+.student-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Manrope Variable', sans-serif;
+  font-size: 22px;
+}
+.student-brand strong {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.student-brand small {
+  letter-spacing: 5px;
+  font-size: 9px;
+  color: var(--green);
+  margin-top: 4px;
+}
+.student-preview-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding: 22px;
+  margin: 26px 0;
+  background: #edf4ef;
+  border: 1px solid #dce8df;
+  border-radius: 12px;
+}
+.student-preview-tools > div {
+  flex: 1;
+  min-width: 220px;
+}
+.student-preview-tools strong {
+  font-size: 14px;
+}
+.student-preview-tools p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 6px 0 0;
+  line-height: 1.6;
+}
+.student-preview-tools label {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  gap: 7px;
+  color: var(--muted);
+}
+.student-preview-tools select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  min-width: 180px;
+  font: inherit;
+  color: var(--ink);
+}
+.student-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 36px 0 24px;
+}
+.student-heading .muted {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.student-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.student-identity > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-start;
+}
+.student-identity strong {
+  font-size: 12px;
+}
+.student-navigation {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.student-overview-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.student-panel {
+  padding: 25px;
+  min-width: 0;
+}
+.student-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.student-section-heading h2 {
+  margin: 0;
+  font-size: 18px;
+}
+.student-lesson-list {
+  margin-top: 18px;
+}
+.student-lesson {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+}
+.student-lesson > div:not(.student-date) {
+  flex: 1;
+}
+.student-lesson h3 {
+  font-size: 13px;
+  margin: 0 0 7px;
+  text-transform: capitalize;
+}
+.student-lesson p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.student-lesson small {
+  color: var(--muted);
+  font-size: 10px;
+  display: block;
+  margin-top: 5px;
+}
+.student-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 62px;
+  border-radius: 10px;
+  background: var(--soft);
+  color: var(--green);
+  flex-shrink: 0;
+}
+.student-date strong {
+  font-size: 23px;
+  font-weight: 600;
+}
+.student-date span {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.student-meeting {
+  display: inline-flex;
+  margin-top: 16px;
+}
+.student-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 18px 0;
+}
+.student-homework-list {
+  margin-top: 22px;
+}
+.student-homework-list .homework-item {
+  margin-bottom: 15px;
+}
+.student-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.student-record {
+  padding: 25px;
+  min-width: 0;
+}
+.student-record-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.student-record h3 {
+  font-size: 16px;
+  margin: 0;
+}
+.student-record h4 {
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 7px 0 0;
+}
+.student-used-material {
+  margin: 20px 0;
+}
+.student-used-material .material-text {
+  max-height: 400px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+.student-search {
+  margin: 20px 0;
+  max-width: 520px;
+}
+.student-search input {
+  min-width: 0;
+}
+.student-empty {
+  margin: 30px 0;
+}
+.student-footer {
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+  padding: 35px 0 5px;
+}
+.student-surface .record-body,
+.student-note {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .student-preview {
+    padding: 0 18px 20px;
+  }
+  .student-preview-bar {
+    min-height: 74px;
+  }
+  .student-preview-tools {
+    padding: 16px;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .student-preview-tools > div {
+    width: 100%;
+    min-width: 0;
+    flex-basis: 100%;
+  }
+  .student-preview-tools label {
+    min-width: 0;
+    flex: 1;
+  }
+  .student-preview-tools select {
+    min-width: 0;
+    width: 100%;
+  }
+  .student-preview-tools > .button {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .student-heading {
+    display: block;
+    margin: 28px 0 20px;
+  }
+  .student-identity {
+    margin-top: 18px;
+  }
+  .student-navigation {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .student-navigation .button {
+    flex: 1;
+    padding: 12px 9px;
+    font-size: 12px;
+  }
+  .student-overview-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .student-panel,
+  .student-record {
+    padding: 20px;
+  }
+  .student-lesson {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .student-section-heading h2 {
+    font-size: 17px;
+  }
+  .student-heading h1 {
+    font-size: 28px;
+  }
+}
