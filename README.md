@@ -32,6 +32,8 @@ Abrir `http://127.0.0.1:5173`. Para acrescentar os exemplos novos aos dados exis
 
 O servidor é independente da demo. SDK fixado em global.json, solução C# em api/NextageClass.slnx e scripts de desenvolvimento em scripts/. Ver [execução do servidor](docs/server-development.md) e [evidências 3A](docs/verification-3a.md).
 
+O 3B usa [Supabase para banco e autenticação](docs/supabase-pilot.md). A primeira parte já valida identidade e vínculo na API; convites, telas de entrada e conferência completa continuam em implementação. [Estado do acesso](docs/account-access.md). A demo pública não exige conta e permanece separada do piloto.
+
 Para experimentar a consulta do aluno, use **Ver como aluno** e escolha um perfil fictício. O aluno consulta material, homework e **Meu acervo** do nível atual; conteúdo/observações livres ficam com a professora. [Consulta 2A](docs/verification-2a.md) e [acervo 2B](docs/verification-2b.md).
 
 Em **Solicitações**, o aluno pode enviar um pedido por horário e combinar dias semanais com aulas avulsas. Na área da professora, **Solicitações** permite aprovar ou recusar cada um. Aprovar confere novamente se o período continua livre. [Regras e limites](docs/scheduling-requests.md) e [roteiro 2C](docs/verification-2c.md).

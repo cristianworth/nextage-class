@@ -77,6 +77,8 @@ Atualizado em 25/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-54 | Todo pedido exige aprovação da professora. Pendente não reserva horário nem altera a agenda. A aprovação verifica novamente conflitos antes de criar uma aula ou série. Confirmado em 25/10/2026. |
 | DEC-55 | Revisão integrada da etapa 2 com Nara confirmada por Cristian em 25/10/2026: “Revisamos e o fluxo atende”. Aceite de uso permite seguir ao piloto; testes técnicos permanecem evidência separada. |
 | DEC-56 | No piloto, professora entra com e-mail/senha e convida alunos por e-mail para criarem sua senha. Não há cadastro público. Confirmado por Cristian em 25/10/2026. Provedor de envio e implantação serão definidos antes do uso real. |
+| DEC-57 | Supabase hospedará PostgreSQL e autenticação (login, convite e recuperação); a API ASP.NET Core mantém regras e autorização. Escolha confirmada por Cristian em 25/10/2026 para reduzir implementação de credenciais e começar no plano gratuito. Não implementar um segundo cadastro de senhas no C#. |
+| DEC-58 | Projeto Supabase separado “Nextage Class”, na organização escolhida por Cristian e região São Paulo; criação cotada em $0/mês e autorizada para o plano gratuito. Projeto criado em 25/10/2026. O projeto GachaManagement não faz parte desta implementação. Hospedagem da API, envio de e-mail e recuperação operacional seguem decisões específicas. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 
@@ -86,4 +88,4 @@ O acervo simples e o planejamento opcional por ocorrência foram entregues antes
 
 ## Tecnologia
 
-React, TypeScript e Vite para a interface. ASP.NET Core com C# e PostgreSQL na etapa com servidor. Next.js não faz parte da stack escolhida. Não foram fixadas versões de bibliotecas, provedor de hospedagem ou solução de autenticação. Ver [architecture.md](architecture.md).
+React, TypeScript e Vite para a interface. ASP.NET Core com C# e PostgreSQL na etapa com servidor. Supabase fornece banco hospedado e autenticação (DEC-57); Next.js não faz parte da stack. Versões e estado de implantação ficam em [architecture.md](architecture.md).

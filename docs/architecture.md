@@ -14,6 +14,8 @@ Versões suportadas e dependências serão verificadas ao iniciar cada etapa. N�
 
 No 3A foram fixados SDK .NET 10.0.402 e Npgsql 10.0.3; testes HTTP usam o pacote oficial ASP.NET Core 10.0.13. PostgreSQL 18.6 foi verificado localmente. Health checks nativos distinguem processo e banco real sem expor configuração. Credenciais são externas; ferramentas e banco local ficam em work, ignorado. Autenticação por convite/e-mail/senha foi aprovada para o 3B; hospedagem segue decisão do 3E. Ver [server-development.md](server-development.md).
 
+No início do 3B, Cristian escolheu Supabase para banco hospedado e autenticação. Isso substitui a intenção de acrescentar ASP.NET Core Identity: não haverá armazenamento paralelo de senhas. A API continuará validando identidade e consultando os vínculos/papéis do próprio sistema antes de permitir operações. O banco local serve a testes de regras e migrações; não replica o serviço Auth. Detalhes e limites do provedor em [supabase-pilot.md](supabase-pilot.md).
+
 ## Estrutura do código
 
 ```text

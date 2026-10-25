@@ -53,6 +53,8 @@ public sealed class HealthEndpointTests
     private sealed class TestApplication(string connection) : WebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder) =>
-            builder.UseEnvironment("Testing").UseSetting("ConnectionStrings:NextageClass", connection);
+            builder.UseEnvironment("Testing")
+                .UseSetting("Supabase:Url", "https://test-project.supabase.co")
+                .UseSetting("ConnectionStrings:NextageClass", connection);
     }
 }

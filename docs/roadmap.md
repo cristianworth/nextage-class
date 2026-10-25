@@ -56,12 +56,18 @@ O **2D está concluído**: revisão de uso confirmada por Cristian e cenário in
 | Recorte | Resultado verificável | Dependência |
 | --- | --- | --- |
 | **3A — Base executável (concluído tecnicamente)** | ASP.NET Core, conexão PostgreSQL, configuração externa, saúde do serviço e testes com banco real | [Evidências 3A](verification-3a.md); demo preservada e ferramentas locais sem credenciais no Git |
-| **3B — Contas e convites** | Entrada/saída, sessão, convite por e-mail/senha e recuperação; acesso restrito por papel | DEC-56; envio local fictício para testes, provedor real antes da implantação |
+| **3B — Contas e convites (em implementação)** | Supabase Auth para entrada/saída, convite por e-mail/senha e recuperação; API valida identidade e permissões | DEC-56/57; projeto gratuito criado em São Paulo. Cadastro público desabilitado e envio de e-mail configurado antes de convites reais |
 | **3C — Rotina da professora no servidor** | Cadastro, acervo, agenda, registros, preparação e homework persistidos pela API | Regras verificadas no servidor, conflitos sob concorrência e migrações |
 | **3D — Aluno conectado** | Consulta própria, acervo e solicitações pela API com autorização por identidade | Reusar limites de compartilhamento; sem enviar documento completo ao aluno |
 | **3E — Operação do piloto** | Backup/restauração verificados, configuração de implantação e revisão antes de dados reais | Definir hospedagem, envio de e-mail, retenção e recuperação com Cristian |
 
 Os recortes serão divididos em chunks na mudança correspondente. A base local pode avançar sem contratar serviços. A publicação e o uso real dependem das decisões operacionais; não são presumidos por um teste local aprovado.
+
+### Reavaliação no início do 3B
+
+Cristian escolheu Supabase para banco e autenticação. A base PostgreSQL/Npgsql continua válida; não haverá ASP.NET Core Identity nem um cadastro paralelo de senhas. Supabase comprova a identidade e a API mantém o vínculo com o aluno e o papel permitido, sem confiar em permissões editáveis pelo navegador. Ver [supabase-pilot.md](supabase-pilot.md).
+
+Divisão do 3B: **B1** contrato e validação de identidade/permissões no servidor; **B2** vínculo com cadastro e convite restrito à professora; **B3** telas de entrada/ativação/recuperação e sessão; **B4** conferência local e com o projeto Supabase, incluindo acessos negados. O cadastro mínimo necessário ao vínculo entra junto de B2; o restante da rotina permanece no 3C. Revisar o plano ao completar B3, antes da conferência integrada.
 
 ## Reavaliação e autonomia
 

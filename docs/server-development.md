@@ -1,6 +1,6 @@
 # Desenvolvimento do servidor
 
-Base 3A: ASP.NET Core/.NET 10 LTS, Npgsql 10 e PostgreSQL 18. A demo React continua independente; este recorte oferece apenas verificações de saúde, sem dados de alunos ou login.
+Base 3A: ASP.NET Core/.NET 10 LTS, Npgsql 10 e PostgreSQL 18. A demo React continua independente. O 3B acrescenta validação de identidade Supabase e sessão autorizada; login/convites continuam em implementação. Ver [account-access.md](account-access.md).
 
 ## Ferramentas
 
@@ -19,6 +19,7 @@ Na raiz, com SDK e binários disponíveis:
 ```powershell
 ./scripts/start-local-database.ps1
 ./scripts/dotnet.ps1 restore api/NextageClass.slnx --locked-mode
+./scripts/migrate-api.ps1
 ./scripts/run-api.ps1
 ```
 
@@ -35,6 +36,6 @@ Processo ativo retorna 200; prontidão consulta PostgreSQL real e retorna 200 ou
 
 ## Outro ambiente e limites
 
-Sem os scripts Windows, usar o SDK fixado, um PostgreSQL próprio de desenvolvimento e as variáveis ConnectionStrings__NextageClass para a API e NEXTAGE_TEST_CONNECTION para testes. Executar dotnet restore/build/test na solução api/NextageClass.slnx. Testes de integração exigem banco real e falham se a configuração não existe; não são ignorados silenciosamente.
+Sem os scripts Windows, usar o SDK fixado, um PostgreSQL próprio de desenvolvimento e as variáveis ConnectionStrings__NextageClass/Supabase__Url para a API e NEXTAGE_TEST_CONNECTION para testes. Supabase__Url é a URL HTTPS do projeto; o script de execução também encontra essa URL em work/supabase/project.json. Executar dotnet restore/build/test na solução api/NextageClass.slnx. Testes de integração exigem banco real e falham se a configuração não existe; não são ignorados silenciosamente.
 
 Pacotes usam versões fixas e packages.lock.json. Contas, esquema de negócio, convites e recuperação entram nos próximos recortes. Não há endpoint de cadastro público ou importação automática de localStorage. Credenciais e instância local não servem como configuração de produção.
