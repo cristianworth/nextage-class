@@ -18,9 +18,9 @@ Usar nomes claros, responsabilidades coesas e organização proporcional ao prob
 2. `openspec/changes/`: propostas em andamento; requisitos e tarefas ainda não necessariamente entregues.
 3. `openspec/specs/`: comportamento incorporado ao produto após implementação e validação.
 
-O 1A–1E e o refinamento de progresso estão implementados e verificados tecnicamente. As mudanças continuam abertas para revisão de uso. A base até `simplify-lesson-entry-1d` foi sincronizada para permitir extensão; os deltas de `organize-material-library-1e` aguardam consolidação. Não preencher as especificações atuais com toda a visão futura.
+A etapa 1 foi entregue e o aceite do 1F por Nara foi informado por Cristian em 24/10/2026. Requisitos estão consolidados em `openspec/specs/`; propostas e tarefas concluídas ficam em `openspec/changes/archive/`. Ajustes menores posteriores possuem evidência técnica própria. Não preencher as especificações atuais com toda a visão futura.
 
-Ao arquivar 1A–1D ou o refinamento de progresso após revisão, conferir que a sincronização já está completa e usar `--skip-specs` para não reaplicar deltas antigos sobre requisitos mais recentes. O modo estrito pode informar que um requisito ADDED já existe devido à sincronização prévia; isso não é falha dos testes nem confirmação de aceitação humana.
+Ao arquivar uma mudança já sincronizada, conferir a base e preservar o histórico sem reaplicar deltas antigos sobre requisitos mais recentes. O modo estrito pode informar que um requisito ADDED já existe devido à sincronização prévia; isso não é falha dos testes nem confirmação de aceitação humana.
 
 ## Ciclo por mudança
 

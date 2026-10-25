@@ -1,6 +1,6 @@
 # Primeira entrega funcional: fluxo do professor
 
-Status: incremento 1A implementado e verificado tecnicamente em 23/10/2026, sob autorização de Cristian. Revisão de uso pendente. Requisitos e tarefas estão na mudança OpenSpec `deliver-teacher-demo-1a`; evidências em [verification-1a.md](verification-1a.md).
+Status: incremento 1A implementado e verificado tecnicamente em 23/10/2026, sob autorização de Cristian. Documento histórico do 1A. O aceite da etapa 1 foi informado por Cristian em 24/10/2026; estado atual em [README.md](README.md). Requisitos e tarefas estão na mudança OpenSpec `deliver-teacher-demo-1a`; evidências em [verification-1a.md](verification-1a.md).
 
 ## Resultado esperado
 

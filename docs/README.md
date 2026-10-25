@@ -1,0 +1,29 @@
+# Documentação do Nextage Class
+
+Etapa 1: demo do professor implementada e aprovada por Nara, conforme relato de Cristian em 24/10/2026. Ajustes de fechamento esclarecem sequência autoral e apoio; a etapa 2 ainda será especificada.
+
+## Visão atual
+
+| Documento | Finalidade |
+| --- | --- |
+| [Visão do produto](product-vision.md) | Problema, público e limites |
+| [Roadmap](roadmap.md) | Estado das entregas e próximos recortes |
+| [Decisões](decisions.md) | Respostas validadas e regras de produto |
+| [Sequências e apoio](book-catalog.md) | Organização de conteúdo atual |
+| [Continuidade](course-progress.md) | Como o lançamento determina o próximo conteúdo |
+| [Pesquisa e fechamento](teaching-sequences.md) | Referências, escolhas e evidências atuais |
+| [Dados pedagógicos](pedagogy.md) | Material utilizado, planejamento e homework |
+| [Arquitetura](architecture.md) | Responsabilidades e stack |
+| [Desenvolvimento local](local-development.md) | Como executar e verificar |
+| [Colaboração/OpenSpec](development-workflow.md) | Requisitos e processo de desenvolvimento |
+| [Questões futuras](deferred-questions.md) | Perguntas para a etapa correspondente |
+
+## Evidências históricas
+
+Estes documentos descrevem o recorte e o estado de verificação na data de cada entrega. Contagens de testes, nomes de campos e versões locais anteriores não substituem os documentos atuais.
+
+- [Primeiro ciclo 1A](verification-1a.md), [agenda 1B](verification-1b.md), [preparação 1C](verification-1c.md), [lançamento 1D](verification-1d.md) e [acervo 1E](verification-1e.md).
+- [Primeira entrega](first-delivery.md), [blocos da etapa 1](delivery-chunks.md) e [perguntas iniciais resolvidas](core-questions.md) preservam a evolução do planejamento.
+- Mudanças OpenSpec concluídas ficam em `openspec/changes/archive/`. Os requisitos atuais ficam em `openspec/specs/`.
+
+O aceite da professora é registrado a partir da informação fornecida por Cristian; testes automatizados são evidência técnica separada.

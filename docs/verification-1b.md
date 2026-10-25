@@ -1,5 +1,7 @@
 # Verificação da entrega 1B
 
+> Registro histórico da entrega. O estado atual e o aceite da etapa 1 estão no [guia documental](README.md).
+
 Data: 23/10/2026. Implementação e verificação técnica concluídas. Revisão de uso com Cristian e a professora pendente. Mudança OpenSpec: `deliver-weekly-agenda-1b`.
 
 ## Entregue

@@ -15,9 +15,9 @@ export function saveStudent(
     values.primaryBookId === undefined ? (previous?.primaryBookId ?? null) : values.primaryBookId
   if (primaryBookId) {
     const book = state.books.find((item) => item.id === primaryBookId)
-    if (!book) throw new Error('O livro principal não foi encontrado.')
+    if (!book) throw new Error('A sequência principal não foi encontrada.')
     if (primaryBookId !== previous?.primaryBookId && !book.levels.includes(values.level))
-      throw new Error('Escolha um livro principal compatível com o nível do aluno.')
+      throw new Error('Escolha uma sequência principal compatível com o nível do aluno.')
   }
   const student = {
     ...values,

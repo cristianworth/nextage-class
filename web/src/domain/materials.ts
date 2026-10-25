@@ -9,9 +9,9 @@ export function saveMaterial(
 ): Workspace {
   const parsed = materialInputSchema.parse(input)
   const book = parsed.bookId ? state.books.find((item) => item.id === parsed.bookId) : undefined
-  if (parsed.bookId && !book) throw new Error('O livro selecionado não foi encontrado.')
+  if (parsed.bookId && !book) throw new Error('A sequência selecionada não foi encontrada.')
   if ((book && parsed.lessonNumber === undefined) || (!book && parsed.lessonNumber !== undefined))
-    throw new Error('Uma unidade precisa de livro e número. Para apoio, deixe ambos vazios.')
+    throw new Error('Uma unidade precisa de sequência e número. Para apoio, deixe ambos vazios.')
   const levels = book?.levels ?? parsed.levels ?? [parsed.level]
   if (new Set(levels).size !== levels.length) throw new Error('Não repita níveis no material.')
   const values = { ...parsed, level: levels[0], levels }
@@ -26,7 +26,9 @@ export function saveMaterial(
         material.lessonNumber === values.lessonNumber,
     )
   )
-    throw new Error(`Já existe a Unidade ${values.lessonNumber} neste livro. Escolha outro número.`)
+    throw new Error(
+      `Já existe a Unidade ${values.lessonNumber} nesta sequência. Escolha outro número.`,
+    )
   const material = {
     ...values,
     id: previous?.id ?? crypto.randomUUID(),

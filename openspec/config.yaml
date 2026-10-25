@@ -2,8 +2,8 @@ schema: spec-driven
 
 context: |
   Project: Nextage Class, a personal learning and portfolio project.
-  Current stage: 1A through 1E implemented and technically verified; usage review 1F pending. Local workspace format is v5.
-  Baseline through 1D is synced. Active change organize-material-library-1e adds books, shared levels and one principal book per student with independent resumable progress. Homework stays unchanged.
+  Current stage: teacher demo complete; Nara approved usage review 1F as reported by Cristian on 2026-10-24. Local workspace format is v5.
+  Baseline includes teaching sequences (books or teacher-authored units), standalone support and flexible selection without presumed completion. Completed changes are archived. Student demo is next to specify. Homework stays unchanged.
   Read docs/decisions.md for validated decisions and docs/roadmap.md for scope.
   Frontend: React, TypeScript, Vite. Later backend: C#, ASP.NET Core, PostgreSQL.
   Initial scope: one teacher, adult students, individual lessons, one reference timezone.

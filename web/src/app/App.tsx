@@ -189,7 +189,7 @@ export function App() {
                 onSave={(input) => {
                   commit(saveBook(state, input, bookEditor?.id))
                   setBookEditor(undefined)
-                  setNotice('Livro salvo. Os registros anteriores foram preservados.')
+                  setNotice('Sequência salva. Os registros anteriores foram preservados.')
                 }}
               />
             )}

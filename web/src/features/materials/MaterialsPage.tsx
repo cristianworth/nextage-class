@@ -51,11 +51,11 @@ export function MaterialsPage({
         <div>
           <p className="eyebrow">IDEIAS PARA O PRÓXIMO ENCONTRO</p>
           <h1>Seu acervo de materiais</h1>
-          <p className="muted">Livros com suas unidades e materiais de apoio por nível.</p>
+          <p className="muted">Sequências com suas unidades e materiais de apoio por nível.</p>
         </div>
         <div className="heading-actions">
           <button className="button" onClick={onNewBook}>
-            Novo livro
+            Nova sequência
           </button>
           <button
             className="button"
@@ -86,7 +86,7 @@ export function MaterialsPage({
           Materiais
         </button>
         <button className="button" aria-pressed={view === 'books'} onClick={() => setView('books')}>
-          Livros
+          Sequências
         </button>
       </div>
       <div className="list-toolbar history-toolbar">
@@ -137,20 +137,20 @@ export function MaterialsPage({
                 <button
                   className="text-button"
                   onClick={() => onEditBook(book)}
-                  aria-label={`Editar livro ${book.title}`}
+                  aria-label={`Editar sequência ${book.title}`}
                 >
-                  Editar livro
+                  Editar sequência
                 </button>
               </div>
             </article>
           ))}
           {!filteredBooks.length && (
             <EmptyState
-              title={books.length ? 'Nenhum livro encontrado' : 'Seu primeiro livro'}
+              title={books.length ? 'Nenhuma sequência encontrada' : 'Sua primeira sequência'}
               description={
                 books.length
                   ? 'Tente outro termo ou nível.'
-                  : 'Use Novo livro e depois cadastre suas unidades.'
+                  : 'Use Nova sequência e depois cadastre suas unidades.'
               }
             />
           )}

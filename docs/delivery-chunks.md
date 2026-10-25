@@ -37,11 +37,11 @@ Implementado e verificado tecnicamente em `organize-material-library-1e`. E1–E
 
 Não incluir uploads, áudio, editor rico ou recursos extras de homework por conveniência.
 
-## 1F — Revisão com a professora
+## 1F — Revisão com a professora: aprovada
 
 | Bloco | Resultado esperado | Evidência |
 | --- | --- | --- |
 | F1 — Semana fictícia | Percorrer o fluxo do professor com unidade longa e materiais de apoio | Nara identifica diferenças de sua rotina |
 | F2 — Ajustes e consolidação | Corrigir o que impede o fluxo e registrar decisões | Requisitos entregues coerentes e pendências explícitas antes da etapa 2 |
 
-A revisão humana não é marcada como feita por uma execução de testes.
+Aceite de Nara informado por Cristian em 24/10/2026. O fechamento técnico acrescenta clareza para sequência autoral, apoio e seleção fora da ordem; ver [teaching-sequences.md](teaching-sequences.md). A aprovação humana não foi inferida dos testes.

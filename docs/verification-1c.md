@@ -1,5 +1,7 @@
 # Verificação da entrega 1C
 
+> Registro histórico da entrega. O estado atual e o aceite da etapa 1 estão no [guia documental](README.md).
+
 Data: 24/10/2026. Implementação e verificação técnica concluídas; revisão de uso com Cristian e Nara pendente. Mudança OpenSpec: `deliver-lesson-preparation-1c`.
 
 ## Entregue

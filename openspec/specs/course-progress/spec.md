@@ -7,26 +7,37 @@ Acompanhar o ponto em que cada aluno está na sequência de aulas do material, p
 ## Requirements
 
 ### Requirement: Retomar conteúdo atual
-O sistema SHALL sugerir no lançamento a aula do material atual daquele aluno e nível, conforme os encontros anteriores. Sem progresso registrado, SHALL sugerir a primeira aula numerada disponível. A professora SHALL poder escolher outro conteúdo efetivamente trabalhado.
+O sistema SHALL sugerir a unidade atual do livro principal compatível do aluno, conforme os encontros anteriores daquele livro. Sem progresso SHALL começar na primeira unidade disponível. A professora SHALL poder selecionar outro conteúdo; apoio ou outro livro não SHALL substituir o principal cadastrado.
 
 #### Scenario: Mesmo conteúdo em dois encontros
-- **WHEN** a Aula 3 é registrada em andamento na terça
-- **THEN** o lançamento do encontro seguinte sugere a Aula 3 novamente.
+- **WHEN** a Unidade 3 é registrada em andamento na terça
+- **THEN** o lançamento do encontro seguinte sugere a Unidade 3 do mesmo livro novamente.
 
 ### Requirement: Concluir e continuar
-O sistema SHALL permitir indicar que a aula do material foi concluída. Em andamento SHALL manter o mesmo conteúdo; concluída SHALL sugerir a próxima aula numerada disponível no nível. A última aula SHALL indicar fim da sequência sem mudar o nível automaticamente.
+O sistema SHALL permitir indicar conclusão da unidade. Em andamento SHALL manter a unidade; concluída SHALL sugerir a próxima unidade do mesmo livro. A última SHALL indicar fim sem mudar nível ou livro automaticamente.
 
 #### Scenario: Avançar após conclusão
-- **WHEN** a professora registra que trabalhou e concluiu a Aula 3
-- **THEN** o histórico guarda a Aula 3 e o próximo encontro sugere a Aula 4, quando disponível.
+- **WHEN** a professora registra que trabalhou e concluiu a Unidade 3
+- **THEN** o histórico guarda a Unidade 3 e o próximo encontro sugere a Unidade 4 do mesmo livro, quando disponível.
 
 #### Scenario: Material complementar ou falta
-- **WHEN** um encontro recebe falta ou utiliza somente material sem número
+- **WHEN** um encontro recebe falta ou utiliza somente material de apoio
 - **THEN** esse lançamento não avança nem apaga a sequência anterior.
 
 ### Requirement: Progresso cronológico e isolado
-O sistema SHALL determinar o progresso pela data/hora efetiva dos encontros, separado por aluno e nível. Editar um registro antigo SHALL atualizar seu histórico sem substituir o resultado de encontros posteriores. Ao consultar uma aula antiga, SHALL considerar apenas encontros anteriores a ela.
+O sistema SHALL determinar progresso por data/hora efetiva, separado por aluno e livro. Editar o passado SHALL preservar o resultado posterior. Consultar aula antiga SHALL considerar só encontros anteriores. Trocar de nível dentro de um livro compatível SHALL manter a continuidade.
 
 #### Scenario: Corrigir lançamento antigo
-- **WHEN** a Aula 4 já foi registrada em encontro posterior e a professora corrige a Aula 3 antiga
-- **THEN** a sugestão atual continua baseada no encontro posterior.
+- **WHEN** a Unidade 4 já foi registrada depois e a professora corrige a Unidade 3 antiga
+- **THEN** a sugestão atual continua baseada no encontro posterior do mesmo livro.
+
+#### Scenario: Livro compartilhado e retomada
+- **WHEN** o aluno muda de A1 para A2 num livro compatível com ambos ou volta a esse livro depois de usar outro
+- **THEN** retoma o progresso desse livro sem reiniciar nem usar o resultado do outro.
+
+### Requirement: Percurso flexível sem conclusão presumida
+O sistema SHALL permitir selecionar uma unidade fora da ordem sugerida. A continuidade SHALL usar o resultado da unidade efetivamente trabalhada, sem registrar conclusão ou remover unidades omitidas. Uma unidade anterior SHALL continuar selecionável para retomada.
+
+#### Scenario: Omitir gramática e retomar depois
+- **WHEN** a professora seleciona Unidade 3 de conversação sem trabalhar Unidade 2 de gramática
+- **THEN** o registro e a continuidade usam a Unidade 3 e a Unidade 2 permanece no acervo sem conclusão presumida, podendo ser selecionada depois.

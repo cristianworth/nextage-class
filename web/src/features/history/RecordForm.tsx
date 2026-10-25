@@ -102,9 +102,9 @@ export function RecordForm({
           <strong className="level-badge">{level}</strong>
         </div>
         <label className="field">
-          Livro/material
+          Conteúdo utilizado
           <select
-            aria-label="Livro/material"
+            aria-label="Conteúdo utilizado"
             value={materialChoice}
             onChange={(event) => {
               setMaterialChoice(event.target.value)
@@ -115,7 +115,7 @@ export function RecordForm({
               )
             }}
           >
-            <option value="">Sem livro/material</option>
+            <option value="">Sem material</option>
             {record?.materialSnapshot && (
               <option value="saved">
                 Manter versão registrada · {catalogLabel(record.materialSnapshot)}
@@ -124,18 +124,36 @@ export function RecordForm({
             {!record?.materialSnapshot && record?.material && (
               <option value="legacy">Manter material registrado · {record.material}</option>
             )}
-            {materials.map((material) => (
-              <option key={material.id} value={material.id}>
-                {catalogLabel(material, state.books)}
-              </option>
-            ))}
+            {state.books.map((book) => {
+              const units = materials.filter((material) => material.bookId === book.id)
+              return units.length ? (
+                <optgroup key={book.id} label={`Unidades · ${book.title}`}>
+                  {units.map((material) => (
+                    <option key={material.id} value={material.id}>
+                      {catalogLabel(material, state.books)}
+                    </option>
+                  ))}
+                </optgroup>
+              ) : null
+            })}
+            {materials.some((material) => !material.bookId) && (
+              <optgroup label="Materiais de apoio">
+                {materials
+                  .filter((material) => !material.bookId)
+                  .map((material) => (
+                    <option key={material.id} value={material.id}>
+                      {catalogLabel(material, state.books)}
+                    </option>
+                  ))}
+              </optgroup>
+            )}
           </select>
           <small>
             {materialChoice === 'saved'
               ? 'A versão histórica é preservada. Escolher o material na lista usa a versão atual.'
               : materialChoice === 'legacy'
                 ? 'O texto do registro anterior será preservado.'
-                : 'Selecione o que foi efetivamente utilizado. A lista considera o nível deste registro.'}
+                : 'Escolha uma unidade da sequência ou um material de apoio. A lista considera o nível deste registro.'}
           </small>
         </label>
         {!materials.length && (
@@ -144,14 +162,20 @@ export function RecordForm({
             adicionar exemplos pela área Acervo.
           </p>
         )}
+        {!!materials.length && !materials.some((material) => !material.bookId) && (
+          <p className="muted form-hint">
+            Ainda não há apoio avulso para este nível. Cadastre um Material de apoio no Acervo ou
+            use Adicionar exemplos.
+          </p>
+        )}
         {attendance === 'attended' && followsSequence ? (
           <div className="course-panel">
             <p className="eyebrow">UNIDADE TRABALHADA</p>
             <p>{catalogLabel(selectedMaterial!, state.books)}</p>
             {selectedMaterial!.bookId !== student.primaryBookId && (
               <p className="muted form-hint">
-                Esta unidade pertence a outro livro. O principal do cadastro permanece o mesmo; o
-                resultado fica guardado neste livro.
+                Esta unidade pertence a outra sequência. O principal do cadastro permanece o mesmo;
+                o resultado fica guardado nesta sequência.
               </p>
             )}
             <label className="check-field">
@@ -164,30 +188,37 @@ export function RecordForm({
             </label>
             <p className="course-continuation" role="status">
               {continuation
-                ? `${selectedMaterial!.bookId === student.primaryBookId ? 'Próximo encontro' : 'Continuidade neste livro'}: ${materialLabel(continuation)}`
-                : 'Última unidade do livro concluída. Nenhuma mudança de nível ou livro será feita automaticamente.'}
+                ? `${selectedMaterial!.bookId === student.primaryBookId ? 'Próximo encontro' : 'Continuidade nesta sequência'}: ${materialLabel(continuation)}`
+                : 'Última unidade da sequência concluída. Nenhuma mudança de nível ou sequência será feita automaticamente.'}
             </p>
             <p className="muted form-hint">
               Se ainda há conteúdo para trabalhar, mantenha sem marcar. O histórico deste encontro
               guarda a aula trabalhada acima.
             </p>
+            <p className="muted form-hint">
+              A ordem é uma sugestão: você pode escolher outra unidade acima. Unidades não
+              trabalhadas continuam disponíveis, sem conclusão automática.
+            </p>
           </div>
         ) : (
           attendance === 'attended' && (
             <p className="muted form-hint">
-              Sem unidade principal selecionada: este lançamento não altera a sequência do aluno.
+              {selectedMaterial
+                ? 'Material de apoio selecionado. A sequência principal permanece no mesmo ponto.'
+                : 'Sem unidade selecionada: este lançamento não altera a sequência do aluno.'}
             </p>
           )
         )}
         {!record && suggestion.finished && (
           <p className="info-note">
-            A sequência deste livro foi concluída. Você pode selecionar um material para revisão.
+            Fim da sequência disponível. Você pode selecionar uma unidade anterior para retomar ou
+            um material de apoio.
           </p>
         )}
         {!record && suggestion.unavailable && (
           <p className="info-note">
-            O livro principal não atende este nível ou a unidade anterior saiu da sequência. Confira
-            o livro no cadastro do aluno ou selecione o conteúdo trabalhado.
+            A sequência principal não atende este nível ou a unidade anterior saiu da sequência.
+            Confira o livro no cadastro do aluno ou selecione o conteúdo trabalhado.
           </p>
         )}
         {attendance !== 'attended' && (

@@ -78,12 +78,12 @@ export function LessonDetails({
             {course.material
               ? catalogLabel(course.material, state.books)
               : course.finished
-                ? 'Sequência deste livro concluída.'
+                ? 'Fim da sequência disponível.'
                 : course.unavailable
-                  ? 'Livro principal incompatível ou unidade indisponível. Confira o cadastro e o lançamento.'
+                  ? 'Sequência principal incompatível ou unidade indisponível. Confira o cadastro e o lançamento.'
                   : course.book
-                    ? 'Nenhuma unidade neste livro.'
-                    : 'Selecione um livro principal no cadastro do aluno.'}
+                    ? 'Nenhuma unidade nesta sequência.'
+                    : 'Selecione uma sequência principal no cadastro do aluno.'}
           </p>
           <p className="muted form-hint">
             O andamento é atualizado ao lançar o que aconteceu no encontro.

@@ -39,7 +39,7 @@ test('nível é informativo, seleção única é filtrada e editar após promoç
   await expect(dialog.locator('.record-level')).toContainText('A2')
   await expect(dialog.getByRole('combobox', { name: /Nível/ })).toHaveCount(0)
   await expect(dialog.getByRole('textbox', { name: /Livro/ })).toHaveCount(0)
-  const select = dialog.getByRole('combobox', { name: 'Livro/material' })
+  const select = dialog.getByRole('combobox', { name: 'Conteúdo utilizado' })
   expect(
     await select
       .locator('option')
@@ -97,7 +97,7 @@ test('sem acervo permite lançamento; material livre antigo e dados são preserv
 }) => {
   await emptyCatalog(page)
   await launchLara(page)
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue('')
   await expect(page.getByRole('dialog')).toContainText('Nenhum material cadastrado para este nível')
   await page
     .getByRole('textbox', { name: 'Conteúdo trabalhado', exact: true })
@@ -109,7 +109,7 @@ test('sem acervo permite lançamento; material livre antigo e dados são preserv
     .filter({ hasText: 'Travel essentials' })
     .getByRole('button', { name: /Editar registro/ })
     .click()
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('legacy')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue('legacy')
   await page
     .getByRole('textbox', { name: 'Conteúdo trabalhado', exact: true })
     .fill('Conteúdo antigo revisado.')
@@ -117,9 +117,9 @@ test('sem acervo permite lançamento; material livre antigo e dados são preserv
   const before = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key)
   await navigate(page, 'Acervo')
   await page.getByRole('button', { name: 'Adicionar exemplos', exact: true }).click()
-  await expect(page.locator('.material-card')).toHaveCount(9)
+  await expect(page.locator('.material-card')).toHaveCount(10)
   await page.getByRole('button', { name: 'Adicionar exemplos', exact: true }).click()
-  await expect(page.locator('.material-card')).toHaveCount(9)
+  await expect(page.locator('.material-card')).toHaveCount(10)
   const after = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key)
   expect(after.records).toEqual(before.records)
   expect(after.students).toEqual(before.students)
@@ -149,7 +149,7 @@ test('falha ao adicionar exemplos preserva o acervo vazio e permite tentar novam
   await page.reload()
   await navigate(page, 'Acervo')
   await page.getByRole('button', { name: 'Adicionar exemplos', exact: true }).click()
-  await expect(page.locator('.material-card')).toHaveCount(9)
+  await expect(page.locator('.material-card')).toHaveCount(10)
 })
 
 test('lançamento no celular mostra unidades filtradas e mantém homework disponível', async ({
@@ -163,12 +163,19 @@ test('lançamento no celular mostra unidades filtradas e mantém homework dispon
     .click()
   await page.getByRole('button', { name: 'Lançar aula', exact: true }).click()
   const dialog = page.getByRole('dialog')
-  const select = dialog.getByRole('combobox', { name: 'Livro/material' })
+  const select = dialog.getByRole('combobox', { name: 'Conteúdo utilizado' })
   expect(
     await select
       .locator('option')
       .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value)),
-  ).toEqual(['', 'material-a1', 'material-a1-2', 'material-a1-3', 'material-a1-4'])
+  ).toEqual([
+    '',
+    'material-a1',
+    'material-a1-2',
+    'material-a1-3',
+    'material-a1-4',
+    'material-a1-speaking',
+  ])
   await expect(dialog.getByRole('combobox', { name: /Nível/ })).toHaveCount(0)
   await select.selectOption('material-a1-3')
   await dialog.getByLabel('Concluí esta unidade', { exact: true }).check()

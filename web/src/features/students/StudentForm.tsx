@@ -112,13 +112,13 @@ export function StudentForm({
           </label>
         </div>
         <label className="field">
-          Livro principal
+          Sequência principal
           <select
-            aria-label="Livro principal"
+            aria-label="Sequência principal"
             value={primaryBookId}
             onChange={(event) => setPrimaryBookId(event.target.value)}
           >
-            <option value="">Sem livro principal</option>
+            <option value="">Sem sequência principal</option>
             {incompatible && (
               <option value={previousBook.id}>{previousBook.title} · não atende este nível</option>
             )}
@@ -130,8 +130,8 @@ export function StudentForm({
           </select>
           <small>
             {incompatible
-              ? 'O livro atual não atende este nível. O vínculo e o progresso são preservados até você escolher outro.'
-              : 'Um principal por aluno. Trocar e voltar retoma o ponto anterior de cada livro.'}
+              ? 'A sequência atual não atende este nível. O vínculo e o progresso são preservados até você escolher outro.'
+              : 'Uma sequência principal por aluno. Trocar e voltar retoma o ponto anterior de cada sequência.'}
           </small>
         </label>
         <div className="form-grid">

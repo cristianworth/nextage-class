@@ -1,5 +1,7 @@
 # Verificação da entrega 1A
 
+> Registro histórico da entrega. O estado atual e o aceite da etapa 1 estão no [guia documental](README.md).
+
 Data: 23/10/2026. Mudança: `deliver-teacher-demo-1a`. Versão inicial da interface: 0.1.0.
 
 ## Evidências técnicas

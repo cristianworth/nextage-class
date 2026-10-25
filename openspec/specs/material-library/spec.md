@@ -7,7 +7,7 @@ Manter um acervo simples de textos por nível para consulta, planejamento e uso 
 ## Requirements
 
 ### Requirement: Manter materiais em texto
-O sistema SHALL permitir criar e editar material com título, nível A1–C2 e conteúdo em texto obrigatórios, preservando criação e indicando atualização. Exemplos SHALL ser fictícios e próprios.
+O sistema SHALL criar e editar unidades de livro com número, título e conteúdo, ou textos de apoio com título, conteúdo e um ou vários níveis A1–C2. Criação SHALL ser preservada e atualização indicada. Exemplos SHALL ser fictícios e próprios.
 
 #### Scenario: Criar e editar
 - **WHEN** um material válido é salvo e depois editado
@@ -21,11 +21,11 @@ O sistema SHALL permitir pesquisar título/conteúdo, filtrar por nível e ler o
 - **THEN** somente materiais correspondentes aparecem, ou uma indicação de ausência de resultados.
 
 ### Requirement: Ordem das aulas do material
-O sistema SHALL permitir informar um número inteiro positivo para ordenar aulas do material dentro do nível, impedindo números duplicados no mesmo nível. Material sem número SHALL continuar disponível como complementar. Ordenação SHALL ser numérica e alterações SHALL preservar cópias históricas.
+O sistema SHALL ordenar unidades numericamente dentro do livro e recusar número duplicado no mesmo livro. Livros diferentes SHALL aceitar o mesmo número. Apoios SHALL permanecer independentes da sequência. Alterações SHALL preservar cópias históricas.
 
 #### Scenario: Organizar sequência
-- **WHEN** o acervo contém A1 Aula 2 e Aula 10
-- **THEN** a Aula 2 aparece antes da Aula 10; outra A1 Aula 2 é recusada, mas A2 Aula 2 é permitida.
+- **WHEN** o Livro A contém Unidade 2 e Unidade 10
+- **THEN** a Unidade 2 aparece antes da 10; outra Unidade 2 nesse livro é recusada, mas Unidade 2 no Livro B é permitida.
 
 ### Requirement: Identificação de unidades
 O sistema SHALL exibir unidades numeradas como Unidade N — Descrição e manter a ordenação numérica independente do título. Materiais sem número SHALL continuar complementares; nomes e textos históricos livres SHALL ser preservados.
@@ -33,3 +33,10 @@ O sistema SHALL exibir unidades numeradas como Unidade N — Descrição e mante
 #### Scenario: Ordem numérica
 - **WHEN** o seletor oferece unidades 2 e 10
 - **THEN** Unidade 2 aparece antes de Unidade 10, ainda que a ordem alfabética das descrições seja diferente.
+
+### Requirement: Consultar livros e apoios
+O sistema SHALL permitir consultar livros, abrir suas unidades e filtrar materiais pela compatibilidade com o nível. A identificação no planejamento e lançamento SHALL distinguir unidades de livros diferentes e apoios.
+
+#### Scenario: Unidades com mesmo número
+- **WHEN** dois livros compatíveis têm Unidade 1
+- **THEN** as opções exibem o livro e Unidade 1 — Descrição, sem ambiguidade.

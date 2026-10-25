@@ -300,11 +300,11 @@ export const workspaceV4Schema = pedagogyWorkspaceSchema
   })
 
 export const bookInputSchema = z.object({
-  title: z.string().trim().min(1, 'Informe o título do livro.').max(150),
+  title: z.string().trim().min(1, 'Informe o título da sequência.').max(150),
   levels: z
     .array(z.enum(LEVELS))
     .min(1, 'Selecione ao menos um nível.')
-    .refine((levels) => new Set(levels).size === levels.length, 'Não repita níveis no livro.'),
+    .refine((levels) => new Set(levels).size === levels.length, 'Não repita níveis na sequência.'),
 })
 export const bookSchema = bookInputSchema.extend({
   id: idSchema,
@@ -355,7 +355,7 @@ export const workspaceSchema = pedagogyWorkspaceSchema
     if (!valid)
       context.addIssue({
         code: 'custom',
-        message: 'Os livros, unidades ou progressos estão inconsistentes.',
+        message: 'As sequências, unidades ou progressos estão inconsistentes.',
       })
   })
 

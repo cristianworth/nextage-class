@@ -85,7 +85,7 @@ describe('exemplos sem reset', () => {
   it('preenche acervo vazio, mantém o restante e é idempotente', () => {
     const state = { ...createDemo(now), materials: [] }
     const next = addDemoMaterials(state, now)
-    expect(next.materials).toHaveLength(9)
+    expect(next.materials).toHaveLength(10)
     expect(next.students).toBe(state.students)
     expect(next.lessons).toBe(state.lessons)
     expect(next.records).toBe(state.records)
@@ -101,7 +101,7 @@ describe('exemplos sem reset', () => {
     const before = structuredClone(state.materials)
     const next = addDemoMaterials(state, now)
     expect(next.materials.slice(0, 3)).toEqual(before)
-    expect(next.materials).toHaveLength(9)
-    expect(new Set(next.materials.map((item) => item.id)).size).toBe(9)
+    expect(next.materials).toHaveLength(10)
+    expect(new Set(next.materials.map((item) => item.id)).size).toBe(10)
   })
 })

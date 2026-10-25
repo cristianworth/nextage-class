@@ -42,12 +42,16 @@ test('Unidade 3 ocupa dois encontros, conclusão sugere 4 e editar o passado pre
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await launchSofia(page)
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('material-a1')
-  await page.getByRole('combobox', { name: 'Livro/material' }).selectOption('material-a1-3')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue(
+    'material-a1',
+  )
+  await page.getByRole('combobox', { name: 'Conteúdo utilizado' }).selectOption('material-a1-3')
   await expect(page.getByLabel('Concluí esta unidade', { exact: true })).not.toBeChecked()
   await record(page, 'Unidade 3: primeira parte e temas extras.')
   await launchSofia(page, 'last')
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('material-a1-3')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue(
+    'material-a1-3',
+  )
   await page.getByLabel('Concluí esta unidade', { exact: true }).check()
   await expect(page.locator('.course-continuation')).toContainText('Unidade 4')
   await record(page, 'Terminamos a Unidade 3.', true)
@@ -70,7 +74,9 @@ test('Unidade 3 ocupa dois encontros, conclusão sugere 4 e editar o passado pre
   ).toContainText('Unidade 4')
   await navigate(page, 'Agenda')
   await addFriday(page)
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('material-a1-4')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue(
+    'material-a1-4',
+  )
   await page.screenshot({ path: '../work/screenshots/course-progress-desktop.png', fullPage: true })
   expect(errors).toEqual([])
 })
@@ -79,7 +85,7 @@ test('falha ao salvar conclusão não avança o progresso nem perde o formulári
   page,
 }) => {
   await launchSofia(page)
-  await page.getByRole('combobox', { name: 'Livro/material' }).selectOption('material-a1-3')
+  await page.getByRole('combobox', { name: 'Conteúdo utilizado' }).selectOption('material-a1-3')
   await record(page, 'Ainda na Unidade 3.')
   await launchSofia(page, 'last')
   await page
@@ -99,7 +105,9 @@ test('falha ao salvar conclusão não avança o progresso nem perde o formulári
   )
   await page.reload()
   await launchSofia(page, 'last')
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('material-a1-3')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue(
+    'material-a1-3',
+  )
   await expect(page.getByLabel('Concluí esta unidade', { exact: true })).not.toBeChecked()
 })
 
@@ -125,10 +133,12 @@ test('migra v3 sem numerar materiais ou inventar conclusão e permite organizar 
   await page.reload()
   expect(await page.evaluate((key) => localStorage.getItem(key), key)).toBe(raw)
   await navigate(page, 'Acervo')
-  await page.getByRole('button', { name: 'Novo livro', exact: true }).click()
-  await page.getByRole('textbox', { name: 'Título do livro', exact: true }).fill('Livro migrado')
+  await page.getByRole('button', { name: 'Nova sequência', exact: true }).click()
+  await page
+    .getByRole('textbox', { name: 'Título da sequência', exact: true })
+    .fill('Livro migrado')
   await page.getByRole('checkbox', { name: 'A1', exact: true }).check()
-  await page.getByRole('button', { name: 'Salvar livro', exact: true }).click()
+  await page.getByRole('button', { name: 'Salvar sequência', exact: true }).click()
   const bookId = await page.evaluate(
     (key) => JSON.parse(localStorage.getItem(key)!).books[0].id as string,
     key,
@@ -138,17 +148,21 @@ test('migra v3 sem numerar materiais ou inventar conclusão e permite organizar 
     .click()
   await page.getByRole('button', { name: 'Editar material', exact: true }).click()
   await page.getByRole('combobox', { name: 'Tipo de material', exact: true }).selectOption('unit')
-  await page.getByRole('combobox', { name: 'Livro', exact: true }).selectOption(bookId)
+  await page.getByRole('combobox', { name: 'Sequência', exact: true }).selectOption(bookId)
   await page.getByRole('spinbutton', { name: /Número da unidade/ }).fill('3')
   await page.getByRole('button', { name: 'Salvar material', exact: true }).click()
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).version, key)).toBe(5)
   await navigate(page, 'Alunos')
   await page.getByRole('button', { name: 'Editar Sofia Lima', exact: true }).click()
-  await page.getByRole('combobox', { name: 'Livro principal', exact: true }).selectOption(bookId)
+  await page
+    .getByRole('combobox', { name: 'Sequência principal', exact: true })
+    .selectOption(bookId)
   await page.getByRole('button', { name: 'Salvar alterações', exact: true }).click()
   await navigate(page, 'Agenda')
   await launchSofia(page)
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('material-a1-3')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue(
+    'material-a1-3',
+  )
   await expect(page.getByLabel('Concluí esta unidade', { exact: true })).not.toBeChecked()
 })
 
@@ -158,7 +172,9 @@ test('numeração duplicada é recusada e sequência cabe no celular', async ({ 
   await page.getByRole('button', { name: 'Novo material', exact: true }).click()
   await page.getByRole('textbox', { name: 'Título', exact: true }).fill('Outro conteúdo')
   await page.getByRole('combobox', { name: 'Tipo de material', exact: true }).selectOption('unit')
-  await page.getByRole('combobox', { name: 'Livro', exact: true }).selectOption('legacy-book/A1')
+  await page
+    .getByRole('combobox', { name: 'Sequência', exact: true })
+    .selectOption('legacy-book/A1')
   await page
     .getByRole('textbox', { name: 'Conteúdo do material', exact: true })
     .fill('Texto próprio')
@@ -172,7 +188,9 @@ test('numeração duplicada é recusada e sequência cabe no celular', async ({ 
   await navigate(page, 'Agenda')
   await page.locator('.mobile-days button').nth(1).click()
   await launchSofia(page)
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('material-a1')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue(
+    'material-a1',
+  )
   await page.getByLabel('Concluí esta unidade', { exact: true }).check()
   await expect(page.locator('.course-continuation')).toContainText('Unidade 2')
   expect(

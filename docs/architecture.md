@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Status: frontend do 1A/1B/1C implementado. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
+Status: demo do professor da etapa 1 implementada; fechamento inclui sequências autorais e apoios. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
 
 ## Stack
 

@@ -64,21 +64,21 @@ export function MaterialForm({
           Tipo de material
           <select value={kind} onChange={(event) => setKind(event.target.value)}>
             <option value="support">Material de apoio</option>
-            <option value="unit">Unidade de livro</option>
+            <option value="unit">Unidade de sequência</option>
           </select>
         </label>
         {kind === 'unit' ? (
           <>
             <label className="field">
               <span>
-                Livro{' '}
+                Sequência{' '}
                 <span className="required-marker" aria-hidden="true">
                   *
                 </span>
               </span>
               <select required value={bookId} onChange={(event) => setBookId(event.target.value)}>
                 <option value="" disabled>
-                  Selecione o livro
+                  Selecione a sequência
                 </option>
                 {books.map((book) => (
                   <option key={book.id} value={book.id}>
@@ -88,7 +88,9 @@ export function MaterialForm({
               </select>
             </label>
             {!books.length && (
-              <p className="info-note">Cadastre um livro no acervo antes de criar suas unidades.</p>
+              <p className="info-note">
+                Cadastre uma sequência no acervo antes de criar suas unidades.
+              </p>
             )}
             <label className="field">
               <span>
@@ -107,7 +109,7 @@ export function MaterialForm({
                 step={1}
                 defaultValue={material?.lessonNumber}
               />
-              <small>Define a ordem dentro deste livro. Os níveis são herdados dele.</small>
+              <small>Define a ordem dentro desta sequência. Os níveis são herdados dela.</small>
             </label>
           </>
         ) : (

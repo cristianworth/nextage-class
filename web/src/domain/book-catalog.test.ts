@@ -60,7 +60,7 @@ describe('livros e principal', () => {
     expect(() => saveMaterial(state, { ...unit, bookId: state.books[0].id })).toThrow('Já existe')
     state = saveMaterial(state, { ...unit, bookId: state.books[1].id }, undefined, now)
     expect(state.materials.filter((item) => item.lessonNumber === 1)).toHaveLength(2)
-    expect(() => saveMaterial(state, unit)).toThrow('livro e número')
+    expect(() => saveMaterial(state, unit)).toThrow('sequência e número')
     expect(workspaceSchema.safeParse(state).success).toBe(true)
   })
   it('herda níveis do livro sem duplicar conteúdo e aceita apoio com vários níveis', () => {

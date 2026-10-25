@@ -1,5 +1,7 @@
 # Verificação do 1E — Livros e sequência principal
 
+> Registro histórico da entrega. O estado atual e o aceite da etapa 1 estão no [guia documental](README.md).
+
 Implementado e verificado tecnicamente em 24/10/2026 na mudança `organize-material-library-1e`. Revisão de uso com Cristian e Nara pendente no 1F.
 
 ## Resultado

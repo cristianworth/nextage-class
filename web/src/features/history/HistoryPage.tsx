@@ -128,7 +128,7 @@ export function HistoryPage({
                     <p className="muted form-hint">
                       {record.courseProgress.next
                         ? `Continuidade indicada: ${materialLabel(record.courseProgress.next)}`
-                        : 'Fim da sequência disponível neste livro.'}
+                        : 'Fim da sequência disponível.'}
                     </p>
                   </div>
                 )}

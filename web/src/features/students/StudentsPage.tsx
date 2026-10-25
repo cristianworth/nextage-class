@@ -115,9 +115,9 @@ export function StudentsPage({
                     {course.material
                       ? `Conteúdo atual: ${catalogLabel(course.material, state.books)}`
                       : course.finished
-                        ? 'Sequência do livro concluída'
+                        ? 'Fim da sequência disponível'
                         : course.unavailable
-                          ? 'Livro principal incompatível ou unidade indisponível'
+                          ? 'Sequência principal incompatível ou unidade indisponível'
                           : 'Sequência ainda não definida'}
                   </p>
                   <span>

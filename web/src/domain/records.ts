@@ -30,7 +30,7 @@ export function saveLessonRecord(
     const material = state.materials.find((item) => item.id === usedMaterialId)
     if (!material) throw new Error('O material selecionado não foi encontrado.')
     if (!materialLevels(material, state.books).includes(values.level))
-      throw new Error(`Selecione um livro/material compatível com o nível ${values.level}.`)
+      throw new Error(`Selecione um conteúdo compatível com o nível ${values.level}.`)
     materialSnapshot = snapshotMaterial(material, state.books, values.level)
   }
   const homework =

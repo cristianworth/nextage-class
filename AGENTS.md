@@ -5,7 +5,7 @@
 - Converse em português com Cristian. Use inglês natural para novos identificadores, nomes de arquivos, testes e comentários técnicos. A documentação de produto e os textos da interface começam em português.
 - Preferência atual: Cristian guia o produto, acompanha decisões e valida entregas; a assistência de IA implementa e verifica. Não reservar tarefas para Cristian programar, a menos que ele peça. Explique escolhas relevantes para que ele consiga acompanhar o desenvolvimento.
 - IA auxilia o desenvolvimento. Não adicione recursos de IA ao produto.
-- Estado atual: 1A–1E entregues tecnicamente; livros, unidades, níveis atendidos e principal por aluno implementados com dados locais v5. Homework fica como está. 1F (revisão de uso) e etapas seguintes continuam pendentes. Não confundir unidade do material com encontro da agenda.
+- Estado atual: Etapa 1 entregue; aceite do 1F por Nara informado por Cristian em 24/10/2026. Sequências didáticas incluem livros ou conteúdo autoral; apoios ficam separados e o percurso é flexível. Dados locais v5 e homework preservados. Etapa 2 e seguintes permanecem planejadas. Não confundir unidade do material com encontro da agenda.
 
 ## Sources of truth
 

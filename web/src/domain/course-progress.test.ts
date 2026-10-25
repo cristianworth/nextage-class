@@ -31,6 +31,34 @@ function fixture(): Workspace {
 }
 
 describe('sequência do aluno', () => {
+  it('permite 1 → 3 sem concluir a 2 e retoma a 2 quando selecionada depois', () => {
+    let state = saveLessonRecord(
+      fixture(),
+      'meeting-0',
+      { ...input, usedMaterialId: 'material-a1', courseCompleted: true },
+      now,
+    )
+    expect(courseSuggestion(state, 'student-sofia', 'A1').material?.lessonNumber).toBe(2)
+    state = saveLessonRecord(state, 'meeting-1', { ...input, usedMaterialId: 'material-a1-3' }, now)
+    expect(courseSuggestion(state, 'student-sofia', 'A1').material?.lessonNumber).toBe(3)
+    expect(state.records.some((record) => record.materialSnapshot?.id === 'material-a1-2')).toBe(
+      false,
+    )
+    expect(state.materials.some((material) => material.id === 'material-a1-2')).toBe(true)
+    state = {
+      ...state,
+      materials: state.materials.filter((material) => material.id !== 'material-a1-4'),
+    }
+    state = saveLessonRecord(
+      state,
+      'meeting-2',
+      { ...input, usedMaterialId: 'material-a1-3', courseCompleted: true },
+      now,
+    )
+    expect(courseSuggestion(state, 'student-sofia', 'A1').finished).toBe(true)
+    state = saveLessonRecord(state, 'meeting-3', { ...input, usedMaterialId: 'material-a1-2' }, now)
+    expect(courseSuggestion(state, 'student-sofia', 'A1').material?.lessonNumber).toBe(2)
+  })
   it('retoma a Aula 3 por vários encontros, avança para 4 e preserva a trabalhada', () => {
     let state = fixture()
     expect(courseSuggestion(state, 'student-sofia', 'A1').material?.lessonNumber).toBe(1)

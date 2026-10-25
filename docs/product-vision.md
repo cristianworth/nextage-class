@@ -1,6 +1,6 @@
 # Visão do produto
 
-Status: visão inicial validada por Cristian; implementação não iniciada.
+Status: demo do professor entregue e aceite do 1F por Nara informado por Cristian em 24/10/2026. Demo do aluno e servidor permanecem planejados.
 
 ## Problema
 

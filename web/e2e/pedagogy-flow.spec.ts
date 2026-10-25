@@ -61,7 +61,7 @@ test('prepara, registra material e homework, corrige e mantém a versão histór
   await page
     .getByRole('textbox', { name: 'Conteúdo trabalhado', exact: true })
     .fill('Perguntas para pedir direções.')
-  await page.getByRole('combobox', { name: 'Livro/material' }).selectOption(materialId)
+  await page.getByRole('combobox', { name: 'Conteúdo utilizado' }).selectOption(materialId)
   await page.getByLabel('Homework passado').fill('Exercícios 1 a 5')
   await page.getByRole('button', { name: 'Lançar aula', exact: true }).click()
   await schedule(page, '2026-10-23', 14)
@@ -82,7 +82,7 @@ test('prepara, registra material e homework, corrige e mantém a versão histór
   await page.reload()
   await openLaraAt(page, '14:00')
   await page.getByRole('button', { name: 'Lançar aula', exact: true }).click()
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue(materialId)
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue(materialId)
   await page
     .getByRole('textbox', { name: 'Conteúdo trabalhado', exact: true })
     .fill('Simulação de viagem com direções.')
@@ -105,7 +105,7 @@ test('prepara, registra material e homework, corrige e mantém a versão histór
   await expect(entry).toContainText('Turn left at the park.')
   await expect(entry).not.toContainText('A new version of the material.')
   await entry.getByRole('button', { name: /Editar registro/ }).click()
-  await expect(page.getByRole('combobox', { name: 'Livro/material' })).toHaveValue('saved')
+  await expect(page.getByRole('combobox', { name: 'Conteúdo utilizado' })).toHaveValue('saved')
   await page
     .getByRole('textbox', { name: 'Conteúdo trabalhado', exact: true })
     .fill('Conteúdo ajustado, material preservado.')

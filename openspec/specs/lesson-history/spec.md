@@ -68,12 +68,26 @@ O sistema SHALL exibir o nível como informação sem seleção no lançamento. 
 - **THEN** o registro continua A1, o cadastro permanece A2 e o formulário não oferece alteração de nível.
 
 ### Requirement: Seleção única de livro ou material
-O sistema SHALL oferecer um seletor Livro/material com itens compatíveis com o nível do registro e opção sem material, sem novo texto livre de livro/material. Novas seleções incompatíveis SHALL ser recusadas; cópia ou texto histórico SHALL poder ser mantidos mesmo fora do catálogo filtrado.
+O sistema SHALL oferecer um seletor de unidades e apoios compatíveis com o nível do registro, incluindo identificação do livro e opção sem material, sem novo texto livre. Novas seleções incompatíveis SHALL ser recusadas; cópia ou texto histórico SHALL poder ser mantidos fora do catálogo filtrado.
 
 #### Scenario: Filtrar e preservar histórico
 - **WHEN** uma aula A1 é lançada
-- **THEN** só itens A1 são oferecidos no catálogo, sem impedir manter uma versão histórica em edição.
+- **THEN** são oferecidos apoios A1 e unidades de livros que atendem A1, sem impedir manter uma versão histórica em edição.
 
 #### Scenario: Registro sem material
 - **WHEN** a professora seleciona sem material e informa conteúdo válido
 - **THEN** o registro é salvo sem exigir acervo nem alterar o progresso anterior.
+
+### Requirement: Livro histórico
+O sistema SHALL guardar identificação do livro junto da cópia da unidade e da continuidade utilizada. Alterar o catálogo ou o principal do aluno SHALL preservar o livro e conteúdo exibidos nos registros anteriores.
+
+#### Scenario: Renomear livro
+- **WHEN** um livro é renomeado depois de um lançamento
+- **THEN** o registro anterior mantém a identificação e conteúdo registrados, inclusive após edição apenas de texto e recarga.
+
+### Requirement: Categorias de conteúdo no lançamento
+O sistema SHALL identificar o campo como conteúdo utilizado e agrupar unidades pela sequência e apoios em categoria própria. SHALL manter seleção única, filtro por nível, opção sem material e preservação de conteúdo histórico.
+
+#### Scenario: Usar apoio avulso
+- **WHEN** a professora escolhe um material compatível no grupo Materiais de apoio
+- **THEN** o conteúdo é salvo no registro sem exigir uma unidade ou alterar a continuidade da sequência principal.

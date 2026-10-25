@@ -9,7 +9,7 @@ export function courseReference(
   >,
 ): CourseReference {
   if (!material.lessonNumber || !material.bookId)
-    throw new Error('Escolha uma unidade numerada de um livro.')
+    throw new Error('Escolha uma unidade numerada de uma sequência.')
   return {
     id: material.id,
     title: material.title,

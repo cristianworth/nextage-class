@@ -29,14 +29,14 @@ export function BookForm({
   }
   return (
     <Modal
-      title={book ? 'Editar livro' : 'Novo livro'}
-      subtitle="Uma sequência de unidades compartilhada entre os níveis atendidos."
+      title={book ? 'Editar sequência' : 'Nova sequência'}
+      subtitle="Organize um livro ou suas próprias aulas em uma sequência de unidades."
       onClose={onClose}
     >
       <form onSubmit={submit}>
         <label className="field">
           <span>
-            Título do livro{' '}
+            Título da sequência{' '}
             <span className="required-marker" aria-hidden="true">
               *
             </span>
@@ -45,7 +45,7 @@ export function BookForm({
         </label>
         <LevelPicker levels={levels} onChange={setLevels} />
         <p className="muted form-hint">
-          Depois de salvar, cadastre as unidades em Novo material. Editar o livro preserva os
+          Depois de salvar, cadastre as unidades em Novo material. Editar a sequência preserva os
           registros anteriores.
         </p>
         <FormError message={error} />
@@ -54,7 +54,7 @@ export function BookForm({
             Cancelar
           </button>
           <button className="button primary" type="submit">
-            Salvar livro
+            Salvar sequência
           </button>
         </div>
       </form>

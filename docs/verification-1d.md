@@ -1,5 +1,7 @@
 # Verificação do 1D — Lançamento simples
 
+> Registro histórico da entrega. O estado atual e o aceite da etapa 1 estão no [guia documental](README.md).
+
 Implementado e verificado tecnicamente em 24/10/2026 na mudança `simplify-lesson-entry-1d`. A revisão de uso com Cristian e Nara continua pendente.
 
 ## Resultado

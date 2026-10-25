@@ -9,7 +9,7 @@ export function saveBook(
 ): Workspace {
   const values = bookInputSchema.parse(input)
   const previous = state.books.find((book) => book.id === id)
-  if (id && !previous) throw new Error('Este livro não foi encontrado.')
+  if (id && !previous) throw new Error('Esta sequência não foi encontrada.')
   const book = {
     ...values,
     id: previous?.id ?? crypto.randomUUID(),

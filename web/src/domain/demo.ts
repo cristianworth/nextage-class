@@ -185,6 +185,15 @@ export function createDemo(now = new Date()): Workspace {
         createdAt,
         updatedAt: createdAt,
       },
+      {
+        id: 'material-a1-speaking',
+        title: 'Speaking warm-up',
+        level: 'A1',
+        content:
+          'Choose an object near you. Describe its color, where it is and why you use it.\n\nAsk your teacher two questions about an object they chose.',
+        createdAt,
+        updatedAt: createdAt,
+      },
     ],
     plans: [],
     series: [],
