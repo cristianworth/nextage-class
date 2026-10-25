@@ -98,7 +98,7 @@ export function createDemo(now = new Date()): Workspace {
     hour: 9,
     createdAt,
   }
-  return migrateCatalog({
+  const catalog = migrateCatalog({
     version: 4,
     materials: [
       {
@@ -216,4 +216,5 @@ export function createDemo(now = new Date()): Workspace {
       },
     ],
   })
+  return { ...catalog, version: 6, requests: [] }
 }

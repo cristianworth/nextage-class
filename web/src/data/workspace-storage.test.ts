@@ -5,6 +5,7 @@ import { occurrenceAt } from '../domain/recurrence'
 import { saveLessonRecord } from '../domain/records'
 import { saveLessonPlan } from '../domain/preparation'
 import { loadWorkspace, saveWorkspace, STORAGE_KEY } from './workspace-storage'
+import { decideSchedulingRequest, submitSchedulingRequest } from '../domain/scheduling-requests'
 
 function memoryStorage(initial?: string) {
   const entries = new Map<string, string>(initial === undefined ? [] : [[STORAGE_KEY, initial]])
@@ -18,6 +19,61 @@ function memoryStorage(initial?: string) {
 const now = new Date('2026-10-23T15:00:00Z')
 
 describe('persistência da demo', () => {
+  it('migra v5 em memória e preserva todas as coleções sem gravar durante leitura', () => {
+    const { requests: _requests, ...previous } = createDemo(now)
+    const raw = JSON.stringify({ ...previous, version: 5 })
+    const storage = memoryStorage(raw)
+    const migrated = loadWorkspace(storage, now).state!
+    expect(migrated).toEqual({ ...previous, version: 6, requests: [] })
+    expect(storage.getItem(STORAGE_KEY)).toBe(raw)
+    const requested = submitSchedulingRequest(
+      migrated,
+      'student-lara',
+      { kind: 'once', date: '2026-10-26', hour: 7, endDate: null },
+      now,
+    )
+    saveWorkspace(storage, requested)
+    expect(loadWorkspace(storage, now).state).toEqual(requested)
+    const before = storage.getItem(STORAGE_KEY)
+    const refusing = {
+      ...storage,
+      setItem: () => {
+        throw new Error('Quota exceeded')
+      },
+    }
+    expect(() =>
+      saveWorkspace(
+        refusing,
+        decideSchedulingRequest(requested, requested.requests[0].id, 'approved', now),
+      ),
+    ).toThrow('não conseguiu salvar')
+    expect(storage.getItem(STORAGE_KEY)).toBe(before)
+    saveWorkspace(
+      storage,
+      decideSchedulingRequest(requested, requested.requests[0].id, 'approved', now),
+    )
+    expect(loadWorkspace(storage, now).state?.requests[0].status).toBe('approved')
+  })
+  it('recusa pedidos órfãos, duplicados e decisões sem aula criada preservando os dados brutos', () => {
+    const state = submitSchedulingRequest(
+      createDemo(now),
+      'student-lara',
+      { kind: 'weekly', date: '2026-10-26', hour: 7, endDate: null },
+      now,
+    )
+    const request = state.requests[0]
+    for (const requests of [
+      [{ ...request, studentId: 'missing' }],
+      [request, { ...request, id: 'another' }],
+      [{ ...request, status: 'approved', decidedAt: now.toISOString(), bookingId: 'missing' }],
+      [{ ...request, status: 'declined', decidedAt: null }],
+    ]) {
+      const raw = JSON.stringify({ ...state, requests })
+      const storage = memoryStorage(raw)
+      expect(loadWorkspace(storage, now).state).toBeNull()
+      expect(storage.getItem(STORAGE_KEY)).toBe(raw)
+    }
+  })
   it('migra v3 sem presumir ordem ou conclusão e preserva cópias, homework e plano', () => {
     let state = createDemo(now)
     state.materials = state.materials.map(
@@ -43,12 +99,12 @@ describe('persistência da demo', () => {
       { materialId: 'material-b1', notes: 'Planejado' },
       now,
     )
-    const { books: _books, ...previous } = state
+    const { books: _books, requests: _requests, ...previous } = state
     const legacy = { ...previous, version: 3 }
     const raw = JSON.stringify(legacy)
     const storage = memoryStorage(raw)
     const migrated = loadWorkspace(storage, now).state!
-    expect(migrated.version).toBe(5)
+    expect(migrated.version).toBe(6)
     expect(migrated.books).toEqual([])
     expect(migrated.records).toEqual(state.records)
     expect(migrated.plans).toEqual(state.plans)
@@ -65,6 +121,7 @@ describe('persistência da demo', () => {
       materials: _materials,
       plans: _plans,
       books: _books,
+      requests: _requests,
       ...data
     } = createDemo(now)
     const legacy = { ...data, version: 1 }
@@ -73,7 +130,8 @@ describe('persistência da demo', () => {
     const migrated = loadWorkspace(storage, now).state!
     expect(migrated).toEqual({
       ...legacy,
-      version: 5,
+      version: 6,
+      requests: [],
       books: [],
       students: legacy.students.map((student) => ({ ...student, primaryBookId: null })),
       series: [],
@@ -115,13 +173,20 @@ describe('persistência da demo', () => {
       'single',
       now,
     )
-    const { materials: _materials, plans: _plans, books: _books, ...data } = state
+    const {
+      materials: _materials,
+      plans: _plans,
+      books: _books,
+      requests: _requests,
+      ...data
+    } = state
     const raw = JSON.stringify({ ...data, version: 2 })
     const storage = memoryStorage(raw)
     const migrated = loadWorkspace(storage, now).state!
     expect(migrated).toEqual({
       ...data,
-      version: 5,
+      version: 6,
+      requests: [],
       books: [],
       materials: [],
       plans: [],

@@ -1,4 +1,13 @@
-import { addDays, daysBetween, formatDate, formatHour } from './dates'
+import {
+  addDays,
+  daysBetween,
+  formatDate,
+  formatHour,
+  hasLessonStarted,
+  HOURS,
+  isValidDate,
+  isWeekday,
+} from './dates'
 import type { Workspace } from './models'
 import { occurrenceAt } from './recurrence'
 
@@ -96,4 +105,32 @@ export function assertAvailable(state: Workspace) {
         )
     }
   }
+}
+
+export function availableRequestHours(
+  state: Workspace,
+  input: { date: string; kind: 'once' | 'weekly'; endDate: string | null },
+  now = new Date(),
+): number[] {
+  if (
+    !isValidDate(input.date) ||
+    !isWeekday(input.date) ||
+    (input.endDate && (!isValidDate(input.endDate) || input.endDate < input.date)) ||
+    (input.kind === 'once' && input.endDate !== null)
+  )
+    return []
+  const rules = occupancyRules(state)
+  return HOURS.filter((hour) => {
+    if (hasLessonStarted(input.date, hour, now)) return false
+    const candidate: Occupancy = {
+      label: '',
+      first: input.date,
+      last: input.kind === 'once' ? input.date : (input.endDate ?? LAST_DATE),
+      weekly: input.kind === 'weekly',
+      startHour: hour,
+      endHour: hour + 1,
+      excluded: new Set(),
+    }
+    return !rules.some((rule) => intersect(candidate, rule) !== undefined)
+  })
 }

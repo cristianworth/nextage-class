@@ -18,7 +18,7 @@ Uma professora real valida os fluxos. O sistema que ela utiliza hoje ajuda a ent
 2. Antes da aula, consultar horário, conteúdo anterior, homework e material planejado.
 3. Depois da aula, registrar presença ou falta, conteúdo e observações.
 4. Consultar o histórico e preparar a próxima aula.
-5. Na etapa do portal, permitir ao aluno consultar suas aulas e o acervo do seu nível.
+5. Na etapa do portal, permitir ao aluno consultar suas aulas e o acervo do seu nível, além de pedir horários sujeitos à aprovação da professora.
 
 ## Objetivos do projeto
 

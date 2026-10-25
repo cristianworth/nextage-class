@@ -35,12 +35,16 @@ describe('livros e principal', () => {
       { ...record, usedMaterialId: 'material-a1-3' },
       now,
     )
-    const { books: _books, ...data } = state
-    const migrated = migrateCatalog({
-      ...data,
-      version: 4,
-      materials: data.materials.map((item) => ({ ...item, level: 'A2' })),
-    })
+    const { books: _books, requests: _requests, ...data } = state
+    const migrated = {
+      ...migrateCatalog({
+        ...data,
+        version: 4,
+        materials: data.materials.map((item) => ({ ...item, level: 'A2' })),
+      }),
+      version: 6 as const,
+      requests: [],
+    }
     expect(migrated.books.some((book) => book.id === 'legacy-book/A1')).toBe(true)
     expect(migrated.students.find((student) => student.id === 'student-sofia')?.primaryBookId).toBe(
       'legacy-book/A1',
@@ -187,7 +191,7 @@ describe('livros e principal', () => {
       now,
     )
     state = setHomeworkCorrected(state, state.records[0].id, true, now)
-    const { books: _books, ...data } = state
+    const { books: _books, requests: _requests, ...data } = state
     const stripBook = <T extends { bookId?: string; bookTitle?: string }>(item: T) => {
       const { bookId: _id, bookTitle: _title, ...rest } = item
       return rest
@@ -214,7 +218,7 @@ describe('livros e principal', () => {
     expect(result.error).toBeNull()
     expect(raw).toBe(original)
     const migrated = result.state!
-    expect(migrated.version).toBe(5)
+    expect(migrated.version).toBe(6)
     expect(courseSuggestion(migrated, 'student-sofia', 'A1').material?.id).toBe('material-a1-3')
     expect(migrated.records[0].homework).toEqual(state.records[0].homework)
     expect(migrated.lessons).toEqual(state.lessons)

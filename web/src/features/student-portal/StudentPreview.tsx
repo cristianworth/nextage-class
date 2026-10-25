@@ -2,6 +2,8 @@ import { useState } from 'react'
 import type { Workspace } from '../../domain/models'
 import { studentOverview } from '../../domain/student-overview'
 import { studentLibrary } from '../../domain/student-library'
+import { availableRequestHours } from '../../domain/availability'
+import { studentRequests, submitSchedulingRequest } from '../../domain/scheduling-requests'
 import { EmptyState } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
 import { StudentPortal } from './StudentPortal'
@@ -10,10 +12,12 @@ export function StudentPreview({
   state,
   now,
   onBack,
+  onCommit,
 }: {
   state: Workspace
   now: Date
   onBack: () => void
+  onCommit: (next: Workspace) => void
 }) {
   const [studentId, setStudentId] = useState(state.students[0]?.id ?? '')
   const view = studentOverview(state, studentId, now)
@@ -67,7 +71,17 @@ export function StudentPreview({
       </section>
       <main id="student-main">
         {view && library ? (
-          <StudentPortal key={view.student.id} view={view} library={library} now={now} />
+          <StudentPortal
+            key={view.student.id}
+            view={view}
+            library={library}
+            now={now}
+            requests={{
+              items: studentRequests(state, studentId),
+              availableHours: (input) => availableRequestHours(state, input, now),
+              onSubmit: (input) => onCommit(submitSchedulingRequest(state, studentId, input)),
+            }}
+          />
         ) : (
           <div className="panel student-empty">
             <EmptyState

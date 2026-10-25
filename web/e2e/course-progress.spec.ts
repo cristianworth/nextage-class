@@ -119,6 +119,7 @@ test('migra v3 sem numerar materiais ou inventar conclusão e permite organizar 
   const raw = await page.evaluate((key) => {
     const data = JSON.parse(localStorage.getItem(key)!)
     data.version = 3
+    delete data.requests
     delete data.books
     for (const material of data.materials) {
       delete material.lessonNumber
@@ -151,7 +152,7 @@ test('migra v3 sem numerar materiais ou inventar conclusão e permite organizar 
   await page.getByRole('combobox', { name: 'Sequência', exact: true }).selectOption(bookId)
   await page.getByRole('spinbutton', { name: /Número da unidade/ }).fill('3')
   await page.getByRole('button', { name: 'Salvar material', exact: true }).click()
-  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).version, key)).toBe(5)
+  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).version, key)).toBe(6)
   await navigate(page, 'Alunos')
   await page.getByRole('button', { name: 'Editar Sofia Lima', exact: true }).click()
   await page

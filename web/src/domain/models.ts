@@ -311,8 +311,8 @@ export const bookSchema = bookInputSchema.extend({
   createdAt: timestampSchema,
   updatedAt: timestampSchema,
 })
-export const workspaceSchema = pedagogyWorkspaceSchema
-  .safeExtend({ version: z.literal(5), books: z.array(bookSchema) })
+const catalogWorkspaceSchema = pedagogyWorkspaceSchema
+  .safeExtend({ books: z.array(bookSchema) })
   .superRefine((state, context) => {
     const books = new Map(state.books.map((book) => [book.id, book]))
     const numbers = state.materials
@@ -359,6 +359,64 @@ export const workspaceSchema = pedagogyWorkspaceSchema
       })
   })
 
+export const workspaceV5Schema = catalogWorkspaceSchema.safeExtend({ version: z.literal(5) })
+
+export const requestInputSchema = lessonInputSchema
+  .omit({ studentId: true })
+  .extend({ kind: z.enum(['once', 'weekly']), endDate: optionalEndDate })
+  .refine((input) => input.kind === 'weekly' || input.endDate === null, {
+    message: 'Aula avulsa não possui data de término.',
+  })
+  .refine((input) => !input.endDate || input.endDate >= input.date, {
+    message: 'O término não pode ser anterior à primeira aula.',
+  })
+
+export const schedulingRequestSchema = requestInputSchema.safeExtend({
+  id: idSchema,
+  studentId: idSchema,
+  createdAt: timestampSchema,
+  status: z.enum(['pending', 'approved', 'declined']),
+  decidedAt: timestampSchema.nullable(),
+  bookingId: idSchema.nullable(),
+})
+
+export const workspaceSchema = catalogWorkspaceSchema
+  .safeExtend({ version: z.literal(6), requests: z.array(schedulingRequestSchema) })
+  .superRefine((state, context) => {
+    const pending = state.requests.filter((request) => request.status === 'pending')
+    const bookings = state.requests.flatMap((request) =>
+      request.bookingId ? [request.bookingId] : [],
+    )
+    const valid =
+      new Set(state.requests.map((request) => request.id)).size === state.requests.length &&
+      new Set(bookings).size === bookings.length &&
+      new Set(
+        pending.map(
+          (request) =>
+            `${request.studentId}:${request.kind}:${request.date}:${request.hour}:${request.endDate}`,
+        ),
+      ).size === pending.length &&
+      state.requests.every((request) => {
+        if (!state.students.some((student) => student.id === request.studentId)) return false
+        if (request.status === 'pending')
+          return request.decidedAt === null && request.bookingId === null
+        if (!request.decidedAt || request.decidedAt < request.createdAt) return false
+        if (request.status === 'declined') return request.bookingId === null
+        const booking =
+          request.kind === 'once'
+            ? state.lessons.find((lesson) => lesson.id === request.bookingId && !lesson.seriesId)
+            : state.series.find((series) => series.id === request.bookingId)
+        return !!booking && booking.studentId === request.studentId
+      })
+    if (!valid)
+      context.addIssue({
+        code: 'custom',
+        message: 'As solicitações possuem referências ou decisões inconsistentes.',
+      })
+  })
+
+export type SchedulingRequestInput = z.infer<typeof requestInputSchema>
+export type SchedulingRequest = z.infer<typeof schedulingRequestSchema>
 export type Book = z.infer<typeof bookSchema>
 export type BookInput = z.infer<typeof bookInputSchema>
 export type StudentInput = z.infer<typeof studentInputSchema>

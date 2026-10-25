@@ -50,7 +50,7 @@ A demo deve poder voltar aos exemplos iniciais. No piloto com dados reais, auten
 
 Preservar a demo fictícia para o portfólio após a evolução do produto. Isso não obriga a reusar todos os detalhes internos nem a prometer uma migração automática do armazenamento local.
 
-O formato local atual v5 mantém sequências, níveis atendidos, preparação e resultado pedagógico. O progresso é consultado pela cronologia dos encontros, por aluno/sequência; não há ponteiro alterado por ordem de gravação. Material utilizado e continuidade preservam contexto histórico. Planejamentos continuam por ocorrência. Ver [pedagogy.md](pedagogy.md) e [course-progress.md](course-progress.md).
+O formato local atual v6 mantém sequências, níveis atendidos, preparação, resultado pedagógico e solicitações. O progresso é consultado pela cronologia dos encontros, por aluno/sequência; não há ponteiro alterado por ordem de gravação. Material utilizado e continuidade preservam contexto histórico. Planejamentos continuam por ocorrência. Ver [pedagogy.md](pedagogy.md) e [course-progress.md](course-progress.md).
 
 ## O que não vamos antecipar
 
@@ -58,12 +58,20 @@ Microserviços, múltiplas organizações, infraestrutura de cobrança, editor d
 
 ## Consulta do aluno — 2A
 
-A função de domínio studentOverview produz um contrato explícito de leitura por aluno, reutilizando as consultas públicas da agenda. Exclui texto livre do lançamento, motivo de falta, planejamento e dados complementares do cadastro. A tela StudentPortal recebe somente esse contrato e nenhum callback de gravação. StudentPreview controla as ferramentas da simulação, com seleção apenas em memória. O documento v5 e o fluxo da professora são preservados.
+A função de domínio studentOverview produz um contrato explícito de leitura por aluno, reutilizando as consultas públicas da agenda. Exclui texto livre do lançamento, motivo de falta, planejamento e dados complementares do cadastro. A consulta de aulas/histórico recebe somente esse contrato e não permite edição. StudentPreview controla as ferramentas da simulação, com seleção apenas em memória. O fluxo da professora é preservado.
 
-A redução de campos permite verificar o que a interface recebe, mas não oferece autorização real: a demo ainda mantém o documento completo no navegador e pode simular qualquer aluno fictício. O piloto exigirá identidade e política de acesso no servidor. Acervo completo e solicitações permanecem recortes posteriores.
+A redução de campos permite verificar o que a interface recebe, mas não oferece autorização real: a demo ainda mantém o documento completo no navegador e pode simular qualquer aluno fictício. O piloto exigirá identidade e política de acesso no servidor. Acervo e solicitações usam contratos separados, descritos abaixo.
 
 ## Acervo do aluno — 2B
 
 studentLibrary produz outro contrato explícito de leitura, reutilizando materialsForLevel/materialLevels e courseSuggestion. Retorna somente conteúdo compatível com o nível atual e metadados públicos das sequências, com cópias dos arrays de níveis. Não entrega registros, planos ou dados pessoais à tela de acervo.
 
-StudentLibrary recebe esse contrato, controla busca/filtro/leitura apenas em memória e não recebe callbacks de gravação. StudentPreview compõe ambas as consultas com o mesmo aluno; a chave do portal descarta o contexto ao trocar de pessoa. O formato local permanece v5. O material histórico do 2A não depende do filtro do catálogo atual.
+StudentLibrary recebe esse contrato, controla busca/filtro/leitura apenas em memória e não recebe callbacks de gravação. StudentPreview compõe as consultas com o mesmo aluno; a chave do portal descarta o contexto ao trocar de pessoa. O material histórico do 2A não depende do filtro do catálogo atual.
+
+## Solicitações — 2C
+
+availableRequestHours pertence ao módulo de disponibilidade e compara candidatos com as mesmas regras de ocupação da agenda, construídas uma vez por consulta. Retorna somente horas livres; não entrega nomes ou motivos de bloqueio. Horário semanal é verificado até o término informado ou sem término, sem horizonte artificial.
+
+studentRequests produz um contrato explícito de pedidos próprios. StudentPreview vincula o aluno selecionado ao comando de envio; StudentRequests recebe apenas pedidos, consulta de horas livres e callback de solicitação. A tela não recebe Workspace nem comando de agendamento/decisão. As outras abas continuam em leitura.
+
+decideSchedulingRequest reutiliza scheduleLesson/scheduleWeekly e acrescenta a decisão ao mesmo documento. Não é uma transação distribuída: a gravação local válida antecede a troca do estado exibido. Formato v6 acrescenta requests; os contratos v1–v5 seguem disponíveis para migração em memória, sem escrita durante leitura. Servidor e controle de concorrência real serão definidos na etapa 3.

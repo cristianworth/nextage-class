@@ -8,7 +8,7 @@ Revisado em 25/10/2026 com as decisões da etapa 1. Cada entrega distingue imple
 | --- | --- | --- |
 | 0 — Fundação | Visão, decisões, Git, stack e OpenSpec | Concluída |
 | 1 — Rotina do professor | Alunos, agenda, lançamento, preparação, sequências autorais e apoio | Entregue; aceite de Nara informado em 24/10/2026. [Fechamento](teaching-sequences.md) |
-| 2 — Demo do aluno | Consulta das próprias aulas, histórico permitido, homework e acervo; depois solicitações | 2A/2B entregues tecnicamente; revisão de uso pendente. 2C/2D planejados, com perfis explicitamente simulados |
+| 2 — Demo do aluno | Consulta das próprias aulas, histórico permitido, homework, acervo e solicitações | 2A/2B/2C entregues tecnicamente; revisão integrada de uso no 2D pendente, com perfis explicitamente simulados |
 | 3 — Piloto com servidor | API ASP.NET Core/C#, PostgreSQL, contas e autorização, backup e recuperação | Usar dados reais somente após acesso restrito e restauração verificada. Preservar demo fictícia para portfólio |
 | 4 — Integrações | Reuniões/calendário e lembretes conforme necessidade | Validar contas, permissões, falhas e valor no uso; link manual atende até lá |
 | 5 — Evolução pedagógica | Arquivos, áudio, apresentação e melhorias justificadas pelo uso | Sem compromisso de implementar todas as ideias; especificar cada recorte antes |
@@ -22,7 +22,7 @@ A etapa 2 começa por leitura para validar o conteúdo compartilhado e sua apres
 | --- | --- | --- |
 | **2A — Consulta do aluno (entregue tecnicamente)** | Simulação de aluno, próximas aulas, link próprio, histórico permitido e homework em leitura | Material e homework compartilhados; conteúdo/observações livres reservados. Consulta própria sem edição ou gravação |
 | **2B — Acervo para leitura (entregue tecnicamente)** | Unidades e apoios compatíveis, sequência atual e leitura dos conteúdos | Somente nível atual; versões antigas usadas em aula continuam no histórico. Abrir texto não marca leitura/conclusão nem altera progresso |
-| **2C — Solicitações de horário** | Solicitar horário e acompanhar decisão; professora aprova/recusa | Definir avulsa/recorrente e regras de aprovação antes de depender delas. Expor disponibilidade sem identificar outros alunos; aprovação revalida conflitos |
+| **2C — Solicitações de horário (entregue tecnicamente)** | Combinar pedidos semanais/avulsos, acompanhar decisão; professora aprova/recusa cada horário | Pendente não reserva. Disponibilidade sem dados de outros alunos; aprovação revalida conflitos e cria aula/série uma única vez |
 | **2D — Revisão dos dois lados** | Percorrer professora → aluno → professora, recarga e celular | Validação de uso com Nara/Cristian; corrigir o que impedir o fluxo antes do servidor |
 
 ## Trabalho do 2A — A1 a A4 concluídos tecnicamente
@@ -42,7 +42,14 @@ A simulação não equivale a autenticação. A interface do aluno recebe soment
 2. **B2 — Meu acervo:** unidades agrupadas por sequência, apoios, busca/tipo e leitura em painel, sem edição ou gravação. Troca de aluno descarta o contexto anterior.
 3. **B3 — Revisão:** acesso após promoção, cópias históricas, conteúdo literal, ordem numérica, recarga, celular e regressões. Ver [verification-2b.md](verification-2b.md).
 
-O próximo recorte é o **2C**, começando pelas regras de solicitação e aprovação antes de implementar ações que alterem a agenda.
+## Trabalho do 2C — C1 a C4
+
+1. **C1 — Regras e persistência:** pedidos independentes, avulsos ou semanais com término opcional; disponibilidade em todo o período; decisão única; migração v1–v5 para v6 sem reset. Contrato em [scheduling-requests.md](scheduling-requests.md).
+2. **C2 — Pedido pelo aluno:** horas livres, envio e acompanhamento próprio; combinação de dias com um envio por horário, sem reserva enquanto pendente.
+3. **C3 — Decisão pela professora:** lista de pendências, filtros, aprovação/recusa por pedido, nova conferência de conflito e preservação do estado em erro.
+4. **C4 — Revisão técnica integrada:** testes de ambos os lados, recarga, falhas e celular; evidências em [verification-2c.md](verification-2c.md).
+
+O próximo recorte é o **2D — revisão integrada de uso**, com Cristian/Nara: percorrer consulta, acervo, solicitação e decisão, incluindo alteração de horário pela professora. Corrigir impedimentos observados antes de definir o piloto com servidor. Verificação automatizada não representa aceite humano.
 
 ## O que permanece simples
 

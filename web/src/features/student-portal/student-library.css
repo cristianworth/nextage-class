@@ -123,15 +123,3 @@
     font-size: 17px;
   }
 }
-@media (max-width: 480px) {
-  .student-navigation {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .student-navigation .button {
-    min-width: 0;
-    flex-direction: column;
-    padding: 10px 4px;
-    font-size: 11px;
-  }
-}

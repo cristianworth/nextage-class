@@ -37,6 +37,8 @@ import { RescheduleForm } from '../features/agenda/RescheduleForm'
 import { RecordForm } from '../features/history/RecordForm'
 import { HistoryPage } from '../features/history/HistoryPage'
 import { StudentPreview } from '../features/student-portal/StudentPreview'
+import { TeacherRequestsPage } from '../features/scheduling-requests/TeacherRequestsPage'
+import { decideSchedulingRequest } from '../domain/scheduling-requests'
 
 export function App() {
   const [page, setPage] = useState<Page>('agenda')
@@ -107,7 +109,14 @@ export function App() {
   }
 
   if (state && studentPreview)
-    return <StudentPreview state={state} now={now} onBack={() => setStudentPreview(false)} />
+    return (
+      <StudentPreview
+        state={state}
+        now={now}
+        onCommit={commit}
+        onBack={() => setStudentPreview(false)}
+      />
+    )
 
   return (
     <Shell
@@ -147,6 +156,14 @@ export function App() {
                 onOpen={setSelectedLesson}
                 onBlock={setBlockPrefill}
                 onOpenBlock={setSelectedBlock}
+              />
+            )}
+            {page === 'requests' && (
+              <TeacherRequestsPage
+                requests={state.requests}
+                students={state.students}
+                now={now}
+                onDecide={(id, decision) => commit(decideSchedulingRequest(state, id, decision))}
               />
             )}
             {page === 'students' && (

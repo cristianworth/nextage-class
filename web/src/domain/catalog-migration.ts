@@ -1,7 +1,9 @@
 import type { z } from 'zod'
-import type { Workspace, workspaceV4Schema } from './models'
+import type { workspaceV5Schema, workspaceV4Schema } from './models'
 
-export function migrateCatalog(previous: z.infer<typeof workspaceV4Schema>): Workspace {
+export function migrateCatalog(
+  previous: z.infer<typeof workspaceV4Schema>,
+): z.infer<typeof workspaceV5Schema> {
   const levels = [
     ...new Set(
       [

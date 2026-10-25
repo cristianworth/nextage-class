@@ -38,11 +38,14 @@ Esta lista separa respostas incorporadas e detalhes ainda abertos. Os exemplos s
 
 - LATER-11: acervo somente do nível atual; materiais antigos já utilizados permanecem nas cópias do histórico (DEC-51).
 
+## Resolvidas para o 2C
+
+- LATER-12: avulsas e vários horários semanais combináveis, com aprovação obrigatória por pedido e sem reserva enquanto pendente (DEC-53/54).
+
 ## Abertas
 
 | ID | Quando resolver | Pergunta |
 | --- | --- | --- |
-| LATER-12 | Solicitação 2C | “Aluno pede uma aula avulsa ou um horário semanal? Você sempre confirma antes de entrar na agenda?” |
 | LATER-14 | Piloto real | Confirmar forma de convite/login, recuperação de conta, dados necessários, retenção, backup e recuperação. |
 | LATER-15 | Integração Google | “Qual conta você usa para dar aula? Como organiza os links hoje?” Validar permissões, falhas e a estratégia de criação/manutenção do link. |
 

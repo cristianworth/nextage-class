@@ -5,6 +5,7 @@ import {
   previousWorkspaceSchema,
   pedagogyWorkspaceV3Schema,
   workspaceV4Schema,
+  workspaceV5Schema,
   workspaceSchema,
 } from '../domain/models'
 import type { Workspace } from '../domain/models'
@@ -33,7 +34,11 @@ export function loadWorkspace(storage: StoragePort, now = new Date()): LoadResul
         ? { ...pedagogy.data, version: 4 }
         : value
     const v4 = workspaceV4Schema.safeParse(current)
-    const state = workspaceSchema.parse(v4.success ? migrateCatalog(v4.data) : current)
+    const catalog = v4.success ? migrateCatalog(v4.data) : current
+    const v5 = workspaceV5Schema.safeParse(catalog)
+    const state = workspaceSchema.parse(
+      v5.success ? { ...v5.data, version: 6, requests: [] } : catalog,
+    )
     assertAvailable(state)
     return { state, error: null }
   } catch {

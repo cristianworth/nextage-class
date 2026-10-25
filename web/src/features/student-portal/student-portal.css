@@ -98,6 +98,19 @@
   display: flex;
   gap: 12px;
   margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .student-surface .student-navigation {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .student-surface .student-navigation .button {
+    min-width: 0;
+    padding: 12px 8px;
+    font-size: 12px;
+  }
 }
 .student-overview-grid {
   display: grid;

@@ -170,6 +170,7 @@ test('migração v4 preserva progresso e homework corrigido, sem escrever durant
     const data = JSON.parse(localStorage.getItem(key)!)
     delete data.books
     data.version = 4
+    delete data.requests
     for (const student of data.students) delete student.primaryBookId
     for (const material of data.materials) {
       delete material.bookId
@@ -205,7 +206,7 @@ test('migração v4 preserva progresso e homework corrigido, sem escrever durant
     .fill('Texto corrigido após migração.')
   await page.getByRole('button', { name: 'Salvar registro', exact: true }).click()
   const state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key)
-  expect(state.version).toBe(5)
+  expect(state.version).toBe(6)
   expect(
     state.records.find(
       (record: { content: string }) => record.content === 'Texto corrigido após migração.',

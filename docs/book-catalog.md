@@ -23,7 +23,7 @@ Apoio, falta ou lançamento sem material preservam a continuidade. Usar conteúd
 
 ## Dados e limites
 
-Formato local v5; leitura valida e migra v1–v4 em memória, sem gravar ou reiniciar automaticamente. Identificadores internos `Book`/`bookId` representam a sequência, incluindo material autoral; foram preservados para manter compatibilidade. Nenhum campo de livro comercial é exigido.
+O acervo foi introduzido no formato local v5; o formato atual v6 acrescenta solicitações e valida/migra v1–v5 em memória, sem gravar ou reiniciar automaticamente. Identificadores internos `Book`/`bookId` representam a sequência, incluindo material autoral; foram preservados para manter compatibilidade. Nenhum campo de livro comercial é exigido.
 
 A demo inclui dez textos próprios: quatro unidades A1 e apoios, incluindo **Speaking warm-up** para A1. Dados existentes recebem somente exemplos ausentes por **Acervo → Adicionar exemplos**, sem sobrescrever conteúdo.
 

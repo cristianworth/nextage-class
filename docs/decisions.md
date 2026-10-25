@@ -73,6 +73,8 @@ Atualizado em 25/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-50 | O 2A é uma simulação explícita, sem edição pelo aluno. Seleção de perfil e navegação ficam em memória; não gravam ou alteram o documento local. Identidade/autorização reais permanecem na etapa com servidor. |
 | DEC-51 | No 2B, Meu acervo oferece apenas conteúdo compatível com o nível atual, inclusive sequências e apoios compartilhados entre níveis. Após promoção, materiais de níveis anteriores ficam disponíveis somente pelas cópias das aulas no histórico. Confirmado em 25/10/2026. |
 | DEC-52 | Abrir material no acervo não marca leitura/conclusão, não avança sequência e não altera homework. O progresso continua sendo informado pela professora no lançamento. |
+| DEC-53 | No 2C, o aluno pode combinar vários horários semanais e aulas avulsas. Ex.: segunda/terça às 10h e quarta às 11h, mais uma aula avulsa. Cada horário é um pedido independente; avulsa é o padrão e término semanal é opcional. Confirmado em 25/10/2026. |
+| DEC-54 | Todo pedido exige aprovação da professora. Pendente não reserva horário nem altera a agenda. A aprovação verifica novamente conflitos antes de criar uma aula ou série. Confirmado em 25/10/2026. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 

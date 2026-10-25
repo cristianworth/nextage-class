@@ -551,15 +551,18 @@ small {
     display: none;
   }
   .nav-section nav {
-    display: flex;
-    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 2px;
   }
   .nav-item {
     justify-content: center;
     margin: 0;
-    padding: 12px;
-    font-size: 12px;
-    gap: 7px;
+    padding: 10px 2px;
+    font-size: 10.5px;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
     border-radius: 8px 8px 0 0;
   }
   .nav-item svg {

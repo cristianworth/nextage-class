@@ -2,6 +2,8 @@ import { useState } from 'react'
 import type { StudentOverview } from '../../domain/student-overview'
 import type { StudentLibraryView } from '../../domain/student-library'
 import { StudentLibrary } from './StudentLibrary'
+import { StudentRequests } from '../scheduling-requests/StudentRequests'
+import type { StudentRequestActions } from '../scheduling-requests/StudentRequests'
 import { ATTENDANCE } from '../../domain/models'
 import { formatDate, formatTimestamp, hasLessonStarted, lessonTime } from '../../domain/dates'
 import { matchesSearch } from '../../domain/students'
@@ -13,10 +15,12 @@ export function StudentPortal({
   view,
   library,
   now,
+  requests,
 }: {
   view: StudentOverview
   library: StudentLibraryView
   now: Date
+  requests: StudentRequestActions
 }) {
   const [page, setPage] = useState('agenda')
   const [search, setSearch] = useState('')
@@ -68,6 +72,14 @@ export function StudentPortal({
         >
           <Icon name="library" size={17} />
           Meu acervo
+        </button>
+        <button
+          className={`button ${page === 'requests' ? 'primary' : ''}`}
+          aria-current={page === 'requests' ? 'page' : undefined}
+          onClick={() => setPage('requests')}
+        >
+          <Icon name="clock" size={17} />
+          Solicitações
         </button>
       </nav>
       {page === 'agenda' ? (
@@ -145,6 +157,8 @@ export function StudentPortal({
         </div>
       ) : page === 'library' ? (
         <StudentLibrary view={library} />
+      ) : page === 'requests' ? (
+        <StudentRequests {...requests} now={now} />
       ) : (
         <section aria-label="Histórico do aluno">
           <div className="student-section-heading">
