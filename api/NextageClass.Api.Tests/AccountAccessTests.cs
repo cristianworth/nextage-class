@@ -23,6 +23,22 @@ public sealed class AccessDatabase : IAsyncLifetime
         ?? throw new InvalidOperationException("Defina NEXTAGE_TEST_CONNECTION para os testes com PostgreSQL real.");
     private readonly List<Guid> users = [];
     private readonly List<string> students = [];
+    private Guid? teacherId;
+
+    public void TrackStudent(string id) => students.Add(id);
+
+    public async Task<Guid> AddTeacherAsync()
+    {
+        if (teacherId is not null) return teacherId.Value;
+        var id = Guid.NewGuid();
+        await using var source = NpgsqlDataSource.Create(Connection);
+        await using var command = source.CreateCommand("INSERT INTO app.access_profiles(user_id,role,display_name) VALUES ($1,'teacher','Test teacher')");
+        command.Parameters.AddWithValue(id);
+        await command.ExecuteNonQueryAsync();
+        users.Add(id);
+        teacherId = id;
+        return id;
+    }
 
     public async Task InitializeAsync()
     {
@@ -54,17 +70,25 @@ public sealed class AccessDatabase : IAsyncLifetime
     {
         await using var source = NpgsqlDataSource.Create(Connection);
         await using var batch = source.CreateBatch();
-        var profiles = new NpgsqlBatchCommand("DELETE FROM app.access_profiles WHERE user_id = ANY($1)");
+        var invitations = new NpgsqlBatchCommand("DELETE FROM app.student_invitations WHERE student_id = ANY($1)");
+        invitations.Parameters.AddWithValue(students.ToArray());
+        var profiles = new NpgsqlBatchCommand("DELETE FROM app.access_profiles WHERE user_id = ANY($1) OR student_id = ANY($2)");
         profiles.Parameters.AddWithValue(users.ToArray());
+        profiles.Parameters.AddWithValue(students.ToArray());
         var registrations = new NpgsqlBatchCommand("DELETE FROM app.students WHERE id = ANY($1)");
         registrations.Parameters.AddWithValue(students.ToArray());
+        batch.BatchCommands.Add(invitations);
         batch.BatchCommands.Add(profiles);
         batch.BatchCommands.Add(registrations);
         await batch.ExecuteNonQueryAsync();
     }
 }
 
-public sealed class AccountAccessTests(AccessDatabase database) : IClassFixture<AccessDatabase>
+[CollectionDefinition("ApiDatabase")]
+public sealed class ApiDatabaseCollection : ICollectionFixture<AccessDatabase>;
+
+[Collection("ApiDatabase")]
+public sealed class AccountAccessTests(AccessDatabase database)
 {
     private const string Issuer = "https://test-project.supabase.co/auth/v1";
 
@@ -124,15 +148,17 @@ public sealed class AccountAccessTests(AccessDatabase database) : IClassFixture<
         Assert.DoesNotContain("OTHER_STUDENT", await response.Content.ReadAsStringAsync());
     }
 
-    private sealed class AccessApplication : WebApplicationFactory<Program>
+    public sealed class AccessApplication : WebApplicationFactory<Program>
     {
         private readonly string connection;
         private readonly ECDsa privateKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         private readonly ECDsaSecurityKey signingKey;
+        private readonly Action<IServiceCollection>? configure;
 
-        public AccessApplication(string connection)
+        public AccessApplication(string connection, Action<IServiceCollection>? configure = null)
         {
             this.connection = connection;
+            this.configure = configure;
             signingKey = new ECDsaSecurityKey(privateKey) { KeyId = Guid.NewGuid().ToString() };
         }
 
@@ -140,6 +166,7 @@ public sealed class AccountAccessTests(AccessDatabase database) : IClassFixture<
         {
             builder.UseEnvironment("Testing")
                 .UseSetting("Supabase:Url", "https://test-project.supabase.co")
+                .UseSetting("Supabase:SecretKey", "")
                 .UseSetting("ConnectionStrings:NextageClass", connection);
             builder.ConfigureServices(services => services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
@@ -147,6 +174,7 @@ public sealed class AccountAccessTests(AccessDatabase database) : IClassFixture<
                 configuration.SigningKeys.Add(new ECDsaSecurityKey(ECDsa.Create(privateKey.ExportParameters(false))) { KeyId = signingKey.KeyId });
                 options.ConfigurationManager = new StaticConfigurationManager<OpenIdConnectConfiguration>(configuration);
             }));
+            if (configure is not null) builder.ConfigureServices(configure);
         }
 
         public string Token(string id, string? invalid = null)

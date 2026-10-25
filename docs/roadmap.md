@@ -69,6 +69,12 @@ Cristian escolheu Supabase para banco e autenticação. A base PostgreSQL/Npgsql
 
 Divisão do 3B: **B1** contrato e validação de identidade/permissões no servidor; **B2** vínculo com cadastro e convite restrito à professora; **B3** telas de entrada/ativação/recuperação e sessão; **B4** conferência local e com o projeto Supabase, incluindo acessos negados. O cadastro mínimo necessário ao vínculo entra junto de B2; o restante da rotina permanece no 3C. Revisar o plano ao completar B3, antes da conferência integrada.
 
+### Reavaliação após B3
+
+B1–B3 estão implementados; B4 continua aberto. O cadastro público foi desativado e confirmado no projeto real. Os testes locais cobrem as fronteiras de permissão e os fluxos da interface, com provedor simulado. O plano continua adequado: a rotina da professora entra no 3C e a do aluno no 3D, sem importar dados locais automaticamente.
+
+Antes de concluir B4, faltam configuração privada administrativa, URLs permitidas, conta inicial verificada e destinatário autorizado para testar e-mail/recuperação no provedor. O SMTP padrão serve apenas para testes limitados; configurar envio a alunos antes do uso real. Não ampliar o produto nem declarar acesso completo usando mocks. Detalhes em [verification-3b.md](verification-3b.md).
+
 ## Reavaliação e autonomia
 
 Reavaliar o roadmap ao concluir cada etapa, a cada três chunks de uma etapa maior e imediatamente quando testes ou uso revelarem uma nova restrição. Primeiro corrigir regras/documentação afetadas, depois retomar a implementação. Cristian autorizou execução contínua em 25/10/2026: decisões rotineiras ficam com a assistência; ambiguidades materiais, tentativas repetidas sem progresso ou escolhas que dependam do uso devem voltar em pergunta com recomendação concreta.

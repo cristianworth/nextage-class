@@ -4,17 +4,20 @@
   "scripts": {
     "spec": "openspec",
     "dev": "npm --prefix web run dev",
+    "dev:pilot": "npm --prefix web run dev -- --mode pilot --port 5174",
     "build": "npm --prefix web run build",
     "test": "npm --prefix web test",
     "test:e2e": "npm --prefix web run test:e2e",
-    "format": "prettier --write web/src web/e2e web/*.ts web/index.html",
-    "format:check": "prettier --check web/src web/e2e web/*.ts web/index.html"
+    "test:e2e:pilot": "npm --prefix web run test:e2e:pilot",
+    "format": "prettier --write web/src web/e2e web/e2e-pilot web/*.ts web/index.html",
+    "format:check": "prettier --check web/src web/e2e web/e2e-pilot web/*.ts web/index.html"
   },
   "engines": {
     "node": ">=24.0.0"
   },
   "devDependencies": {
     "@fission-ai/openspec": "1.14.3",
-    "prettier": "3.9.10"
+    "prettier": "3.9.10",
+    "supabase": "2.122.0"
   }
 }
