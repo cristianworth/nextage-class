@@ -16,7 +16,7 @@ Projeto pessoal de portfólio, construído com assistência de IA e decisões de
 
 **Etapa 1 aprovada por Nara**, conforme relato de Cristian em 24/10/2026. **Etapa 2 aprovada na revisão integrada com Nara**, conforme confirmação de Cristian em 25/10/2026. O próximo ciclo é o piloto com servidor, começando pela base executável. [Fechamento 2D](docs/verification-2d.md) e [roadmap](docs/roadmap.md).
 
-A demo usa dados fictícios no navegador. Contas reais, API ASP.NET Core/C# e PostgreSQL pertencem à etapa do piloto com servidor. A aplicação ainda não está hospedada.
+A demo usa dados fictícios no navegador. A base ASP.NET Core/PostgreSQL do **3A está executável**, com verificações de processo e banco; contas e fluxos persistidos seguem nos próximos recortes do piloto. A aplicação ainda não está hospedada.
 
 ## Executar
 
@@ -29,6 +29,8 @@ npm run dev
 ```
 
 Abrir `http://127.0.0.1:5173`. Para acrescentar os exemplos novos aos dados existentes, usar **Acervo → Adicionar exemplos**. Não é necessário reiniciar a demo.
+
+O servidor é independente da demo. SDK fixado em global.json, solução C# em api/NextageClass.slnx e scripts de desenvolvimento em scripts/. Ver [execução do servidor](docs/server-development.md) e [evidências 3A](docs/verification-3a.md).
 
 Para experimentar a consulta do aluno, use **Ver como aluno** e escolha um perfil fictício. O aluno consulta material, homework e **Meu acervo** do nível atual; conteúdo/observações livres ficam com a professora. [Consulta 2A](docs/verification-2a.md) e [acervo 2B](docs/verification-2b.md).
 
@@ -53,6 +55,8 @@ npm run test:e2e
 | `web/src/domain/` | Regras, modelos e operações |
 | `web/src/data/` | Persistência local e compatibilidade |
 | `web/e2e/` | Cenários completos no navegador |
+| `api/` | Servidor ASP.NET Core e testes HTTP com PostgreSQL |
+| `scripts/` | Execução local e verificação do servidor |
 | `openspec/specs/` | Comportamento entregue |
 | `openspec/changes/` | Recortes atuais em implementação ou revisão |
 | `openspec/changes/archive/` | Histórico das mudanças concluídas |

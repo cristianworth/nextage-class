@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Status: demo do professor da etapa 1 implementada; fechamento inclui sequências autorais e apoios. O backend e o banco permanecem planejados; não há modelo físico de banco ou contratos de API definidos.
+Status: etapas 1 e 2 concluídas. Base ASP.NET Core/PostgreSQL do 3A executável e verificada; contas e operações de negócio seguem no 3B–3E. Modelo físico de negócio e contratos correspondentes ainda não foram implementados.
 
 ## Stack
 
@@ -11,6 +11,8 @@ Status: demo do professor da etapa 1 implementada; fechamento inclui sequências
 | Persistência do piloto | PostgreSQL | Trabalhar relações, restrições e consistência de dados. |
 
 Versões suportadas e dependências serão verificadas ao iniciar cada etapa. Não instalar ferramentas ou definir autenticação, hospedagem, biblioteca de calendário e gerenciamento de estado sem necessidade atual.
+
+No 3A foram fixados SDK .NET 10.0.402 e Npgsql 10.0.3; testes HTTP usam o pacote oficial ASP.NET Core 10.0.13. PostgreSQL 18.6 foi verificado localmente. Health checks nativos distinguem processo e banco real sem expor configuração. Credenciais são externas; ferramentas e banco local ficam em work, ignorado. Autenticação por convite/e-mail/senha foi aprovada para o 3B; hospedagem segue decisão do 3E. Ver [server-development.md](server-development.md).
 
 ## Estrutura do código
 

@@ -7,6 +7,7 @@
 - IA auxilia o desenvolvimento. Não adicione recursos de IA ao produto.
 - Estado atual: etapas 1 e 2 concluídas. Aceite do 1F informado por Cristian em 24/10/2026; revisão integrada com Nara confirmada em 25/10/2026 (DEC-55). Dados locais v6; sequências autorais, percurso flexível, homework simples, consulta própria e acervo do nível atual com histórico preservado. Pedidos avulsos/semanais são independentes e combináveis; aprovação obrigatória, sem reserva enquanto pendentes. Próximo ciclo: piloto 3A–3E com ASP.NET Core/PostgreSQL; acesso por convite e e-mail/senha, sem cadastro público (DEC-56). Não confundir unidade do material com encontro da agenda.
 - Autonomia atual: Cristian autorizou execução contínua pelo roadmap em 25/10/2026. Reavaliar plano após cada etapa, a cada três chunks e ao surgir nova restrição. Atualizar documentos primeiro, depois continuar. Perguntar com recomendação quando depender da visão do usuário, houver ambiguidade material ou repetição sem progresso. Etapas condicionais 4–6 não viram escopo obrigatório automaticamente.
+- Servidor: base 3A executável em api/, SDK 10.0.402 e PostgreSQL 18.6 locais em work/toolchain. Scripts em scripts/; conexão e dados fictícios em work/postgres. Não imprimir configuração privada. Próximo recorte 3B: contas/convites por e-mail/senha; identidade e operações de negócio ainda não implementadas. Demo continua independente. Evidências em docs/verification-3a.md.
 
 ## Sources of truth
 

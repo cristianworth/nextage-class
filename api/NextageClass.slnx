@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="NextageClass.Api.Tests/NextageClass.Api.Tests.csproj" />
+  <Project Path="NextageClass.Api/NextageClass.Api.csproj" />
+</Solution>

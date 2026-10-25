@@ -55,7 +55,7 @@ O **2D está concluído**: revisão de uso confirmada por Cristian e cenário in
 
 | Recorte | Resultado verificável | Dependência |
 | --- | --- | --- |
-| **3A — Base executável** | ASP.NET Core, conexão PostgreSQL, configuração externa, saúde do serviço e testes com banco real | Preservar demo; ferramentas locais sem credenciais no Git |
+| **3A — Base executável (concluído tecnicamente)** | ASP.NET Core, conexão PostgreSQL, configuração externa, saúde do serviço e testes com banco real | [Evidências 3A](verification-3a.md); demo preservada e ferramentas locais sem credenciais no Git |
 | **3B — Contas e convites** | Entrada/saída, sessão, convite por e-mail/senha e recuperação; acesso restrito por papel | DEC-56; envio local fictício para testes, provedor real antes da implantação |
 | **3C — Rotina da professora no servidor** | Cadastro, acervo, agenda, registros, preparação e homework persistidos pela API | Regras verificadas no servidor, conflitos sob concorrência e migrações |
 | **3D — Aluno conectado** | Consulta própria, acervo e solicitações pela API com autorização por identidade | Reusar limites de compartilhamento; sem enviar documento completo ao aluno |

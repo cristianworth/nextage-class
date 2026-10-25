@@ -14,6 +14,8 @@ Etapa 1 aprovada por Nara, conforme relato de Cristian em 24/10/2026. Revisão i
 | [Solicitações de horário](scheduling-requests.md) | Pedidos combináveis, disponibilidade e decisão individual |
 | [Verificação do 2C](verification-2c.md) | Roteiro aluno → professora → aluno, erros e evidências |
 | [Fechamento 2D](verification-2d.md) | Aceite de uso, fluxo integrado e decisão de avançar ao servidor |
+| [Desenvolvimento do servidor](server-development.md) | SDK, PostgreSQL isolado, execução e testes |
+| [Verificação do 3A](verification-3a.md) | Processo, conexão real, indisponibilidade e preservação da demo |
 | [Sequências e apoio](book-catalog.md) | Organização de conteúdo atual |
 | [Continuidade](course-progress.md) | Como o lançamento determina o próximo conteúdo |
 | [Pesquisa e fechamento](teaching-sequences.md) | Referências, escolhas e evidências atuais |
