@@ -18,7 +18,7 @@ Usar nomes claros, responsabilidades coesas e organização proporcional ao prob
 2. `openspec/changes/`: propostas em andamento; requisitos e tarefas ainda não necessariamente entregues.
 3. `openspec/specs/`: comportamento incorporado ao produto após implementação e validação.
 
-A etapa 1 foi entregue e o aceite do 1F por Nara foi informado por Cristian em 24/10/2026. Requisitos estão consolidados em `openspec/specs/`; propostas e tarefas concluídas ficam em `openspec/changes/archive/`. Ajustes menores posteriores possuem evidência técnica própria. 2A e 2B estão em `deliver-student-overview-2a` e `deliver-student-library-2b`, entregues tecnicamente e aguardando revisão de uso. Não preencher as especificações atuais com toda a visão futura.
+As etapas 1 e 2 foram entregues; Cristian informou o aceite de Nara do 1F em 24/10/2026 e da revisão integrada 2D em 25/10/2026. Requisitos estão consolidados em `openspec/specs/`; propostas e tarefas concluídas ficam em `openspec/changes/archive/`. Não preencher as especificações atuais com toda a visão futura.
 
 Ao arquivar uma mudança já sincronizada, conferir a base e preservar o histórico sem reaplicar deltas antigos sobre requisitos mais recentes. O modo estrito pode informar que um requisito ADDED já existe devido à sincronização prévia; isso não é falha dos testes nem confirmação de aceitação humana.
 
@@ -33,7 +33,7 @@ Ao arquivar uma mudança já sincronizada, conferir a base e preservar o histór
 7. Atualizar especificações entregues e arquivar a mudança, sem promover pendências a comportamento pronto.
 8. Registrar a entrega em commit coeso, respeitando as regras de changelog e versão.
 
-Não executar uma implementação inteira só porque uma ferramenta produziu uma lista de tarefas. O trabalho deve seguir o recorte combinado. Ajustes pequenos não exigem refazer toda a documentação.
+Cristian autorizou execução contínua pelo roadmap em 25/10/2026. Ao terminar cada etapa, avaliar impedimentos e decisões que dependam dele; sem isso, seguir ao próximo recorte. Reavaliar o plano também a cada três chunks de etapas maiores e ao descobrir uma nova restrição. Corrigir primeiro documentos/regras afetados. Em ambiguidade material ou tentativas repetidas sem progresso, formular uma pergunta com recomendação. A autorização não converte ideias condicionais em funcionalidades obrigatórias nem substitui escolhas sobre contratação, dados reais ou aceite humano.
 
 ## Preparação da ferramenta
 
@@ -47,7 +47,7 @@ Ao configurar a integração, usar uma versão identificada e começar pelo flux
 
 Uma tarefa marcada não basta. Conferir critérios de aceite, efeitos plausíveis, resultado visual quando houver e persistência quando aplicável. Registrar limitações e o que não foi testado. Revisão por IA e validação estrutural de documentos complementam essa evidência.
 
-Antes de commit ou merge, procurar e ler o changelog. Se existir, avaliar o impacto e consultar Cristian sobre versão/changelog, salvo autorização já dada. Esta base documental não cria versão de aplicação ou changelog antecipadamente. Sem remoto ou publicação nesta etapa.
+Antes de commit ou merge, procurar e ler o changelog. Se existir, avaliar o impacto e consultar Cristian sobre versão/changelog, salvo autorização já dada. Não criar changelog ou incremento de versão antecipadamente. O repositório público e os pushes foram autorizados; hospedagem da aplicação depende do recorte operacional.
 
 ## Referências do processo
 

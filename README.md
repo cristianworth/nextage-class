@@ -14,7 +14,7 @@ Projeto pessoal de portfólio, construído com assistência de IA e decisões de
 - Consulta simulada do aluno: próximas aulas, link próprio, histórico, homework e acervo do nível atual em leitura.
 - Pedidos avulsos e semanais pelo aluno, com acompanhamento e aprovação/recusa individual pela professora; pendente não reserva horário.
 
-**Etapa 1 aprovada por Nara**, conforme relato de Cristian em 24/10/2026. O fechamento esclarece sequências autorais e a seleção de apoio. **2A, 2B e 2C da demo do aluno estão entregues tecnicamente**; a próxima etapa é a revisão integrada de uso dos dois lados (2D). [Roadmap](docs/roadmap.md).
+**Etapa 1 aprovada por Nara**, conforme relato de Cristian em 24/10/2026. **Etapa 2 aprovada na revisão integrada com Nara**, conforme confirmação de Cristian em 25/10/2026. O próximo ciclo é o piloto com servidor, começando pela base executável. [Fechamento 2D](docs/verification-2d.md) e [roadmap](docs/roadmap.md).
 
 A demo usa dados fictícios no navegador. Contas reais, API ASP.NET Core/C# e PostgreSQL pertencem à etapa do piloto com servidor. A aplicação ainda não está hospedada.
 

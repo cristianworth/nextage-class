@@ -75,6 +75,8 @@ Atualizado em 25/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-52 | Abrir material no acervo não marca leitura/conclusão, não avança sequência e não altera homework. O progresso continua sendo informado pela professora no lançamento. |
 | DEC-53 | No 2C, o aluno pode combinar vários horários semanais e aulas avulsas. Ex.: segunda/terça às 10h e quarta às 11h, mais uma aula avulsa. Cada horário é um pedido independente; avulsa é o padrão e término semanal é opcional. Confirmado em 25/10/2026. |
 | DEC-54 | Todo pedido exige aprovação da professora. Pendente não reserva horário nem altera a agenda. A aprovação verifica novamente conflitos antes de criar uma aula ou série. Confirmado em 25/10/2026. |
+| DEC-55 | Revisão integrada da etapa 2 com Nara confirmada por Cristian em 25/10/2026: “Revisamos e o fluxo atende”. Aceite de uso permite seguir ao piloto; testes técnicos permanecem evidência separada. |
+| DEC-56 | No piloto, professora entra com e-mail/senha e convida alunos por e-mail para criarem sua senha. Não há cadastro público. Confirmado por Cristian em 25/10/2026. Provedor de envio e implantação serão definidos antes do uso real. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 

@@ -1,6 +1,6 @@
 # Roadmap do Nextage Class
 
-Revisado em 25/10/2026 com as decisões da etapa 1. Cada entrega distingue implementação técnica, revisão de uso e recursos ainda planejados. Sem estimativas de prazo artificiais.
+Revisado em 25/10/2026 após o aceite da etapa 2 e a definição de acesso por convite. Cada entrega distingue implementação técnica, revisão de uso e recursos ainda planejados. Sem estimativas de prazo artificiais.
 
 ## Etapas e ordem
 
@@ -8,7 +8,7 @@ Revisado em 25/10/2026 com as decisões da etapa 1. Cada entrega distingue imple
 | --- | --- | --- |
 | 0 — Fundação | Visão, decisões, Git, stack e OpenSpec | Concluída |
 | 1 — Rotina do professor | Alunos, agenda, lançamento, preparação, sequências autorais e apoio | Entregue; aceite de Nara informado em 24/10/2026. [Fechamento](teaching-sequences.md) |
-| 2 — Demo do aluno | Consulta das próprias aulas, histórico permitido, homework, acervo e solicitações | 2A/2B/2C entregues tecnicamente; revisão integrada de uso no 2D pendente, com perfis explicitamente simulados |
+| 2 — Demo do aluno | Consulta das próprias aulas, histórico permitido, homework, acervo e solicitações | Concluída; revisão com Nara confirmada por Cristian em 25/10/2026. [Fechamento 2D](verification-2d.md) |
 | 3 — Piloto com servidor | API ASP.NET Core/C#, PostgreSQL, contas e autorização, backup e recuperação | Usar dados reais somente após acesso restrito e restauração verificada. Preservar demo fictícia para portfólio |
 | 4 — Integrações | Reuniões/calendário e lembretes conforme necessidade | Validar contas, permissões, falhas e valor no uso; link manual atende até lá |
 | 5 — Evolução pedagógica | Arquivos, áudio, apresentação e melhorias justificadas pelo uso | Sem compromisso de implementar todas as ideias; especificar cada recorte antes |
@@ -23,7 +23,7 @@ A etapa 2 começa por leitura para validar o conteúdo compartilhado e sua apres
 | **2A — Consulta do aluno (entregue tecnicamente)** | Simulação de aluno, próximas aulas, link próprio, histórico permitido e homework em leitura | Material e homework compartilhados; conteúdo/observações livres reservados. Consulta própria sem edição ou gravação |
 | **2B — Acervo para leitura (entregue tecnicamente)** | Unidades e apoios compatíveis, sequência atual e leitura dos conteúdos | Somente nível atual; versões antigas usadas em aula continuam no histórico. Abrir texto não marca leitura/conclusão nem altera progresso |
 | **2C — Solicitações de horário (entregue tecnicamente)** | Combinar pedidos semanais/avulsos, acompanhar decisão; professora aprova/recusa cada horário | Pendente não reserva. Disponibilidade sem dados de outros alunos; aprovação revalida conflitos e cria aula/série uma única vez |
-| **2D — Revisão dos dois lados** | Percorrer professora → aluno → professora, recarga e celular | Validação de uso com Nara/Cristian; corrigir o que impedir o fluxo antes do servidor |
+| **2D — Revisão dos dois lados (concluído)** | Percorrer professora → aluno → professora, recarga e celular | Aceite informado por Cristian em 25/10/2026; cenário integrado adicional aprovado |
 
 ## Trabalho do 2A — A1 a A4 concluídos tecnicamente
 
@@ -49,7 +49,25 @@ A simulação não equivale a autenticação. A interface do aluno recebe soment
 3. **C3 — Decisão pela professora:** lista de pendências, filtros, aprovação/recusa por pedido, nova conferência de conflito e preservação do estado em erro.
 4. **C4 — Revisão técnica integrada:** testes de ambos os lados, recarga, falhas e celular; evidências em [verification-2c.md](verification-2c.md).
 
-O próximo recorte é o **2D — revisão integrada de uso**, com Cristian/Nara: percorrer consulta, acervo, solicitação e decisão, incluindo alteração de horário pela professora. Corrigir impedimentos observados antes de definir o piloto com servidor. Verificação automatizada não representa aceite humano.
+O **2D está concluído**: revisão de uso confirmada por Cristian e cenário integrado adicional aprovado. Verificação automatizada e aceite humano continuam registrados separadamente em [verification-2d.md](verification-2d.md).
+
+## Etapa 3 — Piloto com servidor
+
+| Recorte | Resultado verificável | Dependência |
+| --- | --- | --- |
+| **3A — Base executável** | ASP.NET Core, conexão PostgreSQL, configuração externa, saúde do serviço e testes com banco real | Preservar demo; ferramentas locais sem credenciais no Git |
+| **3B — Contas e convites** | Entrada/saída, sessão, convite por e-mail/senha e recuperação; acesso restrito por papel | DEC-56; envio local fictício para testes, provedor real antes da implantação |
+| **3C — Rotina da professora no servidor** | Cadastro, acervo, agenda, registros, preparação e homework persistidos pela API | Regras verificadas no servidor, conflitos sob concorrência e migrações |
+| **3D — Aluno conectado** | Consulta própria, acervo e solicitações pela API com autorização por identidade | Reusar limites de compartilhamento; sem enviar documento completo ao aluno |
+| **3E — Operação do piloto** | Backup/restauração verificados, configuração de implantação e revisão antes de dados reais | Definir hospedagem, envio de e-mail, retenção e recuperação com Cristian |
+
+Os recortes serão divididos em chunks na mudança correspondente. A base local pode avançar sem contratar serviços. A publicação e o uso real dependem das decisões operacionais; não são presumidos por um teste local aprovado.
+
+## Reavaliação e autonomia
+
+Reavaliar o roadmap ao concluir cada etapa, a cada três chunks de uma etapa maior e imediatamente quando testes ou uso revelarem uma nova restrição. Primeiro corrigir regras/documentação afetadas, depois retomar a implementação. Cristian autorizou execução contínua em 25/10/2026: decisões rotineiras ficam com a assistência; ambiguidades materiais, tentativas repetidas sem progresso ou escolhas que dependam do uso devem voltar em pergunta com recomendação concreta.
+
+Etapas 4–6 permanecem evoluções condicionais. Não transformar possibilidades adiadas em obrigações para declarar o produto concluído.
 
 ## O que permanece simples
 
