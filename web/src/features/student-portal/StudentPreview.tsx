@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Workspace } from '../../domain/models'
 import { studentOverview } from '../../domain/student-overview'
+import { studentLibrary } from '../../domain/student-library'
 import { EmptyState } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
 import { StudentPortal } from './StudentPortal'
@@ -16,6 +17,7 @@ export function StudentPreview({
 }) {
   const [studentId, setStudentId] = useState(state.students[0]?.id ?? '')
   const view = studentOverview(state, studentId, now)
+  const library = studentLibrary(state, studentId)
   return (
     <div className="student-preview">
       <a className="skip-link" href="#student-main">
@@ -64,8 +66,8 @@ export function StudentPreview({
         </button>
       </section>
       <main id="student-main">
-        {view ? (
-          <StudentPortal key={view.student.id} view={view} now={now} />
+        {view && library ? (
+          <StudentPortal key={view.student.id} view={view} library={library} now={now} />
         ) : (
           <div className="panel student-empty">
             <EmptyState

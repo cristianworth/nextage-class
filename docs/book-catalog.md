@@ -28,3 +28,9 @@ Formato local v5; leitura valida e migra v1–v4 em memória, sem gravar ou rein
 A demo inclui dez textos próprios: quatro unidades A1 e apoios, incluindo **Speaking warm-up** para A1. Dados existentes recebem somente exemplos ausentes por **Acervo → Adicionar exemplos**, sem sobrescrever conteúdo.
 
 Não há marcação persistente de unidades dispensadas por aluno, seleção de vários materiais no mesmo registro, exclusão, uploads ou editor rico. Evoluções maiores estão propostas no [roadmap](roadmap.md), sem autorização de implementação nesta entrega.
+
+## Consulta do aluno — 2B
+
+Meu acervo inclui todas as unidades e apoios compatíveis com o nível atual, inclusive conteúdo ainda não usado e sequências além da principal. Há busca, filtro por tipo e painel de leitura sem edição. Materiais compartilhados entre níveis aparecem sem duplicação; abrir o texto não altera progresso, conclusão ou homework.
+
+A continuidade da sequência principal usa as mesmas regras do lançamento. Após promoção, o catálogo anterior deixa de aparecer, mas as cópias já utilizadas permanecem no histórico. O acervo mostra a versão atual do texto; cada aula mantém a versão efetivamente registrada. Ver [verification-2b.md](verification-2b.md).

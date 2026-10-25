@@ -1,0 +1,137 @@
+.student-library .student-note {
+  margin: 12px 0 20px;
+}
+.student-primary-sequence {
+  padding: 22px;
+  margin-bottom: 24px;
+}
+.student-primary-sequence h3 {
+  margin: 8px 0 12px;
+  font-size: 18px;
+}
+.student-primary-sequence p:not(.eyebrow) {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.student-primary-sequence .button {
+  margin: 4px 0 8px;
+}
+.student-library-toolbar {
+  display: flex;
+  align-items: end;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+.student-library-toolbar .search-field {
+  flex: 1;
+  min-width: 0;
+}
+.student-library-toolbar input {
+  min-width: 0;
+}
+.student-library-count {
+  margin: 18px 0;
+}
+.student-library-group {
+  margin: 26px 0;
+}
+.student-library-group > h3 {
+  font-size: 16px;
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
+}
+.student-library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.student-library-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.student-library-card h4 {
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 15px 0 10px;
+  overflow-wrap: anywhere;
+}
+.student-library-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.student-library-excerpt {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  margin: 0 0 22px;
+}
+.student-library-card .text-button {
+  align-self: start;
+  margin-top: auto;
+}
+.student-material-reader {
+  padding: 25px;
+  margin: 24px 0;
+  outline-color: var(--green);
+}
+.student-material-reader h3 {
+  font-size: 20px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.student-material-reader .material-text {
+  max-height: 65vh;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  padding-top: 12px;
+}
+.student-material-reader .student-section-heading .eyebrow {
+  margin: 0;
+}
+@media (max-width: 950px) {
+  .student-library-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .student-library-grid {
+    grid-template-columns: 1fr;
+  }
+  .student-library-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .student-library-toolbar .filter-label {
+    align-items: start;
+  }
+  .student-primary-sequence,
+  .student-library-card,
+  .student-material-reader {
+    padding: 20px;
+  }
+  .student-material-reader h3 {
+    font-size: 17px;
+  }
+}
+@media (max-width: 480px) {
+  .student-navigation {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .student-navigation .button {
+    min-width: 0;
+    flex-direction: column;
+    padding: 10px 4px;
+    font-size: 11px;
+  }
+}

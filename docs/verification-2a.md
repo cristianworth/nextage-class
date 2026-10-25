@@ -37,7 +37,7 @@ A tela do aluno não recebe Workspace nem callbacks de gravação. O controlador
 
 A demo continua no formato local v5, sem dependências novas. O documento completo permanece no navegador; a escolha de aluno é uma ferramenta de simulação, não autenticação ou autorização real. O servidor deverá impor identidade e acesso no piloto.
 
-O material usado numa aula anterior é consultado pela sua cópia histórica. Isso não abre o catálogo inteiro de níveis anteriores. A regra do acervo após mudança de nível ainda será decidida no **2B**. Solicitações e aprovação de horários pertencem ao **2C**; a revisão dos dois lados, ao **2D**.
+O material usado numa aula anterior é consultado pela sua cópia histórica. Isso não abre o catálogo inteiro de níveis anteriores. A regra foi definida no [2B](verification-2b.md): acervo do nível atual, preservando no histórico as cópias anteriores. Solicitações e aprovação de horários pertencem ao **2C**; a revisão dos dois lados, ao **2D**.
 
 As duas melhorias adiadas por Cristian — dispensa por aluno e vários materiais no encontro — permanecem apenas possibilidades futuras. O fluxo atual de andamento/conclusão e homework foi preservado. Ver [roadmap](roadmap.md).
 

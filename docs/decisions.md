@@ -43,7 +43,7 @@ Atualizado em 25/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-20 | Níveis previstos: A1, A2, B1, B2, C1 e C2. Nível, módulo e aula de material são conceitos distintos. |
 | DEC-21 | Homework consiste em registrar o que foi passado e o que foi corrigido. Não há envio de tarefa/arquivo pelo aluno. |
 | DEC-22 | Antes da aula, facilitar consulta ao horário, homework, conteúdo anterior e material planejado. |
-| DEC-23 | Aluno pode acessar o acervo de apoio do seu nível; não apenas o material da última aula. Regras após mudança de nível serão detalhadas depois. |
+| DEC-23 | Aluno pode acessar o acervo de apoio do seu nível; não apenas o material da última aula. Após mudança de nível, o acervo segue o nível atual e o histórico preserva materiais já utilizados (DEC-51). |
 | DEC-24 | Materiais começam em texto. Áudio, grids, zoom e apresentação ficam para depois. |
 | DEC-25 | Streak fica adiado até definirmos uma regra coerente com faltas e períodos sem aulas. |
 | DEC-26 | Link de reunião pode ser cadastrado manualmente no começo. Geração automática e estabilidade por aluno dependem de validação da integração Google; não prometer um link permanente antes disso. |
@@ -71,6 +71,8 @@ Atualizado em 25/10/2026. Estas decisões orientam o planejamento; não signific
 | DEC-48 | Unidades dispensadas/adiadas por aluno e vários apoios no mesmo registro ficam como melhorias possíveis, sem necessidade atual ou desenvolvimento nesta etapa. Confirmado em 25/10/2026. |
 | DEC-49 | No 2A, aluno consulta material utilizado e homework; texto livre de Conteúdo trabalhado/observações fica reservado à professora. Confirmado em 25/10/2026. Motivo de falta e planejamento também não integram o contrato de consulta. |
 | DEC-50 | O 2A é uma simulação explícita, sem edição pelo aluno. Seleção de perfil e navegação ficam em memória; não gravam ou alteram o documento local. Identidade/autorização reais permanecem na etapa com servidor. |
+| DEC-51 | No 2B, Meu acervo oferece apenas conteúdo compatível com o nível atual, inclusive sequências e apoios compartilhados entre níveis. Após promoção, materiais de níveis anteriores ficam disponíveis somente pelas cópias das aulas no histórico. Confirmado em 25/10/2026. |
+| DEC-52 | Abrir material no acervo não marca leitura/conclusão, não avança sequência e não altera homework. O progresso continua sendo informado pela professora no lançamento. |
 
 Detalhes técnicos adotados para o 1A: referência de horário `America/Sao_Paulo`; material utilizado em texto livre até o acervo do 1C; dados exclusivamente fictícios na demo. São escolhas de implementação revisáveis, sem introduzir suporte a múltiplos fusos.
 

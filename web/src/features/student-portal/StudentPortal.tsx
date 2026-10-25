@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import type { StudentOverview } from '../../domain/student-overview'
+import type { StudentLibraryView } from '../../domain/student-library'
+import { StudentLibrary } from './StudentLibrary'
 import { ATTENDANCE } from '../../domain/models'
 import { formatDate, formatTimestamp, hasLessonStarted, lessonTime } from '../../domain/dates'
 import { matchesSearch } from '../../domain/students'
@@ -7,7 +9,15 @@ import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
 import './student-portal.css'
 
-export function StudentPortal({ view, now }: { view: StudentOverview; now: Date }) {
+export function StudentPortal({
+  view,
+  library,
+  now,
+}: {
+  view: StudentOverview
+  library: StudentLibraryView
+  now: Date
+}) {
   const [page, setPage] = useState('agenda')
   const [search, setSearch] = useState('')
   const history = view.history.filter((entry) =>
@@ -50,6 +60,14 @@ export function StudentPortal({ view, now }: { view: StudentOverview; now: Date 
         >
           <Icon name="book" size={17} />
           Meu histórico
+        </button>
+        <button
+          className={`button ${page === 'library' ? 'primary' : ''}`}
+          aria-current={page === 'library' ? 'page' : undefined}
+          onClick={() => setPage('library')}
+        >
+          <Icon name="library" size={17} />
+          Meu acervo
         </button>
       </nav>
       {page === 'agenda' ? (
@@ -125,6 +143,8 @@ export function StudentPortal({ view, now }: { view: StudentOverview; now: Date 
             )}
           </section>
         </div>
+      ) : page === 'library' ? (
+        <StudentLibrary view={library} />
       ) : (
         <section aria-label="Histórico do aluno">
           <div className="student-section-heading">

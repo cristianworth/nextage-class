@@ -34,12 +34,14 @@ Esta lista separa respostas incorporadas e detalhes ainda abertos. Os exemplos s
 
 - LATER-03: compartilhar material e homework, mantendo conteúdo/observações livres com a professora (DEC-49). Não criar campo de resumo público agora.
 
+## Resolvidas para o 2B
+
+- LATER-11: acervo somente do nível atual; materiais antigos já utilizados permanecem nas cópias do histórico (DEC-51).
+
 ## Abertas
 
 | ID | Quando resolver | Pergunta |
 | --- | --- | --- |
-
-| LATER-11 | Acervo 2B | “Se o aluno mudar de nível, ele continua vendo o material do nível anterior?” |
 | LATER-12 | Solicitação 2C | “Aluno pede uma aula avulsa ou um horário semanal? Você sempre confirma antes de entrar na agenda?” |
 | LATER-14 | Piloto real | Confirmar forma de convite/login, recuperação de conta, dados necessários, retenção, backup e recuperação. |
 | LATER-15 | Integração Google | “Qual conta você usa para dar aula? Como organiza os links hoje?” Validar permissões, falhas e a estratégia de criação/manutenção do link. |

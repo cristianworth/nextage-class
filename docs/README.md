@@ -1,6 +1,6 @@
 # Documentação do Nextage Class
 
-Etapa 1: demo do professor implementada e aprovada por Nara, conforme relato de Cristian em 24/10/2026. O 2A da demo do aluno está entregue tecnicamente, com revisão de uso pendente; 2B/2C/2D continuam planejados.
+Etapa 1: demo do professor implementada e aprovada por Nara, conforme relato de Cristian em 24/10/2026. 2A e 2B da demo do aluno estão entregues tecnicamente, com revisão de uso pendente; 2C/2D continuam planejados.
 
 ## Visão atual
 
@@ -10,6 +10,7 @@ Etapa 1: demo do professor implementada e aprovada por Nara, conforme relato de 
 | [Roadmap](roadmap.md) | Estado das entregas e próximos recortes |
 | [Decisões](decisions.md) | Respostas validadas e regras de produto |
 | [Consulta do aluno 2A](verification-2a.md) | Próximas aulas, histórico permitido, homework e evidências |
+| [Acervo do aluno 2B](verification-2b.md) | Conteúdo compatível, continuidade, leitura e acesso após mudança de nível |
 | [Sequências e apoio](book-catalog.md) | Organização de conteúdo atual |
 | [Continuidade](course-progress.md) | Como o lançamento determina o próximo conteúdo |
 | [Pesquisa e fechamento](teaching-sequences.md) | Referências, escolhas e evidências atuais |

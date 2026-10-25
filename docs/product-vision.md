@@ -1,6 +1,6 @@
 # Visão do produto
 
-Status: demo do professor entregue e aceite do 1F por Nara informado por Cristian em 24/10/2026. Consulta simulada do aluno (2A) entregue tecnicamente, com material e homework em leitura. Acervo completo, solicitações e servidor permanecem planejados.
+Status: demo do professor entregue e aceite do 1F por Nara informado por Cristian em 24/10/2026. Consulta simulada (2A) e acervo do aluno (2B) entregues tecnicamente, em leitura. Solicitações e servidor permanecem planejados.
 
 ## Problema
 

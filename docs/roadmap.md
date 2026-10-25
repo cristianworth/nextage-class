@@ -8,7 +8,7 @@ Revisado em 25/10/2026 com as decisões da etapa 1. Cada entrega distingue imple
 | --- | --- | --- |
 | 0 — Fundação | Visão, decisões, Git, stack e OpenSpec | Concluída |
 | 1 — Rotina do professor | Alunos, agenda, lançamento, preparação, sequências autorais e apoio | Entregue; aceite de Nara informado em 24/10/2026. [Fechamento](teaching-sequences.md) |
-| 2 — Demo do aluno | Consulta das próprias aulas, histórico permitido, homework e acervo; depois solicitações | 2A entregue tecnicamente; revisão de uso pendente. 2B/2C/2D planejados, com perfis explicitamente simulados |
+| 2 — Demo do aluno | Consulta das próprias aulas, histórico permitido, homework e acervo; depois solicitações | 2A/2B entregues tecnicamente; revisão de uso pendente. 2C/2D planejados, com perfis explicitamente simulados |
 | 3 — Piloto com servidor | API ASP.NET Core/C#, PostgreSQL, contas e autorização, backup e recuperação | Usar dados reais somente após acesso restrito e restauração verificada. Preservar demo fictícia para portfólio |
 | 4 — Integrações | Reuniões/calendário e lembretes conforme necessidade | Validar contas, permissões, falhas e valor no uso; link manual atende até lá |
 | 5 — Evolução pedagógica | Arquivos, áudio, apresentação e melhorias justificadas pelo uso | Sem compromisso de implementar todas as ideias; especificar cada recorte antes |
@@ -21,7 +21,7 @@ A etapa 2 começa por leitura para validar o conteúdo compartilhado e sua apres
 | Chunk | Resultado | Dependências / conferência |
 | --- | --- | --- |
 | **2A — Consulta do aluno (entregue tecnicamente)** | Simulação de aluno, próximas aulas, link próprio, histórico permitido e homework em leitura | Material e homework compartilhados; conteúdo/observações livres reservados. Consulta própria sem edição ou gravação |
-| **2B — Acervo para leitura** | Unidades e apoios compatíveis, sequência atual e leitura dos conteúdos | Decidir acesso após mudança de nível. Reutilizar o acervo e a conclusão atual; não criar dispensa nem vários materiais por registro |
+| **2B — Acervo para leitura (entregue tecnicamente)** | Unidades e apoios compatíveis, sequência atual e leitura dos conteúdos | Somente nível atual; versões antigas usadas em aula continuam no histórico. Abrir texto não marca leitura/conclusão nem altera progresso |
 | **2C — Solicitações de horário** | Solicitar horário e acompanhar decisão; professora aprova/recusa | Definir avulsa/recorrente e regras de aprovação antes de depender delas. Expor disponibilidade sem identificar outros alunos; aprovação revalida conflitos |
 | **2D — Revisão dos dois lados** | Percorrer professora → aluno → professora, recarga e celular | Validação de uso com Nara/Cristian; corrigir o que impedir o fluxo antes do servidor |
 
@@ -36,12 +36,20 @@ Evidências e roteiro estão em [verification-2a.md](verification-2a.md). Revis�
 
 A simulação não equivale a autenticação. A interface do aluno recebe somente o modelo de consulta; seleção de perfil e armazenamento local continuam ferramentas da demo, sem promessa de isolamento seguro no navegador.
 
+## Trabalho do 2B — B1 a B3 concluídos tecnicamente
+
+1. **B1 — Consulta compatível:** contrato explícito por aluno, filtro pelo nível atual, herança de níveis das sequências e continuidade derivada dos lançamentos.
+2. **B2 — Meu acervo:** unidades agrupadas por sequência, apoios, busca/tipo e leitura em painel, sem edição ou gravação. Troca de aluno descarta o contexto anterior.
+3. **B3 — Revisão:** acesso após promoção, cópias históricas, conteúdo literal, ordem numérica, recarga, celular e regressões. Ver [verification-2b.md](verification-2b.md).
+
+O próximo recorte é o **2C**, começando pelas regras de solicitação e aprovação antes de implementar ações que alterem a agenda.
+
 ## O que permanece simples
 
 - Uma sequência principal por aluno e uma seleção de conteúdo por registro.
 - Unidade em andamento/concluída e percurso livre, sem concluir unidades omitidas automaticamente.
 - Homework com uma descrição e correção inteira, sem envio de arquivos ou ampliação do fluxo.
-- Leitura do acervo fica no 2B; andamento/conclusão da unidade mantém o funcionamento atual.
+- Leitura do acervo entregue no 2B; andamento/conclusão da unidade mantém o funcionamento atual.
 
 ## Ideias registradas, sem prioridade atual
 

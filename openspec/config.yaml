@@ -3,7 +3,7 @@ schema: spec-driven
 context: |
   Project: Nextage Class, a personal learning and portfolio project.
   Current stage: teacher demo complete; Nara approved usage review 1F as reported by Cristian on 2026-10-24. Local workspace format is v5.
-  Baseline includes teaching sequences (books or teacher-authored units), standalone support and flexible selection without presumed completion. Completed changes are archived. Active change deliver-student-overview-2a provides read-only student consultation; usage review pending. 2B catalog, 2C requests and 2D integrated review remain planned. Student view shares used material and homework only; free lesson notes, absence reasons and preparation are excluded. Homework stays unchanged.
+  Baseline includes teaching sequences (books or teacher-authored units), standalone support and flexible selection without presumed completion. Completed changes are archived. Changes deliver-student-overview-2a and deliver-student-library-2b provide read-only consultation and current-level catalog; usage review pending. 2C requests and 2D integrated review remain planned. Student view shares used material and homework only; free lesson notes, absence reasons and preparation are excluded. Previous-level catalog access is limited to used-material snapshots in history. Reading catalog items does not change progress or mark completion. Homework stays unchanged.
   Read docs/decisions.md for validated decisions and docs/roadmap.md for scope.
   Frontend: React, TypeScript, Vite. Later backend: C#, ASP.NET Core, PostgreSQL.
   Initial scope: one teacher, adult students, individual lessons, one reference timezone.
