@@ -34,6 +34,8 @@ Invoke-RestMethod http://127.0.0.1:5080/api/health/ready
 
 Processo ativo retorna 200; prontidão consulta PostgreSQL real e retorna 200 ou 503, com somente status público e sem cache. Desligar o banco não derruba o processo; a prontidão deve indicar indisponibilidade. Iniciar sem ConnectionStrings__NextageClass produz erro claro, sem conexão fictícia silenciosa. run-api carrega a configuração local privada somente quando a variável não está definida.
 
+O início local prepara dois bancos na mesma instância isolada: nextage_class para a API de desenvolvimento e nextage_class_tests para testes automatizados. test-api deriva a conexão de testes sem alterar a configuração privada da aplicação. Assim, a professora fictícia dos testes não disputa o vínculo único com a conta inicial do piloto. Os testes não devem usar o banco do piloto; NEXTAGE_TEST_CONNECTION explícita continua disponível para um banco de testes próprio.
+
 ## Outro ambiente e limites
 
 Sem os scripts Windows, usar o SDK fixado, um PostgreSQL próprio de desenvolvimento e as variáveis ConnectionStrings__NextageClass/Supabase__Url para a API e NEXTAGE_TEST_CONNECTION para testes. Supabase__Url é a URL HTTPS do projeto; o script de execução também encontra essa URL em work/supabase/project.json. Executar dotnet restore/build/test na solução api/NextageClass.slnx. Testes de integração exigem banco real e falham se a configuração não existe; não são ignorados silenciosamente.

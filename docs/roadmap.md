@@ -73,7 +73,9 @@ Divisão do 3B: **B1** contrato e validação de identidade/permissões no servi
 
 B1–B3 estão implementados; B4 continua aberto. O cadastro público foi desativado e confirmado no projeto real. Os testes locais cobrem as fronteiras de permissão e os fluxos da interface, com provedor simulado. O plano continua adequado: a rotina da professora entra no 3C e a do aluno no 3D, sem importar dados locais automaticamente.
 
-Antes de concluir B4, faltam configuração privada administrativa, URLs permitidas, conta inicial verificada e destinatário autorizado para testar e-mail/recuperação no provedor. O SMTP padrão serve apenas para testes limitados; configurar envio a alunos antes do uso real. Não ampliar o produto nem declarar acesso completo usando mocks. Detalhes em [verification-3b.md](verification-3b.md).
+No B4, a chave privada já foi configurada e aceita; identidade inicial e vínculo teacher foram verificados, o retorno de ativação foi conferido e o provedor aceitou o primeiro convite de teste autorizado. Falta conferir recebimento, ativação, login e recuperação no uso real. O SMTP padrão serve apenas para testes limitados; configurar envio a alunos antes do uso real. Não ampliar o produto nem declarar acesso completo usando mocks ou apenas uma confirmação de envio. Detalhes em [verification-3b.md](verification-3b.md).
+
+O provisionamento da primeira conta também exige separar o banco dos testes automatizados do banco de desenvolvimento. Os testes criam sua própria professora fictícia, e o produto permite uma única professora; compartilhar o banco causaria conflito com a conta provisionada. A preparação local deve manter nextage_class para desenvolvimento e nextage_class_tests para testes, sem apagar ou substituir o vínculo existente.
 
 ## Reavaliação e autonomia
 

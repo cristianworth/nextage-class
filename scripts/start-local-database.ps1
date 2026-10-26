@@ -32,11 +32,13 @@ if ($LASTEXITCODE -ne 0) {
 $previousPassword = $env:PGPASSWORD
 try {
     $env:PGPASSWORD = ([regex]::Match($settings.ConnectionString, 'Password=([^;]+)')).Groups[1].Value
-    $exists = & (Join-Path $PostgresBin 'psql.exe') -w -h 127.0.0.1 -p $Port -U nextage -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='nextage_class'"
-    if ($LASTEXITCODE -ne 0) { throw 'Não foi possível consultar o banco local.' }
-    if ($exists -ne '1') {
-        & (Join-Path $PostgresBin 'createdb.exe') -w -h 127.0.0.1 -p $Port -U nextage nextage_class
-        if ($LASTEXITCODE -ne 0) { throw 'Não foi possível criar o banco fictício de desenvolvimento.' }
+    foreach ($databaseName in @('nextage_class', 'nextage_class_tests')) {
+        $exists = & (Join-Path $PostgresBin 'psql.exe') -w -h 127.0.0.1 -p $Port -U nextage -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='$databaseName'"
+        if ($LASTEXITCODE -ne 0) { throw 'Não foi possível consultar o banco local.' }
+        if ($exists -ne '1') {
+            & (Join-Path $PostgresBin 'createdb.exe') -w -h 127.0.0.1 -p $Port -U nextage $databaseName
+            if ($LASTEXITCODE -ne 0) { throw 'Não foi possível criar o banco local de desenvolvimento ou testes.' }
+        }
     }
 } finally { $env:PGPASSWORD = $previousPassword }
 Write-Output "PostgreSQL local disponível em 127.0.0.1:$Port. Configuração privada em work/postgres/server-env.json."

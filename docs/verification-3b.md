@@ -16,7 +16,11 @@ Os dezenove testes HTTP usam PostgreSQL real, tokens assinados e um provedor de 
 
 Resultado local: **19 testes HTTP**, **11 cenários de navegador do piloto**, **49 cenários de regressão da demo** e **109 testes de domínio/persistência** aprovados. Builds da demo e do piloto, formatação e validação OpenSpec aprovados. Capturas de computador/celular revisadas; nenhuma ultrapassagem horizontal nos cenários conferidos. Esses resultados técnicos não substituem o teste real de conta/e-mail nem o aceite de uso.
 
-Na configuração real do projeto separado, foi confirmado: cadastro público desativado, acesso por e-mail habilitado e confirmação de e-mail mantida. As migrações estão aplicadas localmente e no Supabase. Nenhum usuário Auth, perfil, aluno ou convite real foi criado até esta conferência. O schema app é privado e as tabelas têm RLS; não existe política pública de leitura. A ausência dessas políticas é intencional, pois as operações passam pela API.
+Na configuração real do projeto separado, foi confirmado: cadastro público desativado, acesso por e-mail habilitado e confirmação de e-mail mantida. As migrações estão aplicadas localmente e no Supabase. O schema app é privado e as tabelas têm RLS; não existe política pública de leitura. A ausência dessas políticas é intencional, pois as operações passam pela API.
+
+Após Cristian configurar a chave administrativa no arquivo privado, ela foi aceita pelo provedor. A identidade do endereço de teste autorizado foi verificada pelo contrato administrativo e vinculada explicitamente ao perfil teacher no banco local e no projeto separado. Nenhum papel foi concedido pelo primeiro login ou por metadados do navegador. O link gerado retornou à porta 5174, em /auth/activate. O provedor confirmou a aceitação do envio do primeiro convite em 25/10/2026; isso não comprova chegada à caixa de entrada. Ativação, senha, login e recuperação ainda aguardam a conferência real. Destinatário e recibo de provisionamento ficam somente no ambiente privado, fora do repositório público.
+
+A criação da conta exigiu separar os bancos locais de aplicação e testes. O script de preparação agora mantém ambos sem reset; a suíte foi executada no nextage_class_tests e os dezenove testes passaram. A conexão resultante e a preservação do vínculo teacher no desenvolvimento foram conferidas.
 
 ## Executar a conferência local
 
@@ -31,7 +35,7 @@ Em outro terminal, após copiar web/.env.example para web/.env.pilot.local e con
 npm run dev:pilot
 ```
 
-Abrir http://127.0.0.1:5174. Sem conta/vínculo provisionados, não será possível entrar no espaço da professora. Configurações privadas ficam em work/supabase/server-secrets.json, fora do Git; usar o modelo config/supabase-server.example.json. Nunca colocar a chave administrativa em VITE_ ou na conversa.
+Abrir http://127.0.0.1:5174. A conta inicial de teste foi provisionada; o responsável deve aceitar o convite e definir sua própria senha. Sem ativação, ainda não há senha para entrar. Configurações privadas ficam em work/supabase/server-secrets.json, fora do Git; usar o modelo config/supabase-server.example.json. Nunca colocar a chave administrativa em VITE_ ou na conversa.
 
 Após configurar o ambiente real: entrar com a conta autorizada da professora, cadastrar um aluno fictício, enviar um convite ao destinatário autorizado, abrir o link e criar a senha, sair/entrar, solicitar recuperação e conferir que a conta de aluno não tem ações administrativas. Usar apenas endereços de teste previamente autorizados.
 
@@ -52,9 +56,9 @@ Os testes do piloto usam a porta 4178 e guardam capturas em work/playwright-pilo
 
 ## Pendências externas do B4
 
-1. Configurar a chave administrativa somente no servidor, as URLs permitidas de ativação/recuperação e verificar as políticas de senha no Auth.
-2. Provisionar e verificar a conta inicial da professora. O primeiro login não concede papel automaticamente. Vincular o ID Auth confirmado ao perfil autorizado no banco usado pela API.
-3. Usar destinatário de teste autorizado. O SMTP padrão é limitado aos endereços da organização; alunos reais exigem SMTP próprio antes do uso, conforme documentação do provedor.
+1. Chave administrativa configurada e aceita; retorno de ativação conferido. Ainda verificar a recuperação e as políticas de senha reais do Auth.
+2. Conta inicial de teste e vínculo teacher provisionados explicitamente. Aguardar aceitação do convite e conferência de login pelo responsável, sem compartilhar senha ou link de ativação na conversa.
+3. Primeiro convite aceito pelo provedor para o destinatário autorizado. Verificar recebimento; o SMTP padrão é limitado e alunos reais exigem SMTP próprio antes do uso, conforme documentação do provedor.
 4. Conferir ativação, login, recuperação e acessos negados contra o projeto real. A conexão de desenvolvimento da API ainda usa PostgreSQL local; a conexão privada ao banco hospedado precisa de configuração explícita para o piloto.
 
 Essas pendências não serão consideradas resolvidas por testes simulados. Hospedagem, recuperação e dados reais seguem condicionados ao 3E.
