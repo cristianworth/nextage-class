@@ -1,6 +1,6 @@
 # Visão do produto
 
-Status: demo do professor entregue e aceite do 1F por Nara informado por Cristian em 24/10/2026. Consulta simulada (2A) e acervo do aluno (2B) entregues tecnicamente, em leitura. Solicitações e servidor permanecem planejados.
+Status: etapas 1 e 2 concluídas e aprovadas conforme relato de Cristian; consulta/acervo do aluno e solicitações com aprovação estão na demo. Base do servidor 3A executável. No 3B, identidade, cadastro/convites e telas de acesso estão implementados, com conferência integrada real ainda pendente. Rotina completa persistida e operação do piloto seguem no 3C–3E. Estado detalhado em [roadmap.md](roadmap.md).
 
 ## Problema
 

@@ -1,6 +1,8 @@
 # Verificação parcial do 3B — contas e convites
 
-Estado em 25/10/2026: B1–B3 implementados e verificados localmente. B4 permanece aberto até o fluxo autorizado no provedor real. A demo e o piloto usam entradas separadas.
+Estado consolidado em 26/10/2026: B1–B3 implementados e verificados localmente. B4 permanece aberto até o fluxo autorizado no provedor real. A demo e o piloto usam entradas separadas. As evidências abaixo são das execuções anteriores; preparar o handoff não equivale a repetir os testes nem verificar uma nova ativação de conta.
+
+A continuação foi solicitada a partir do 3B. O sucessor deve confirmar com Cristian o resultado do convite/login e apresentar o menor recorte pendente antes de implementar. Criar dois alunos fictícios com credenciais de teste e conectar a API ao banco hospedado foram sugestões discutidas, ainda não executadas nem transformadas automaticamente em requisitos novos do B4. Ver [handoff de continuação](handoffs/2026-10-26-resume-3b.md).
 
 ## Comportamento entregue
 

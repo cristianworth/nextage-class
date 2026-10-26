@@ -16,7 +16,7 @@ Projeto pessoal de portfólio, construído com assistência de IA e decisões de
 
 **Etapa 1 aprovada por Nara**, conforme relato de Cristian em 24/10/2026. **Etapa 2 aprovada na revisão integrada com Nara**, conforme confirmação de Cristian em 25/10/2026. O próximo ciclo é o piloto com servidor, começando pela base executável. [Fechamento 2D](docs/verification-2d.md) e [roadmap](docs/roadmap.md).
 
-A demo usa dados fictícios no navegador. A base ASP.NET Core/PostgreSQL do **3A está executável**, com verificações de processo e banco; contas e fluxos persistidos seguem nos próximos recortes do piloto. A aplicação ainda não está hospedada.
+A demo usa dados fictícios no navegador. A base ASP.NET Core/PostgreSQL do **3A está executável**; contas, cadastro mínimo/convites e telas de acesso do 3B estão implementados, com conferência integrada real pendente. A rotina completa no servidor segue no 3C/3D. A aplicação ainda não está hospedada.
 
 ## Executar
 

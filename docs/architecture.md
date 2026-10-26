@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Status: etapas 1 e 2 concluídas. Base ASP.NET Core/PostgreSQL do 3A executável e verificada; contas e operações de negócio seguem no 3B–3E. Modelo físico de negócio e contratos correspondentes ainda não foram implementados.
+Status: etapas 1 e 2 concluídas. Base ASP.NET Core/PostgreSQL do 3A executável e verificada. No 3B, cadastro mínimo, perfis de acesso, convites e telas de autenticação estão implementados; a conferência integrada real continua pendente. Modelos e contratos de agenda, acervo e acompanhamento pedagógico no servidor seguem no 3C/3D.
 
 ## Stack
 
@@ -14,7 +14,7 @@ Versões suportadas e dependências serão verificadas ao iniciar cada etapa. N�
 
 No 3A foram fixados SDK .NET 10.0.402 e Npgsql 10.0.3; testes HTTP usam o pacote oficial ASP.NET Core 10.0.13. PostgreSQL 18.6 foi verificado localmente. Health checks nativos distinguem processo e banco real sem expor configuração. Credenciais são externas; ferramentas e banco local ficam em work, ignorado. Autenticação por convite/e-mail/senha foi aprovada para o 3B; hospedagem segue decisão do 3E. Ver [server-development.md](server-development.md).
 
-No início do 3B, Cristian escolheu Supabase para banco hospedado e autenticação. Isso substitui a intenção de acrescentar ASP.NET Core Identity: não haverá armazenamento paralelo de senhas. A API continuará validando identidade e consultando os vínculos/papéis do próprio sistema antes de permitir operações. O banco local serve a testes de regras e migrações; não replica o serviço Auth. Detalhes e limites do provedor em [supabase-pilot.md](supabase-pilot.md).
+No início do 3B, Cristian escolheu Supabase para banco hospedado e autenticação. Isso substitui a intenção de acrescentar ASP.NET Core Identity: não haverá armazenamento paralelo de senhas. A API já valida identidade e consulta os vínculos/papéis do próprio sistema antes de permitir operações. O schema de acesso foi aplicado localmente e no projeto separado, mas a API de desenvolvimento ainda usa PostgreSQL local com Auth hospedado. Os testes automatizados usam outro banco local, nextage_class_tests; não replicam o serviço Auth. Conexão ao banco hospedado e operação completa ainda exigem configuração e validação. Detalhes em [account-access.md](account-access.md) e [supabase-pilot.md](supabase-pilot.md).
 
 ## Estrutura do código
 

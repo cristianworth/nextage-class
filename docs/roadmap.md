@@ -79,6 +79,10 @@ O provisionamento da primeira conta também exige separar o banco dos testes aut
 
 ## Reavaliação e autonomia
 
+### Passagem do 3B em 26/10/2026
+
+Cristian solicitou preparar o handoff e continuar a partir do 3B, sem concluir sua implementação neste chat. B1–B3 permanecem concluídos e B4 aberto. Primeiro o sucessor confere o estado e alinha um recorte pequeno; depois completa a validação do acesso antes de avançar ao 3C. A criação de contas fictícias com senha conhecida e a ordem da conexão ao PostgreSQL hospedado foram propostas recentes, não tarefas já executadas ou decisões confirmadas. Não é necessário executar toda a lista discutida para realizar a passagem. Contexto, evidências e protocolo em [handoff do 3B](handoffs/2026-10-26-resume-3b.md).
+
 Reavaliar o roadmap ao concluir cada etapa, a cada três chunks de uma etapa maior e imediatamente quando testes ou uso revelarem uma nova restrição. Primeiro corrigir regras/documentação afetadas, depois retomar a implementação. Cristian autorizou execução contínua em 25/10/2026: decisões rotineiras ficam com a assistência; ambiguidades materiais, tentativas repetidas sem progresso ou escolhas que dependam do uso devem voltar em pergunta com recomendação concreta.
 
 Etapas 4–6 permanecem evoluções condicionais. Não transformar possibilidades adiadas em obrigações para declarar o produto concluído.

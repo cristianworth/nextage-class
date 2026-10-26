@@ -19,6 +19,7 @@ Etapa 1 aprovada por Nara, conforme relato de Cristian em 24/10/2026. Revisão i
 | [Supabase no piloto](supabase-pilot.md) | Decisão do provedor, responsabilidades, plano gratuito e limites |
 | [Acesso autenticado](account-access.md) | Identidade, cadastro/convites, telas de acesso e limites do 3B |
 | [Verificação parcial 3B](verification-3b.md) | Evidências locais, roteiro e configuração real pendente |
+| [Handoff do 3B — 26/10/2026](handoffs/2026-10-26-resume-3b.md) | Snapshot, pendências e protocolo para o sucessor |
 | [Sequências e apoio](book-catalog.md) | Organização de conteúdo atual |
 | [Continuidade](course-progress.md) | Como o lançamento determina o próximo conteúdo |
 | [Pesquisa e fechamento](teaching-sequences.md) | Referências, escolhas e evidências atuais |

@@ -13,6 +13,8 @@
 
 ## Sources of truth
 
+- Continuação solicitada em 26/10/2026: retomar o 3B pelo handoff em docs/handoffs/2026-10-26-resume-3b.md. Primeiro diagnóstico/plano e validação, depois primeiro recorte e revisão antes de ampliar. A preparação desta passagem não implementa o restante do B4. Propostas de alunos fictícios e conexão do banco hospedado ainda precisam de alinhamento; não tratá-las como realizadas. Respeitar pedidos de análise/perguntas sem implementação.
+
 - Leia `README.md`, `docs/decisions.md` e `docs/roadmap.md` antes de propor trabalho.
 - `docs/` contém visão, decisões, planejamento e perguntas; não afirma que funcionalidades existem.
 - `openspec/specs/` fica reservado ao comportamento já entregue. `openspec/changes/` reúne propostas em andamento.

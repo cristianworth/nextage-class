@@ -49,6 +49,12 @@ Uma tarefa marcada não basta. Conferir critérios de aceite, efeitos plausívei
 
 Antes de commit ou merge, procurar e ler o changelog. Se existir, avaliar o impacto e consultar Cristian sobre versão/changelog, salvo autorização já dada. Não criar changelog ou incremento de versão antecipadamente. O repositório público e os pushes foram autorizados; hospedagem da aplicação depende do recorte operacional.
 
+## Continuidade entre chats
+
+Em 26/10/2026, Cristian solicitou uma passagem a partir do 3B. O [handoff](handoffs/2026-10-26-resume-3b.md) e seu [prompt de continuidade](handoffs/2026-10-26-resume-3b-prompt.md) preservam o snapshot, sem substituir as fontes atuais. O sucessor deve verificar divergências e apresentar primeiro contexto/plano com evidências; após alinhamento, apresentar o primeiro recorte e sua verificação antes de ampliar o trabalho. Cristian pode validar diretamente ou dispensar um marco explicitamente.
+
+O chat de origem é referência histórica e de revisão; código atual, testes e decisões atuais prevalecem. O fluxo de revisão manual por Cristian funciona sem comunicação entre chats. Não enviar mensagens diretamente nem criar um chat para completar a passagem sem autorização correspondente. Os artefatos não transportam credenciais nem transformam sugestões recentes em requisitos aprovados.
+
 ## Referências do processo
 
 - [Primeiros passos](https://github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md).
