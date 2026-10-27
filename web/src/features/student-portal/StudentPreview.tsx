@@ -6,6 +6,7 @@ import { availableRequestHours } from '../../domain/availability'
 import { studentRequests, submitSchedulingRequest } from '../../domain/scheduling-requests'
 import { EmptyState } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
+import { Brand } from '../../shared/Brand'
 import { StudentPortal } from './StudentPortal'
 
 export function StudentPreview({
@@ -28,17 +29,12 @@ export function StudentPreview({
         Pular para o conteúdo
       </a>
       <header className="student-preview-bar">
-        <div className="student-brand">
-          <span className="brand-symbol">
-            N<span>↗</span>
-          </span>
-          <strong>
-            Nextage<small>CLASS</small>
-          </strong>
+        <div className="student-brand" aria-label="Nextage Class">
+          <Brand />
         </div>
         <span className="demo-badge">
           <span />
-          DEMO LOCAL
+          Demo local
         </span>
       </header>
       <section className="student-preview-tools" aria-label="Ferramentas da demo">

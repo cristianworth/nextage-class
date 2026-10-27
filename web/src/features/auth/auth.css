@@ -17,19 +17,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: 'Manrope Variable', sans-serif;
-  font-size: 22px;
-}
-.pilot-brand strong {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-.pilot-brand small {
-  font-size: 9px;
-  color: var(--green);
-  letter-spacing: 5px;
-  margin-top: 4px;
+  font-family: 'DM Sans Variable', sans-serif;
+  color: var(--brand);
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -1px;
 }
 .pilot-header-actions {
   display: flex;
@@ -51,7 +43,7 @@
   padding: 44px 0;
 }
 .auth-intro h1 {
-  font-family: 'Manrope Variable', sans-serif;
+  font-family: 'DM Sans Variable', sans-serif;
   font-size: clamp(30px, 4vw, 48px);
   line-height: 1.25;
   max-width: 420px;

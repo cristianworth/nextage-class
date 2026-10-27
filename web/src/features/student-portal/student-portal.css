@@ -14,19 +14,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: 'Manrope Variable', sans-serif;
-  font-size: 22px;
-}
-.student-brand strong {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-.student-brand small {
-  letter-spacing: 5px;
-  font-size: 9px;
-  color: var(--green);
-  margin-top: 4px;
+  font-family: 'DM Sans Variable', sans-serif;
+  color: var(--brand);
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -1px;
 }
 .student-preview-tools {
   display: flex;

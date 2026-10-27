@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../shared/Icon'
+import { Brand } from '../shared/Brand'
 
 export type Page = 'agenda' | 'students' | 'history' | 'materials' | 'requests'
 const navigation = [
@@ -35,15 +36,10 @@ export function Shell({
           onClick={() => onNavigate('agenda')}
           aria-label="Nextage Class, agenda"
         >
-          <span className="brand-symbol">
-            N<span>↗</span>
-          </span>
-          <span>
-            Nextage<small>CLASS</small>
-          </span>
+          <Brand />
         </a>
         <div className="nav-section">
-          <p className="nav-caption">ÁREA DA PROFESSORA</p>
+          <p className="nav-caption">Área da professora</p>
           <nav aria-label="Navegação principal">
             {navigation.map((item) => (
               <button
@@ -91,7 +87,7 @@ export function Shell({
               Ver como aluno
             </button>
             <span className="demo-badge">
-              <span /> DEMO LOCAL
+              <span /> Demo local
             </span>
           </div>
         </header>

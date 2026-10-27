@@ -1,18 +1,27 @@
 @import '@fontsource-variable/dm-sans';
-@import '@fontsource-variable/manrope';
 
 :root {
   font-family: 'DM Sans Variable', system-ui, sans-serif;
-  color: #253631;
-  background: #f6f8f6;
+  color: var(--ink);
+  background: var(--canvas);
   font-synthesis: none;
   font-weight: 400;
-  --green: #176456;
-  --green-dark: #104c41;
-  --muted: #74817b;
-  --border: #e3e9e5;
-  --soft: #edf4ef;
-  --ink: #253631;
+  --brand: #243c78;
+  --accent: #345ac1;
+  --accent-strong: #243f91;
+  --lavender: #eae7fa;
+  --marker: #f2ba62;
+  --canvas: #f3f5fc;
+  --surface: #ffffff;
+  --ink: #25314a;
+  --muted: #586580;
+  --border: #ccd4e8;
+  --soft: #eaeefa;
+  --focus: var(--accent);
+  --sidebar-width: 242px;
+  /* Feature styles still use these names; the shared palette is authoritative. */
+  --green: var(--accent);
+  --green-dark: var(--accent-strong);
 }
 * {
   box-sizing: border-box;
@@ -48,7 +57,7 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid #83b9a8;
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 button {
@@ -66,14 +75,14 @@ h1,
 h2,
 h3,
 .brand {
-  font-family: 'Manrope Variable', system-ui, sans-serif;
+  font-family: 'DM Sans Variable', system-ui, sans-serif;
 }
 h1 {
   font-size: 32px;
-  letter-spacing: -1.2px;
+  letter-spacing: -1px;
   line-height: 1.3;
   margin-bottom: 8px;
-  font-weight: 800;
+  font-weight: 650;
 }
 h2 {
   font-size: 22px;
@@ -92,9 +101,9 @@ small {
   font-size: 14px;
 }
 .eyebrow {
-  font-size: 10px;
-  letter-spacing: 1.9px;
-  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  font-weight: 600;
   color: var(--green);
   margin-bottom: 10px;
 }
@@ -103,11 +112,13 @@ small {
   min-height: 100vh;
 }
 .sidebar {
-  width: 230px;
+  width: var(--sidebar-width);
   flex-shrink: 0;
-  background: #fff;
-  border-right: 1px solid var(--border);
-  padding: 32px 20px 20px;
+  background: var(--brand);
+  color: var(--canvas);
+  --focus: var(--marker);
+  border-right: 0;
+  padding: 30px 18px 20px;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -119,43 +130,35 @@ small {
   align-items: center;
   gap: 11px;
   text-decoration: none;
-  font-size: 22px;
-  letter-spacing: -0.8px;
-  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -1px;
+  font-weight: 650;
   padding: 0 10px;
 }
-.brand small {
+.brand-mark {
   display: block;
-  font-family: 'DM Sans Variable', sans-serif;
-  letter-spacing: 4px;
-  font-size: 9px;
-  font-weight: 600;
-  margin-top: 2px;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
 }
-.brand-symbol {
-  width: 40px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--green);
-  color: white;
-  display: grid;
-  place-items: center;
-  font-size: 27px;
-  position: relative;
+.brand-wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
 }
-.brand-symbol span {
-  position: absolute;
-  font-size: 15px;
-  right: 4px;
-  top: 0;
+.brand-wordmark > span {
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: 0.2px;
+  margin-top: 5px;
 }
 .nav-section {
-  margin-top: 52px;
+  margin-top: 44px;
 }
 .nav-caption {
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  color: #88948e;
+  font-size: 12px;
+  letter-spacing: 0;
+  color: #c4d1f0;
   margin: 0 12px 15px;
 }
 .nav-item {
@@ -165,27 +168,27 @@ small {
   width: 100%;
   border: 0;
   background: transparent;
-  color: #74817b;
+  color: #e1e7f8;
   padding: 14px;
-  border-radius: 9px;
+  border-radius: 6px 16px 16px 6px;
   margin-bottom: 6px;
   text-align: left;
   font-weight: 500;
   font-size: 14px;
 }
 .nav-item:hover {
-  background: #f5f8f5;
+  background: #314c8b;
 }
 .nav-item.active {
-  background: #eaf2ed;
-  color: var(--green);
+  background: var(--marker);
+  color: var(--ink);
   font-weight: 700;
 }
 .nav-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--green);
+  background: var(--ink);
   margin-left: auto;
 }
 .sidebar-bottom {
@@ -193,9 +196,9 @@ small {
   padding-top: 50px;
 }
 .demo-note {
-  background: #f5f8f5;
-  border: 1px solid #e8eee9;
-  border-radius: 12px;
+  background: #2d4682;
+  border: 1px solid #5870a7;
+  border-radius: 8px;
   padding: 15px;
   font-size: 11px;
   line-height: 1.65;
@@ -204,7 +207,7 @@ small {
   font-size: 11px;
 }
 .demo-note p {
-  color: var(--muted);
+  color: #d0daf2;
   margin: 8px 0 12px;
 }
 .demo-indicator,
@@ -213,7 +216,7 @@ small {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #78a68f;
+  background: var(--marker);
   margin-right: 4px;
 }
 .text-button {
@@ -234,14 +237,14 @@ small {
   display: flex;
   gap: 10px;
   align-items: center;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #5870a7;
   margin-top: 24px;
   padding: 20px 2px 0;
   font-size: 12px;
 }
 .teacher-profile small {
   display: block;
-  color: var(--muted);
+  color: #c4d1f0;
   font-size: 10px;
   margin-top: 3px;
 }
@@ -253,15 +256,15 @@ small {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #efe7db;
-  color: #84735b;
+  background: var(--lavender);
+  color: var(--brand);
   font-weight: 700;
   font-size: 13px;
 }
 .main {
-  margin-left: 230px;
+  margin-left: var(--sidebar-width);
   min-width: 0;
-  width: calc(100% - 230px);
+  width: calc(100% - var(--sidebar-width));
   padding: 0 38px 32px;
   max-width: 1900px;
 }
@@ -270,28 +273,34 @@ small {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #929b95;
-  font-size: 11px;
+  color: var(--muted);
+  font-size: 12px;
   border-bottom: 1px solid var(--border);
   margin-bottom: 32px;
 }
 .topbar strong {
   font-weight: 500;
-  color: #52675d;
+  color: var(--ink);
 }
 .topbar-slash {
   padding: 0 12px;
-  color: #ccd5ce;
+  color: #7b8cb4;
 }
 .demo-badge {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  background: #edf3ed;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  background: var(--lavender);
   padding: 7px 10px;
-  border: 1px solid #e1e9df;
-  border-radius: 20px;
-  color: #648166;
+  border: 1px solid #d0c9ec;
+  border-radius: 6px;
+  color: var(--brand);
+}
+.demo-badge span {
+  background: var(--accent);
+}
+.sidebar .text-button {
+  color: var(--marker);
 }
 .page-heading {
   display: flex;
@@ -308,24 +317,24 @@ small {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 11px 17px;
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
 }
 .button:hover {
-  background: #f0f5f1;
+  background: var(--soft);
 }
 .button.primary {
   background: var(--green);
   color: white;
   border-color: var(--green);
-  box-shadow: 0 3px 6px #17645612;
+  box-shadow: none;
 }
 .button.primary:hover {
   background: var(--green-dark);
@@ -342,13 +351,13 @@ small {
 .icon-button {
   border: 1px solid var(--border);
   border-radius: 7px;
-  background: #fff;
+  background: var(--surface);
   width: 32px;
   height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #6c7c73;
+  color: var(--muted);
   flex-shrink: 0;
 }
 .icon-button:hover {
@@ -358,13 +367,13 @@ small {
   width: min(570px, calc(100vw - 32px));
   max-height: 90dvh;
   border: 0;
-  border-radius: 18px;
+  border-radius: 12px;
   padding: 28px;
   box-shadow: 0 24px 120px #102e3d40;
   color: var(--ink);
 }
 .modal::backdrop {
-  background: #16352a60;
+  background: #17274f80;
   backdrop-filter: blur(3px);
 }
 .modal-heading {
@@ -390,7 +399,7 @@ small {
   margin-bottom: 17px;
   font-size: 12px;
   font-weight: 600;
-  color: #40574c;
+  color: var(--ink);
 }
 .field input,
 .field select,
@@ -398,8 +407,8 @@ small {
 .search-field input,
 .filter-select {
   width: 100%;
-  border: 1px solid #dce5df;
-  background: #fff;
+  border: 1px solid #a6b4d4;
+  background: var(--surface);
   border-radius: 7px;
   color: var(--ink);
   padding: 11px 12px;
@@ -415,7 +424,7 @@ small {
 .field input::placeholder,
 .field textarea::placeholder,
 .search-field input::placeholder {
-  color: #9aa69f;
+  color: #687591;
 }
 .field small {
   color: var(--muted);
@@ -451,7 +460,7 @@ small {
   color: var(--muted);
 }
 .empty-state h3 {
-  color: #53695d;
+  color: var(--ink);
   margin: 15px 0 8px;
 }
 .empty-state p {
@@ -464,11 +473,11 @@ small {
   width: 55px;
   height: 55px;
   border-radius: 16px;
-  background: #f0f4ef;
+  background: var(--lavender);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #8ca794;
+  color: var(--brand);
 }
 .skip-link {
   position: fixed;
@@ -490,14 +499,14 @@ small {
   }
 }
 @media (max-width: 1000px) {
+  :root {
+    --sidebar-width: 202px;
+  }
   .sidebar {
-    width: 190px;
     padding-left: 12px;
     padding-right: 12px;
   }
   .main {
-    margin-left: 190px;
-    width: calc(100% - 190px);
     padding-left: 22px;
     padding-right: 22px;
   }
@@ -530,13 +539,13 @@ small {
     font-size: 20px;
     padding: 0;
   }
-  .brand-symbol {
-    width: 33px;
-    height: 35px;
-    font-size: 23px;
+  .brand-mark {
+    width: 38px;
+    height: 38px;
   }
-  .brand small {
-    font-size: 8px;
+  .brand-wordmark > span {
+    font-size: 11px;
+    margin-top: 3px;
   }
   .nav-section {
     margin: 12px -7px 0;

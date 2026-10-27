@@ -6,6 +6,7 @@ import type { AuthMode } from '../features/auth/AuthScreen'
 import { usePilotAccess } from '../features/auth/usePilotAccess'
 import { TeacherAccountsPage } from '../features/accounts/TeacherAccountsPage'
 import { FormError } from '../shared/Modal'
+import { Brand } from '../shared/Brand'
 import '../features/auth/auth.css'
 
 const projectUrl = import.meta.env.VITE_SUPABASE_URL
@@ -76,13 +77,8 @@ function ConnectedPilot({ client }: { client: SupabaseClient }) {
         Pular para o conteúdo
       </a>
       <header className="pilot-header">
-        <div className="pilot-brand">
-          <span className="brand-symbol">
-            N<span>↗</span>
-          </span>
-          <strong>
-            Nextage<small>CLASS</small>
-          </strong>
+        <div className="pilot-brand" aria-label="Nextage Class">
+          <Brand />
         </div>
         {signedIn && !signingOut && (
           <div className="pilot-header-actions">
