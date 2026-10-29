@@ -31,7 +31,7 @@ export function TeacherAccountsPage({
   const [notice, setNotice] = useState('')
   const [search, setSearch] = useState('')
   const [refresh, setRefresh] = useState(0)
-  const [creating, setCreating] = useState(false)
+  const [editor, setEditor] = useState<Student | null | undefined>(undefined)
   const [inviting, setInviting] = useState<Student | null>(null)
   useEffect(() => {
     const controller = new AbortController()
@@ -68,7 +68,7 @@ export function TeacherAccountsPage({
           <h1>Seus alunos</h1>
           <p className="muted">Cadastre seus alunos e convide cada um para o próprio espaço.</p>
         </div>
-        <button className="button primary" onClick={() => setCreating(true)}>
+        <button className="button primary" onClick={() => setEditor(null)}>
           <Icon name="plus" size={17} />
           Novo aluno
         </button>
@@ -121,6 +121,13 @@ export function TeacherAccountsPage({
                         year: 'numeric',
                       })}
                     </p>
+                    <button
+                      className="button"
+                      aria-label={`Editar ${student.name}`}
+                      onClick={() => setEditor(student)}
+                    >
+                      Editar cadastro
+                    </button>
                     {invitation && (
                       <p className={`status-badge ${invitation.status === 'sent' ? 'done' : ''}`}>
                         {STATUS[invitation.status]}
@@ -147,20 +154,33 @@ export function TeacherAccountsPage({
           )}
         </>
       )}
-      {creating && (
+      {editor !== undefined && (
         <StudentForm
+          key={editor?.id ?? 'new'}
+          student={editor ?? undefined}
           books={[]}
           includeSequence={false}
-          onClose={() => setCreating(false)}
+          onClose={() => setEditor(undefined)}
           onSave={async (input) => {
             const student = studentSchema.parse(
-              await pilotRequest(client, profile.userId, '/api/students', { body: input }),
+              await pilotRequest(
+                client,
+                profile.userId,
+                editor ? `/api/students/${encodeURIComponent(editor.id)}` : '/api/students',
+                { body: input, method: editor ? 'PUT' : 'POST' },
+              ),
             )
             setStudents((current) =>
-              [...current, student].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR')),
+              [...current.filter((item) => item.id !== student.id), student].sort((a, b) =>
+                a.name.localeCompare(b.name, 'pt-BR'),
+              ),
             )
-            setCreating(false)
-            setNotice('Aluno cadastrado. Você já pode enviar o convite de acesso.')
+            setEditor(undefined)
+            setNotice(
+              editor
+                ? 'Cadastro atualizado. O acesso e o convite foram preservados.'
+                : 'Aluno cadastrado. Você já pode enviar o convite de acesso.',
+            )
           }}
         />
       )}

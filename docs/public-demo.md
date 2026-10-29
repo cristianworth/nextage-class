@@ -51,4 +51,4 @@ Nextage Class organiza a agenda e o acompanhamento pedagógico de uma professora
 
 ## Limites do piloto
 
-A publicação não comprova autenticação, entrega de convite, recuperação de senha, isolamento seguro entre contas, backup ou operação com dados reais. O convite expirado da professora foi reenviado com autorização em 29/10 e aceito pelo provedor; o resultado humano continua pendente. Conferir [estado do 3B](verification-3b.md) e [roadmap](roadmap.md) antes de retomar 3C.
+A publicação não comprova autenticação, entrega de convite, recuperação de senha, isolamento seguro entre contas, backup ou operação com dados reais. Separadamente, Cristian confirmou em 29/10 a ativação e entrada/saída da professora após o reenvio autorizado. Recuperação e acesso do aluno mantêm B4 aberto. O cadastro conectado começa no [3C1](verification-3c1.md); a demo é referência de comportamento e testes, sem importação de dados para o piloto. Conferir [estado do 3B](verification-3b.md) e [roadmap](roadmap.md).

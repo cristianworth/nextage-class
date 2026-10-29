@@ -50,4 +50,30 @@ public sealed class StudentStore(NpgsqlDataSource source)
         await command.ExecuteNonQueryAsync(cancellationToken);
         return student;
     }
+
+    public async Task<StudentData> UpdateAsync(string id, StudentInput input, CancellationToken cancellationToken)
+    {
+        var values = input.Validated();
+        await using var connection = await source.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        StudentData student;
+        await using (var command = new NpgsqlCommand("UPDATE app.students SET name=$2, level=$3, start_date=$4, phone=$5, occupation=$6, interests=$7, meeting_url=$8 WHERE id=$1 RETURNING id, name, level, start_date, phone, occupation, interests, meeting_url, created_at", connection, transaction))
+        {
+            foreach (var value in new object[] { id, values.Name, values.Level, values.StartDate, values.Phone!, values.Occupation!, values.Interests!, values.MeetingUrl! })
+                command.Parameters.AddWithValue(value);
+            await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+            if (!await reader.ReadAsync(cancellationToken)) throw new ApiFailure(404, "Aluno não encontrado.");
+            student = new StudentData(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetFieldValue<DateOnly>(3),
+                reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetDateTime(8));
+        }
+        // Keep the account label consistent without changing its identity or permissions.
+        await using (var profile = new NpgsqlCommand("UPDATE app.access_profiles SET display_name=$2 WHERE student_id=$1 AND role='student'", connection, transaction))
+        {
+            profile.Parameters.AddWithValue(id);
+            profile.Parameters.AddWithValue(student.Name);
+            await profile.ExecuteNonQueryAsync(cancellationToken);
+        }
+        await transaction.CommitAsync(cancellationToken);
+        return student;
+    }
 }

@@ -18,6 +18,8 @@ No início do 3B, Cristian escolheu Supabase para banco hospedado e autenticaç�
 
 ## Estrutura do código
 
+O 3C1 reaproveita o formulário da demo no piloto e acrescenta edição transacional de alunos pela API. Nome do cadastro e do perfil vinculado permanecem coerentes, preservando identidade/convite. Acervo, agenda e registros ainda serão conectados nos próximos recortes; nenhum documento local da demo é importado automaticamente. Ver [evidências 3C1](verification-3c1.md).
+
 ```text
 nextage-class/
   docs/                  visão, decisões e planejamento

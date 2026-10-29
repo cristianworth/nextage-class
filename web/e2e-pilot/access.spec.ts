@@ -108,6 +108,66 @@ async function assertFits(page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 }
 
+test('student editing preserves the form on failure and reloads the confirmed server data', async ({
+  page,
+}) => {
+  const calls = await mockServices(page)
+  let saved = { ...person }
+  let attempts = 0
+  await page.route('**/api/students', (route) => route.fulfill({ json: [saved] }))
+  await page.route(`**/api/students/${person.id}`, async (route) => {
+    expect(route.request().method()).toBe('PUT')
+    attempts++
+    if (attempts === 1) return route.fulfill({ status: 503, json: {} })
+    saved = { ...saved, ...route.request().postDataJSON() }
+    return route.fulfill({ json: saved })
+  })
+  await page.goto('/')
+  await login(page)
+  await page.getByRole('button', { name: `Editar ${person.name}`, exact: true }).click()
+  const dialog = page.getByRole('dialog')
+  await expect(dialog.getByLabel('Nome do aluno')).toHaveValue(person.name)
+  await expect(dialog.getByLabel('Sequência principal')).toHaveCount(0)
+  await dialog.getByLabel('Nome do aluno').fill('Aluno Atualizado')
+  await dialog.getByRole('combobox', { name: 'Nível', exact: true }).selectOption('B1')
+  await dialog.getByRole('button', { name: 'Salvar alterações', exact: true }).click()
+  await expect(dialog.getByRole('alert')).toBeVisible()
+  await expect(dialog.getByLabel('Nome do aluno')).toHaveValue('Aluno Atualizado')
+  await expect(page.getByRole('heading', { name: person.name, exact: true })).toBeVisible()
+  await dialog.getByRole('button', { name: 'Salvar alterações', exact: true }).click()
+  await expect(dialog).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Aluno Atualizado', exact: true })).toBeVisible()
+  await page.reload()
+  await expect(page.getByRole('heading', { name: 'Aluno Atualizado', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Editar Aluno Atualizado', exact: true }).click()
+  await expect(page.getByRole('combobox', { name: 'Nível', exact: true })).toHaveValue('B1')
+  expect(saved.id).toBe(person.id)
+  expect(saved.createdAt).toBe(person.createdAt)
+  expect(calls.invites).toBe(0)
+})
+
+test('editing retries an expired token once with the same method and student', async ({ page }) => {
+  const calls = await mockServices(page)
+  const methods: string[] = []
+  await page.route(`**/api/students/${person.id}`, (route) => {
+    methods.push(route.request().method())
+    return route.fulfill(
+      methods.length === 1
+        ? { status: 401, json: {} }
+        : { json: { ...person, ...route.request().postDataJSON() } },
+    )
+  })
+  await page.goto('/')
+  await login(page)
+  await page.getByRole('button', { name: `Editar ${person.name}`, exact: true }).click()
+  await page.getByLabel('Nome do aluno').fill('Nome renovado')
+  await page.getByRole('button', { name: 'Salvar alterações', exact: true }).click()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Nome renovado', exact: true })).toBeVisible()
+  expect(methods).toEqual(['PUT', 'PUT'])
+  expect(calls.refreshes).toBe(1)
+})
+
 test('login errors are friendly; recovery does not confirm an account exists', async ({ page }) => {
   const calls = await mockServices(page, { loginFails: true })
   await page.goto('/')

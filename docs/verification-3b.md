@@ -1,5 +1,7 @@
 # Verificação parcial do 3B — contas e convites
 
+Validação humana em 29/10/2026: Cristian confirmou definição da senha, acesso à área de alunos/cadastro, saída e nova entrada com a conta da professora. O cadastro vazio é compatível com a separação entre demo e piloto. Recuperação real e acesso do aluno permanecem pendentes; B4 não foi marcado como concluído. A próxima implementação autorizada é o cadastro conectado 3C1, conforme reavaliação do roadmap.
+
 Atualização em 29/10/2026: Cristian informou retorno otp_expired ao abrir o convite. Um reenvio explicitamente autorizado foi aceito pelo provedor, preservando a identidade existente; piloto/API locais estavam prontos no momento do envio. Recebimento, ativação, login e recuperação ainda não foram confirmados por Cristian. A [demo pública](public-demo.md) foi priorizada e entregue separadamente; não encerra B4.
 
 Estado consolidado em 26/10/2026: B1–B3 implementados e verificados localmente. B4 permanece aberto até o fluxo autorizado no provedor real. A demo e o piloto usam entradas separadas. As evidências abaixo são das execuções anteriores; preparar o handoff não equivale a repetir os testes nem verificar uma nova ativação de conta.

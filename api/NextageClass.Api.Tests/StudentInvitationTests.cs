@@ -31,7 +31,7 @@ public sealed class StudentInvitationTests(AccessDatabase database)
         return student.Id;
     }
 
-    private static TestApplication Application(AccessDatabase database, FakeProvider provider) =>
+    private static TestApplication Application(AccessDatabase database, IInvitationProvider provider) =>
         new(database.Connection, services => services.AddSingleton<IInvitationProvider>(provider));
 
     [Fact]
@@ -162,6 +162,118 @@ public sealed class StudentInvitationTests(AccessDatabase database)
         Assert.Equal(HttpStatusCode.BadRequest, (await client.PostAsJsonAsync("/api/students/missing/invitation", new InvitationInput("invalid"))).StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, (await client.PostAsJsonAsync("/api/students/missing/invitation", new InvitationInput("unknown@example.test"))).StatusCode);
         Assert.Equal(0, provider.Calls);
+    }
+
+    [Fact]
+    public async Task TeacherEditsStudentWithoutRecreatingTheInvitationOrAccess()
+    {
+        var provider = new FakeProvider();
+        await using var application = Application(database, provider);
+        using var client = await TeacherAsync(application);
+        var id = await CreateStudentAsync(client);
+        var before = (await client.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Single(student => student.Id == id);
+        using var invited = await client.PostAsJsonAsync($"/api/students/{id}/invitation", new InvitationInput($"editing-{Guid.NewGuid():N}@example.test"));
+        Assert.Equal(HttpStatusCode.OK, invited.StatusCode);
+        var receipt = await invited.Content.ReadFromJsonAsync<InvitationReceipt>();
+        var input = new StudentInput(" Updated learner ", "B1", new DateOnly(2026, 11, 1), " 123 ", " Designer ", " Travel ", "https://example.test/lesson");
+        using var response = await client.PutAsJsonAsync($"/api/students/{id}", input);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var updated = await response.Content.ReadFromJsonAsync<StudentData>();
+        Assert.Equal(before.CreatedAt, updated!.CreatedAt);
+        Assert.Equal(id, updated.Id);
+        Assert.Equal("Updated learner", updated.Name);
+        Assert.Equal("B1", updated.Level);
+        Assert.Equal("123", updated.Phone);
+        Assert.Equal("Designer", updated.Occupation);
+        Assert.Equal("Travel", updated.Interests);
+        Assert.Equal(input.StartDate, updated.StartDate);
+        Assert.Equal(input.MeetingUrl, updated.MeetingUrl);
+        Assert.Equal(updated, (await client.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Single(student => student.Id == id));
+        Assert.Equal(receipt, (await client.GetFromJsonAsync<List<InvitationReceipt>>("/api/invitations"))!.Single(item => item.StudentId == id));
+        using var learner = application.CreateClient();
+        learner.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", application.Token(provider.Identity.ToString()));
+        var session = await learner.GetFromJsonAsync<JsonElement>("/api/session");
+        Assert.Equal(id, session.GetProperty("studentId").GetString());
+        Assert.Equal("student", session.GetProperty("role").GetString());
+        Assert.Equal("Updated learner", session.GetProperty("displayName").GetString());
+        Assert.Equal(1, provider.Calls);
+    }
+
+    [Fact]
+    public async Task InvalidStudentEditPreservesStoredDataAndUnknownIdReturnsNotFound()
+    {
+        await using var application = Application(database, new FakeProvider());
+        using var client = await TeacherAsync(application);
+        var id = await CreateStudentAsync(client);
+        var before = (await client.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Single(student => student.Id == id);
+        foreach (var input in new[] {
+            new StudentInput("", "A1", before.StartDate),
+            new StudentInput("Invalid", "A3", before.StartDate),
+            new StudentInput("Invalid", "A1", before.StartDate, MeetingUrl: "javascript:alert(1)") })
+            Assert.Equal(HttpStatusCode.BadRequest, (await client.PutAsJsonAsync($"/api/students/{id}", input)).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, (await client.PutAsJsonAsync($"/api/students/{id}", new { name = "Missing date", level = "A1" })).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, (await client.PutAsJsonAsync("/api/students/missing", new StudentInput("Unknown", "A1", before.StartDate))).StatusCode);
+        Assert.Equal(before, (await client.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Single(student => student.Id == id));
+    }
+
+    [Fact]
+    public async Task OnlyAnActiveTeacherCanEditStudents()
+    {
+        var provider = new FakeProvider();
+        var (userId, studentId) = await database.AddStudentAsync();
+        await using var application = Application(database, provider);
+        using var teacher = await TeacherAsync(application);
+        var before = (await teacher.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Single(student => student.Id == studentId);
+        using var client = application.CreateClient();
+        var input = new StudentInput("Blocked edit", "A2", new DateOnly(2026, 10, 29));
+        var path = $"/api/students/{Uri.EscapeDataString(studentId)}";
+        Assert.Equal(HttpStatusCode.Unauthorized, (await client.PutAsJsonAsync(path, input)).StatusCode);
+        foreach (var identity in new[] { userId, Guid.NewGuid() })
+        {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", application.Token(identity.ToString()));
+            Assert.Equal(HttpStatusCode.Forbidden, (await client.PutAsJsonAsync(path, input)).StatusCode);
+        }
+        Assert.Equal(before, (await teacher.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Single(student => student.Id == studentId));
+        Assert.Equal(0, provider.Calls);
+    }
+
+    [Fact]
+    public async Task EditWhileInvitationIsBeingDeliveredUsesTheLatestStudentName()
+    {
+        var provider = new DelayedProvider();
+        await using var application = Application(database, provider);
+        using var client = await TeacherAsync(application);
+        var id = await CreateStudentAsync(client);
+        var delivery = client.PostAsJsonAsync($"/api/students/{id}/invitation", new InvitationInput($"delayed-{Guid.NewGuid():N}@example.test"));
+        try
+        {
+            await provider.Started.Task.WaitAsync(TimeSpan.FromSeconds(10));
+            using var edited = await client.PutAsJsonAsync($"/api/students/{id}", new StudentInput("Name changed during delivery", "A2", new DateOnly(2026, 10, 29)));
+            Assert.Equal(HttpStatusCode.OK, edited.StatusCode);
+        }
+        finally { provider.Release.TrySetResult(); }
+        using var sent = await delivery;
+        Assert.Equal(HttpStatusCode.OK, sent.StatusCode);
+        using var learner = application.CreateClient();
+        learner.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", application.Token(provider.Identity.ToString()));
+        var session = await learner.GetFromJsonAsync<JsonElement>("/api/session");
+        Assert.Equal("Name changed during delivery", session.GetProperty("displayName").GetString());
+        Assert.Equal(id, session.GetProperty("studentId").GetString());
+        Assert.Equal("student", session.GetProperty("role").GetString());
+    }
+
+    private sealed class DelayedProvider : IInvitationProvider
+    {
+        public bool IsConfigured => true;
+        public Guid Identity { get; } = Guid.NewGuid();
+        public TaskCompletionSource Started { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public TaskCompletionSource Release { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public async Task<InvitedIdentity> SendAsync(string email, CancellationToken cancellationToken)
+        {
+            Started.TrySetResult();
+            await Release.Task.WaitAsync(cancellationToken);
+            return new InvitedIdentity(Identity, email);
+        }
     }
 
     private sealed class FakeProvider : IInvitationProvider

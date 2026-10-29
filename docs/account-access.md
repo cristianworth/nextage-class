@@ -2,13 +2,15 @@
 
 ## B1–B3 implementados; integração real B4 pendente
 
+Em 29/10/2026, Cristian confirmou ativação/definição da senha, entrada na área da professora, saída e nova entrada. Esse fluxo da professora está validado por uso humano. A área vazia não é defeito: o piloto não recebe os alunos fictícios da demo. Recuperação e conferência real do aluno continuam pendentes no B4.
+
 A API valida assinatura assimétrica, emissor do projeto configurado, audiência authenticated e expiração. A sessão depende também de um perfil ativo no schema app. O perfil fornece papel e vínculo com aluno; claims role/user_metadata editáveis não concedem acesso. Contas sem perfil ativo recebem 403 e tokens ausentes/inválidos recebem 401.
 
 GET /api/session retorna apenas userId, displayName, role e studentId do vínculo autorizado. Cadastro mínimo, convite administrativo e telas de entrada/ativação/recuperação estão implementados. A conferência real B4 continua na mudança deliver-supabase-access-3b; isso ainda não conclui o piloto.
 
 ## Cadastro e convite da professora
 
-Somente o perfil teacher pode listar/cadastrar alunos e criar/consultar convites. POST /api/students valida nome, nível, data de início e campos complementares. POST /api/students/{id}/invitation recebe o e-mail, preservando o aluno escolhido pela professora. A chave administrativa e a URL de retorno são configuração do servidor, sem entrada pelo formulário do aluno.
+Somente o perfil teacher pode listar/cadastrar/editar alunos e criar/consultar convites. POST /api/students e PUT /api/students/{id} validam nome, nível, data de início e campos complementares. A edição preserva identidade, data de criação e convite; atualiza o nome do perfil student vinculado na mesma transação. POST /api/students/{id}/invitation recebe o e-mail, preservando o aluno escolhido pela professora. A chave administrativa e a URL de retorno são configuração do servidor, sem entrada pelo formulário do aluno. Ver [evidências 3C1](verification-3c1.md).
 
 O servidor registra a tentativa antes de chamar o SDK Supabase 8.5.0. Após o provedor confirmar o convite, consulta a identidade exata e cria o perfil student e a confirmação do envio em uma transação. O SDK retorna booleano para convite; a consulta administrativa resolve o ID sem inventá-lo ou confiar em metadados editáveis. Pedidos concorrentes para o mesmo aluno/e-mail não enviam dois convites. Um perfil já existente não é sobrescrito.
 
@@ -36,7 +38,7 @@ O projeto Supabase foi inspecionado vazio antes da primeira migração. Cadastro
 
 Além de ConnectionStrings__NextageClass, configurar Supabase__Url com a URL HTTPS do projeto. scripts/run-api.ps1 também pode ler a URL de work/supabase/project.json. Esse arquivo é local e ignorado. Chave administrativa não é necessária para validar JWT; convites exigem Supabase__SecretKey e Supabase__InvitationRedirectUrl.
 
-Para configurar localmente, copiar config/supabase-server.example.json para work/supabase/server-secrets.json e preencher apenas no arquivo privado. Usar a chave secret do servidor, nunca a publicável nem variáveis VITE_. Não colar a chave na conversa. Cristian configurou a chave, aceita pelo provedor em 25/10/2026. Uma identidade de teste foi verificada e vinculada explicitamente ao papel teacher, no banco local e no projeto separado; o provedor aceitou o envio do convite. O retorno de ativação para a porta 5174 foi conferido na geração do link. Recebimento, definição da senha, entrada e recuperação ainda precisam da conferência B4.
+Para configurar localmente, copiar config/supabase-server.example.json para work/supabase/server-secrets.json e preencher apenas no arquivo privado. Usar a chave secret do servidor, nunca a publicável nem variáveis VITE_. Não colar a chave na conversa. Cristian configurou a chave, aceita pelo provedor em 25/10/2026. Uma identidade de teste foi verificada e vinculada explicitamente ao papel teacher, no banco local e no projeto separado; o provedor aceitou o envio do convite. O retorno de ativação para a porta 5174 foi conferido. Em 29/10, Cristian confirmou definição da senha, entrada, saída e nova entrada após o reenvio autorizado. Recuperação e acesso do aluno continuam pendentes no B4.
 
 JWKS vem do endpoint público documentado do mesmo emissor, com atualização a cada dez minutos, sem aceitar HS256 ou um emissor escolhido pelo token. A política de rotação/expiração do provedor deve ser respeitada. Não implementar algoritmos próprios nem exportar chaves privadas para testes.
 

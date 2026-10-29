@@ -58,6 +58,12 @@ public sealed class StudentInvitationService(NpgsqlDataSource source, IInvitatio
                 throw new InvalidOperationException("A identidade retornada não corresponde ao convite.");
             await using var connection = await source.OpenConnectionAsync(cancellationToken);
             await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+            // An edit during delivery must not create an account with an older name.
+            await using (var currentStudent = new NpgsqlCommand("SELECT name FROM app.students WHERE id=$1 FOR UPDATE", connection, transaction))
+            {
+                currentStudent.Parameters.AddWithValue(studentId);
+                name = await currentStudent.ExecuteScalarAsync(cancellationToken) as string ?? throw new ApiFailure(404, "Aluno não encontrado.");
+            }
             await using var profile = new NpgsqlCommand("INSERT INTO app.access_profiles(user_id,role,student_id,display_name) VALUES ($1,'student',$2,$3)", connection, transaction);
             profile.Parameters.AddWithValue(identity.UserId);
             profile.Parameters.AddWithValue(studentId);

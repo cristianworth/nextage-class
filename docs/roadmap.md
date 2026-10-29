@@ -1,6 +1,6 @@
 # Roadmap do Nextage Class
 
-Revisado em 25/10/2026 após o aceite da etapa 2 e a definição de acesso por convite. Cada entrega distingue implementação técnica, revisão de uso e recursos ainda planejados. Sem estimativas de prazo artificiais.
+Revisado em 29/10/2026 após a publicação da demo e a validação humana do acesso da professora. Cada entrega distingue implementação técnica, revisão de uso e recursos ainda planejados. Sem estimativas de prazo artificiais.
 
 ## Etapas e ordem
 
@@ -20,9 +20,9 @@ A etapa 2 começa por leitura para validar o conteúdo compartilhado e sua apres
 
 Cristian autorizou execução autônoma para preparar e publicar a demo das etapas 1/2 no GitHub Pages do repositório existente. O recorte inclui exemplos pedagógicos coerentes e restauráveis, armazenamento público separado, roteiro opcional, verificação dos fluxos em computador/celular e documentação de apresentação. Identidade visual atual preservada; apenas a demo estática é publicada.
 
-Essa entrega antecede a retomada da validação B4 e não a conclui. O convite da professora expirou segundo o retorno informado por Cristian; um reenvio autorizado foi aceito pelo provedor em 29/10/2026. Ativação, entrada e recuperação continuam dependendo de conferência. Banco hospedado, piloto, 3C–3E e dados reais não fazem parte da publicação demonstrativa.
+Essa entrega antecede a retomada da validação B4 e não a conclui. O convite da professora expirou segundo o retorno informado por Cristian; um reenvio autorizado foi aceito pelo provedor em 29/10/2026. Ativação e entrada/saída da professora foram depois confirmadas por Cristian; recuperação e acesso do aluno continuam dependendo de conferência. Banco hospedado, piloto, 3C–3E e dados reais não fazem parte da publicação demonstrativa.
 
-Demo [publicada e conferida](https://cristianworth.github.io/nextage-class/) em 29/10/2026. [Roteiro e política de datas](public-demo.md), [evidências novas](verification-public-demo.md) e mudança [publish-public-demo](../openspec/changes/publish-public-demo/proposal.md). Reavaliação: os fluxos das etapas 1/2 continuam adequados à apresentação; retomar B4 pelo resultado humano do acesso da professora. Não iniciar 3C nem ampliar o produto como consequência da publicação.
+Demo [publicada e conferida](https://cristianworth.github.io/nextage-class/) em 29/10/2026. [Roteiro e política de datas](public-demo.md), [evidências novas](verification-public-demo.md) e mudança [publish-public-demo](../openspec/changes/publish-public-demo/proposal.md). Reavaliação: os fluxos das etapas 1/2 continuam adequados à apresentação; retomar B4 pelo resultado humano do acesso da professora. A publicação isoladamente não conclui B4; a retomada abaixo define o início incremental do 3C1 solicitado por Cristian.
 
 ## Etapa 2 dividida em entregas
 
@@ -86,6 +86,24 @@ No B4, a chave privada já foi configurada e aceita; identidade inicial e víncu
 O provisionamento da primeira conta também exige separar o banco dos testes automatizados do banco de desenvolvimento. Os testes criam sua própria professora fictícia, e o produto permite uma única professora; compartilhar o banco causaria conflito com a conta provisionada. A preparação local deve manter nextage_class para desenvolvimento e nextage_class_tests para testes, sem apagar ou substituir o vínculo existente.
 
 ## Reavaliação e autonomia
+
+### Retomada após o acesso da professora — 29/10/2026
+
+Cristian confirmou que definiu a senha, abriu a área de alunos/cadastro e conseguiu sair e entrar novamente. O cadastro vazio é esperado: a demo e o piloto têm dados separados. Isso valida o acesso da professora, mas recuperação e fluxo real do aluno ainda mantêm B4 aberto.
+
+Cristian solicitou replanejar e iniciar a próxima implementação. A demo pública passa a ser referência executável e fonte de cenários fictícios para testes; não será importada automaticamente para a conta autenticada. O início incremental do 3C1 pode usar o acesso teacher já validado enquanto as pendências externas do B4 ficam visíveis. O fechamento do B4 continua necessário antes de validar o portal autenticado 3D ou uso real.
+
+| Ordem | Recorte | Resultado e dependência |
+| --- | --- | --- |
+| Atual | **3C1 — Cadastro conectado** | Reusar o formulário da demo para cadastrar/editar alunos pela API, preservar identidade e convites e conferir recarga/erros. Não exige criar conta de aluno ou importar exemplos |
+| Em paralelo no planejamento | **B4 restante** | Conferir recuperação real e acesso/permissões de aluno com identidade/destinatário de teste alinhados. Não enviar convites novos por inferência |
+| Depois de revisar 3C1 | **3C2 — Acervo e vínculo pedagógico** | Persistir sequências, unidades, apoios e sequência principal do aluno; preservar históricos ao evoluir o schema |
+| Seguinte | **3C3 — Agenda no servidor** | Aulas pontuais/semanais, bloqueios e remarcações com conflitos verificados no servidor |
+| Seguinte | **3C4 — Registros e preparação** | Histórico, continuidade, planejamento e homework persistidos; reusar cenários da demo como comparação |
+| Após 3B/3C | **3D — Portal conectado** | Consulta autorizada e solicitações; manter os limites de conteúdo da demo e validar isolamento real |
+| Antes de dados reais | **3E — Operação** | Banco hospedado, implantação do piloto, e-mail operacional, backup/restauração e revisão de uso |
+
+Primeiro recorte: [connect-teacher-students-3c1](../openspec/changes/connect-teacher-students-3c1/proposal.md). Demo pública permanece estática e independente; nova publicação do piloto não está autorizada por esta reordenação.
 
 ### Passagem do 3B em 26/10/2026
 

@@ -64,6 +64,8 @@ Demo das etapas 1 e 2 publicada no GitHub Pages e conferida em computador/celula
 
 Base ASP.NET Core/PostgreSQL executável; cadastro, convites e telas de acesso implementados, com conferência integrada real do 3B ainda pendente. Rotina completa persistida e operação do piloto seguem no [roadmap](docs/roadmap.md). A publicação demonstrativa não conclui o piloto.
 
+Cristian validou ativação e entrada/saída da professora. O primeiro recorte conectado oferece cadastro e edição de alunos pela API no piloto local; recuperação e acesso real do aluno continuam pendentes. A demo pública permanece independente. [Conferência do cadastro conectado](docs/verification-3c1.md).
+
 O projeto é desenvolvido com assistência de IA. Cristian guia o produto, define prioridades e acompanha decisões; Nara valida a rotina de ensino. A IA participa do desenvolvimento, sem recursos de IA no produto. [Visão e processo](docs/product-vision.md).
 
 ## Verificação e documentação

@@ -6,6 +6,8 @@ Etapa 1 aprovada por Nara, conforme relato de Cristian em 24/10/2026. Revisão i
 
 A [demo pública](public-demo.md) das etapas 1/2 foi publicada e conferida em 29/10/2026; [evidências](verification-public-demo.md). O piloto com servidor continua separado, com B4 pendente.
 
+Acesso da professora validado por Cristian; primeiro recorte [3C1 — cadastro conectado](verification-3c1.md) implementa edição pela API. Recuperação e acesso real do aluno seguem no B4, conforme [replanejamento](roadmap.md#retomada-após-o-acesso-da-professora--29102026).
+
 | Documento                                                      | Finalidade                                                                |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | [Visão do produto](product-vision.md)                          | Problema, público e limites                                               |

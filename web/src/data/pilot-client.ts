@@ -31,7 +31,7 @@ export async function pilotRequest(
   client: SupabaseClient,
   userId: string,
   path: string,
-  options: { body?: unknown; signal?: AbortSignal } = {},
+  options: { body?: unknown; method?: 'POST' | 'PUT'; signal?: AbortSignal } = {},
 ): Promise<unknown> {
   const {
     data: { session },
@@ -40,7 +40,7 @@ export async function pilotRequest(
     throw new PilotRequestError(401, 'Sua sessão mudou. Entre novamente para continuar.')
   const send = (token: string) =>
     fetch(path, {
-      method: options.body === undefined ? 'GET' : 'POST',
+      method: options.method ?? (options.body === undefined ? 'GET' : 'POST'),
       headers: {
         Authorization: `Bearer ${token}`,
         ...(options.body === undefined ? {} : { 'Content-Type': 'application/json' }),

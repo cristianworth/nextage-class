@@ -57,6 +57,8 @@ students.MapPost("", async (StudentInput input, StudentStore store, Cancellation
     var student = await store.CreateAsync(input, cancellationToken);
     return Results.Created($"/api/students/{student.Id}", student);
 });
+students.MapPut("/{studentId}", async (string studentId, StudentInput input, StudentStore store, CancellationToken cancellationToken) =>
+    Results.Ok(await store.UpdateAsync(studentId, input, cancellationToken)));
 students.MapPost("/{studentId}/invitation", async (string studentId, InvitationInput input, StudentInvitationService service, CancellationToken cancellationToken) =>
     Results.Ok(await service.InviteAsync(studentId, input, cancellationToken)));
 app.MapGet("/api/invitations", async (StudentInvitationService service, CancellationToken cancellationToken) => await service.ListAsync(cancellationToken)).RequireAuthorization("Teacher");
