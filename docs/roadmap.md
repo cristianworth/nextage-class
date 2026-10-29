@@ -16,6 +16,14 @@ Revisado em 25/10/2026 após o aceite da etapa 2 e a definição de acesso por c
 
 A etapa 2 começa por leitura para validar o conteúdo compartilhado e sua apresentação antes de introduzir solicitações que alteram o estado. O piloto com servidor vem antes do uso cotidiano com pessoas reais.
 
+## Demonstração pública de portfólio — prioridade em 29/10/2026
+
+Cristian autorizou execução autônoma para preparar e publicar a demo das etapas 1/2 no GitHub Pages do repositório existente. O recorte inclui exemplos pedagógicos coerentes e restauráveis, armazenamento público separado, roteiro opcional, verificação dos fluxos em computador/celular e documentação de apresentação. Identidade visual atual preservada; apenas a demo estática é publicada.
+
+Essa entrega antecede a retomada da validação B4 e não a conclui. O convite da professora expirou segundo o retorno informado por Cristian; um reenvio autorizado foi aceito pelo provedor em 29/10/2026. Ativação, entrada e recuperação continuam dependendo de conferência. Banco hospedado, piloto, 3C–3E e dados reais não fazem parte da publicação demonstrativa.
+
+Mudança: [publish-public-demo](../openspec/changes/publish-public-demo/proposal.md). Reavaliar o roadmap após concluir e conferir a demonstração pública.
+
 ## Etapa 2 dividida em entregas
 
 | Chunk | Resultado | Dependências / conferência |

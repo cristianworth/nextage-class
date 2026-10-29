@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../shared/Icon'
 import { Brand } from '../shared/Brand'
+import { isPublicDemo } from './mode'
 
 export type Page = 'agenda' | 'students' | 'history' | 'materials' | 'requests'
 const navigation = [
@@ -87,7 +88,7 @@ export function Shell({
               Ver como aluno
             </button>
             <span className="demo-badge">
-              <span /> Demo local
+              <span /> {isPublicDemo ? 'Demonstração' : 'Demo local'}
             </span>
           </div>
         </header>

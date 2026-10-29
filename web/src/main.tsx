@@ -5,7 +5,9 @@ import './styles.css'
 import './features.css'
 
 const RootApp =
-  import.meta.env.VITE_APP_MODE === 'pilot' ? lazy(() => import('./app/PilotApp')) : App
+  import.meta.env.MODE !== 'public-demo' && import.meta.env.VITE_APP_MODE === 'pilot'
+    ? lazy(() => import('./app/PilotApp'))
+    : App
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

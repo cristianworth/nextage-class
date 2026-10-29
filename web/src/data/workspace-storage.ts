@@ -10,10 +10,14 @@ import {
 } from '../domain/models'
 import type { Workspace } from '../domain/models'
 import { migrateCatalog } from '../domain/catalog-migration'
+import { isPublicDemo } from '../app/mode'
+import { loadPublicWorkspace } from './public-demo-storage'
 
 export const STORAGE_KEY = 'nextage-class:workspace:v1'
 export type StoragePort = Pick<Storage, 'getItem' | 'setItem'>
-export type LoadResult = { state: Workspace; error: null } | { state: null; error: string }
+export type LoadResult = ({ state: Workspace; error: null } | { state: null; error: string }) & {
+  demoCreatedAt?: string
+}
 
 export function loadWorkspace(storage: StoragePort, now = new Date()): LoadResult {
   try {
@@ -64,7 +68,9 @@ export function saveWorkspace(storage: StoragePort, state: Workspace) {
 
 export function loadBrowserWorkspace(): LoadResult {
   try {
-    return loadWorkspace(window.localStorage)
+    return isPublicDemo
+      ? loadPublicWorkspace(window.localStorage)
+      : loadWorkspace(window.localStorage)
   } catch {
     return {
       state: null,

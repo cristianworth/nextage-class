@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Shell } from './Shell'
 import type { Page } from './Shell'
 import { useWorkspace } from '../data/useWorkspace'
-import { addDemoMaterials, createDemo } from '../domain/demo'
+import { addDemoMaterials } from '../domain/demo'
 import { errorMessage } from '../domain/models'
 import { FormError, Modal } from '../shared/Modal'
 import { saveStudent } from '../domain/students'
@@ -39,11 +39,13 @@ import { HistoryPage } from '../features/history/HistoryPage'
 import { StudentPreview } from '../features/student-portal/StudentPreview'
 import { TeacherRequestsPage } from '../features/scheduling-requests/TeacherRequestsPage'
 import { decideSchedulingRequest } from '../domain/scheduling-requests'
+import { isPublicDemo } from './mode'
+import { PublicDemoGuide } from '../features/demo/PublicDemoGuide'
 
 export function App() {
   const [page, setPage] = useState<Page>('agenda')
   const [studentPreview, setStudentPreview] = useState(false)
-  const { state, error, commit } = useWorkspace()
+  const { state, error, commit, restoreExamples, demoCreatedAt } = useWorkspace()
   const [resetOpen, setResetOpen] = useState(false)
   const [resetError, setResetError] = useState('')
   const [studentEditor, setStudentEditor] = useState<Student | null | undefined>(undefined)
@@ -88,7 +90,7 @@ export function App() {
   }
   function reset() {
     try {
-      commit(createDemo())
+      restoreExamples()
       setResetOpen(false)
       setPage('agenda')
       setHistoryStudent('')
@@ -148,6 +150,13 @@ export function App() {
       ) : (
         state && (
           <>
+            {isPublicDemo && demoCreatedAt && (
+              <PublicDemoGuide
+                createdAt={demoCreatedAt}
+                onNavigate={navigate}
+                onStudentPreview={() => setStudentPreview(true)}
+              />
+            )}
             {page === 'agenda' && (
               <AgendaPage
                 state={state}

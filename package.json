@@ -6,11 +6,13 @@
     "dev": "npm --prefix web run dev",
     "dev:pilot": "npm --prefix web run dev -- --mode pilot --port 5174",
     "build": "npm --prefix web run build",
+    "build:public": "npm --prefix web run build -- --mode public-demo",
+    "test:e2e:public": "npm --prefix web run test:e2e:public",
     "test": "npm --prefix web test",
     "test:e2e": "npm --prefix web run test:e2e",
     "test:e2e:pilot": "npm --prefix web run test:e2e:pilot",
-    "format": "prettier --write web/src web/e2e web/e2e-pilot web/*.ts web/index.html",
-    "format:check": "prettier --check web/src web/e2e web/e2e-pilot web/*.ts web/index.html"
+    "format": "prettier --write web/src web/e2e web/e2e-pilot web/e2e-public web/*.ts web/index.html",
+    "format:check": "prettier --check web/src web/e2e web/e2e-pilot web/e2e-public web/*.ts web/index.html"
   },
   "engines": {
     "node": ">=24.0.0"

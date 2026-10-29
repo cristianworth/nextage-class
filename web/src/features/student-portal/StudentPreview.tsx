@@ -7,6 +7,7 @@ import { studentRequests, submitSchedulingRequest } from '../../domain/schedulin
 import { EmptyState } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
 import { Brand } from '../../shared/Brand'
+import { isPublicDemo } from '../../app/mode'
 import { StudentPortal } from './StudentPortal'
 
 export function StudentPreview({
@@ -34,7 +35,7 @@ export function StudentPreview({
         </div>
         <span className="demo-badge">
           <span />
-          Demo local
+          {isPublicDemo ? 'Demonstração' : 'Demo local'}
         </span>
       </header>
       <section className="student-preview-tools" aria-label="Ferramentas da demo">

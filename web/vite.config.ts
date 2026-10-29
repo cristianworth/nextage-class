@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   const environment = loadEnv(mode, process.cwd(), 'VITE_')
   if (
+    mode !== 'public-demo' &&
     environment.VITE_APP_MODE === 'pilot' &&
     environment.VITE_SUPABASE_PUBLISHABLE_KEY &&
     !environment.VITE_SUPABASE_PUBLISHABLE_KEY.startsWith('sb_publishable_')
@@ -13,6 +14,7 @@ export default defineConfig(({ mode }) => {
       'Use somente uma chave publicável em VITE_SUPABASE_PUBLISHABLE_KEY. Chaves administrativas não podem entrar no cliente.',
     )
   return {
+    base: mode === 'public-demo' ? '/nextage-class/' : '/',
     plugins: [react()],
     server: {
       host: '127.0.0.1',

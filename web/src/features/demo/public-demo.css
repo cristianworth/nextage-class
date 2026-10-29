@@ -1,0 +1,38 @@
+.public-demo-guide {
+  margin: -8px 0 28px;
+  padding: 16px 18px;
+  background: var(--lavender);
+  border-radius: 8px;
+  color: var(--brand);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.public-demo-guide summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 650;
+}
+.public-demo-guide summary:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+.public-demo-guide ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding-left: 22px;
+  margin: 20px 0 0;
+}
+.public-demo-guide li p {
+  margin: 6px 0 0;
+}
+.public-demo-guide > p {
+  margin: 8px 0 0;
+  font-size: 11px;
+}
+@media (max-width: 700px) {
+  .public-demo-guide ol {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
