@@ -22,7 +22,7 @@ Cristian autorizou execução autônoma para preparar e publicar a demo das etap
 
 Essa entrega antecede a retomada da validação B4 e não a conclui. O convite da professora expirou segundo o retorno informado por Cristian; um reenvio autorizado foi aceito pelo provedor em 29/10/2026. Ativação, entrada e recuperação continuam dependendo de conferência. Banco hospedado, piloto, 3C–3E e dados reais não fazem parte da publicação demonstrativa.
 
-Mudança: [publish-public-demo](../openspec/changes/publish-public-demo/proposal.md). Reavaliar o roadmap após concluir e conferir a demonstração pública.
+Demo [publicada e conferida](https://cristianworth.github.io/nextage-class/) em 29/10/2026. [Roteiro e política de datas](public-demo.md), [evidências novas](verification-public-demo.md) e mudança [publish-public-demo](../openspec/changes/publish-public-demo/proposal.md). Reavaliação: os fluxos das etapas 1/2 continuam adequados à apresentação; retomar B4 pelo resultado humano do acesso da professora. Não iniciar 3C nem ampliar o produto como consequência da publicação.
 
 ## Etapa 2 dividida em entregas
 

@@ -4,6 +4,8 @@ Etapa 1 aprovada por Nara, conforme relato de Cristian em 24/10/2026. Revisão i
 
 ## Visão atual
 
+A [demo pública](public-demo.md) das etapas 1/2 foi publicada e conferida em 29/10/2026; [evidências](verification-public-demo.md). O piloto com servidor continua separado, com B4 pendente.
+
 | Documento                                                      | Finalidade                                                                |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | [Visão do produto](product-vision.md)                          | Problema, público e limites                                               |

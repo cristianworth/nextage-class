@@ -8,7 +8,7 @@ Em 27/10/2026, Cristian solicitou a revisão da identidade por considerar a inte
 
 O novo desenho é uma composição vetorial própria de duas páginas abertas, com uma margem central que separa os lados. A leitura de livro remete ao acompanhamento pedagógico; as duas partes também representam o diálogo entre professora e aluno. A página amarela funciona como um marcador visual. O símbolo substitui o monograma N e a seta ascendente anteriores.
 
-O [SVG documentado](images/brand.svg) é uma cópia do símbolo da revisão local de 27/10/2026, cuja publicação de interface ainda está pendente. Nessa revisão, o componente `Brand` mantém símbolo e nome consistentes na demo da professora, na simulação do aluno e no piloto. O desenho não depende de uma fonte, imagem gerada ou biblioteca de ícones. Essa é uma criação para o projeto, sem alegação de exclusividade ou registro de marca.
+O [SVG documentado](images/brand.svg) é uma cópia do símbolo da revisão local de 27/10/2026, preservada na [demo pública](public-demo.md) publicada em 29/10. O componente `Brand` mantém símbolo e nome consistentes na demo da professora, na simulação do aluno e no piloto; o caminho respeita o subdiretório da publicação. O desenho não depende de uma fonte, imagem gerada ou biblioteca de ícones. Essa é uma criação para o projeto, sem alegação de exclusividade ou registro de marca.
 
 ### Paleta e tipografia
 

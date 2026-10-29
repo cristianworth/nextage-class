@@ -13,7 +13,15 @@ Conferência iniciada em 29/10/2026 sobre master, base 97c6fd0, com árvore inic
 - O cenário de rede não registrou chamadas operacionais externas nem `/api/`. Inspeção do JavaScript compilado confirmou chave pública de demonstração e ausência do endpoint `/auth/v1`, chave de sessão do piloto e chamadas de API.
 - Formatação, whitespace e validação estrita dos 19 itens OpenSpec aprovados.
 
-Os testes usam dados fictícios e contextos de navegador isolados. A publicação e a conferência HTTPS ainda serão registradas após o workflow.
+Os testes usam dados fictícios e contextos de navegador isolados. Os 11 cenários do piloto com Auth/API simulados também passaram após a separação de modos, sem envio de e-mails pelos testes.
+
+## Publicação e conferência HTTPS
+
+O [workflow 40929140959](https://github.com/cristianworth/nextage-class/actions/runs/40929140959), commit c4a002a57732b0fea518c65c3a6b25d302e42991, concluiu build e deploy com sucesso. A pipeline repetiu unitários, formatação, OpenSpec e os oito cenários públicos com Chromium em Linux antes de publicar somente web/dist.
+
+A URL [https://cristianworth.github.io/nextage-class/](https://cristianworth.github.io/nextage-class/) foi conferida em 29/10/2026. Os mesmos oito cenários passaram em Edge contra o HTTPS, sem servidor local (12,6 s). Isso inclui execução de fluxos, assets/fontes/favicon, recarga, tráfego sem chamadas operacionais e ausência de erros de console. As capturas atuais de computador/celular usadas no README vieram dessa execução publicada.
+
+Revisão independente de código não encontrou achados acionáveis. Essa revisão estática complementa as verificações executadas; não é certificação de segurança ou aceite de uso de Nara/Cristian.
 
 ## Fluxos conferidos
 

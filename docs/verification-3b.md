@@ -1,5 +1,7 @@
 # Verificação parcial do 3B — contas e convites
 
+Atualização em 29/10/2026: Cristian informou retorno otp_expired ao abrir o convite. Um reenvio explicitamente autorizado foi aceito pelo provedor, preservando a identidade existente; piloto/API locais estavam prontos no momento do envio. Recebimento, ativação, login e recuperação ainda não foram confirmados por Cristian. A [demo pública](public-demo.md) foi priorizada e entregue separadamente; não encerra B4.
+
 Estado consolidado em 26/10/2026: B1–B3 implementados e verificados localmente. B4 permanece aberto até o fluxo autorizado no provedor real. A demo e o piloto usam entradas separadas. As evidências abaixo são das execuções anteriores; preparar o handoff não equivale a repetir os testes nem verificar uma nova ativação de conta.
 
 A continuação foi solicitada a partir do 3B. O sucessor deve confirmar com Cristian o resultado do convite/login e apresentar o menor recorte pendente antes de implementar. Criar dois alunos fictícios com credenciais de teste e conectar a API ao banco hospedado foram sugestões discutidas, ainda não executadas nem transformadas automaticamente em requisitos novos do B4. Ver [handoff de continuação](handoffs/2026-10-26-resume-3b.md).

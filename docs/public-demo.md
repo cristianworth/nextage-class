@@ -1,6 +1,6 @@
 # Demonstração pública
 
-Entrega autorizada em 29/10/2026. Publica somente a demo fictícia das etapas 1/2; piloto, autenticação e B4 continuam separados. Estado da URL e evidências finais serão registrados após a conferência da publicação.
+Entrega autorizada e publicada em 29/10/2026: [experimentar a demo](https://cristianworth.github.io/nextage-class/). Publica somente a demo fictícia das etapas 1/2; piloto, autenticação e B4 continuam separados. Os oito cenários públicos passaram também no endereço HTTPS. Ver [evidências](verification-public-demo.md).
 
 ## Dados e restauração
 
@@ -44,6 +44,10 @@ O teste público usa o artefato compilado e um preview isolado na porta 4189. `P
 O workflow `.github/workflows/pages.yml` instala dependências fixadas, executa verificações, compila o modo público e envia somente `web/dist` ao GitHub Pages. Alterações de código da interface e do workflow disparam publicação em master; documentação isolada não exige recompilar a demo. API, banco, `work/`, arquivos privados e modo piloto não entram no artefato.
 
 Referências oficiais consultadas em 29/10/2026: [workflow personalizado do GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) e [Vite no GitHub Pages](https://vite.dev/guide/static-deploy.html#github-pages).
+
+## Resumo para o chat do site
+
+Nextage Class organiza a agenda e o acompanhamento pedagógico de uma professora particular de idiomas. Demo: https://cristianworth.github.io/nextage-class/ . Código: https://github.com/cristianworth/nextage-class . Demonstra agenda, continuidade, preparação, registro e homework; o aluno simulado consulta aulas, histórico permitido e acervo, solicita horários e acompanha a decisão da professora. A demo React/TypeScript é estática, usa dados fictícios restauráveis e persistência local separada. Pedidos pendentes não reservam horário; aprovar verifica conflitos. A API C#/PostgreSQL e o Auth Supabase pertencem ao piloto, que continua em validação 3B e não foi publicado.
 
 ## Limites do piloto
 
