@@ -68,7 +68,7 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
             Assert.Equal(marker + " editado", reader.GetString(0));
             Assert.Equal("B1", reader.GetString(1));
             Assert.Equal(new DateOnly(2026, 11, 4), reader.GetFieldValue<DateOnly>(2));
-            Assert.Equal("0000-0000", reader.GetString(3));
+            Assert.Equal("(11) 3456-7890", reader.GetString(3));
             Assert.Equal("Dados fictícios", reader.GetString(4));
             Assert.Equal("Conversação", reader.GetString(5));
             Assert.Equal("https://example.test/aula", reader.GetString(6));

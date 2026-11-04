@@ -13,6 +13,8 @@
 
 ## Sources of truth
 
+- Aceite em 04/11/2026: Cristian aprovou o cadastro 3C1, pediu máscara de telefone com DDD e autorizou seguir ao acervo 3C2. Commits e push estão liberados quando necessários, após as verificações relevantes; não criar atividade artificial. Essa autorização não implica contratar serviços ou publicar o piloto. B4 segue aberto para recuperação e aluno reais.
+
 - Continuação em 04/11/2026: Cristian reforçou que a assistência deve implementar e executar as verificações técnicas, solicitando validação humana com objetivo/passos/resultado esperado. O 3C1 passou na conferência navegador → API → PostgreSQL isolado em computador/celular; emissão de identidade simulada, sem conta ou e-mail novo. Revisão de uso do cadastro antecede o 3C2 e pode ser dispensada explicitamente. B4 continua aberto para recuperação e aluno reais. Ver docs/verification-3c1.md.
 
 - Retomada em 29/10/2026: Cristian validou definição da senha, acesso da professora, saída e nova entrada. Cadastro vazio é esperado; preservar a separação de dados. Pedido atual autoriza replanejar e iniciar 3C1 (cadastro/edição pela API), usando a demo como referência de comportamento e testes. B4 permanece aberto para recuperação e acesso do aluno; não criar contas nem enviar convites adicionais por inferência. Ver reavaliação em docs/roadmap.md.

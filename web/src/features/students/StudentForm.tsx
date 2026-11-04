@@ -4,6 +4,7 @@ import { LEVELS, errorMessage } from '../../domain/models'
 import type { Book, Student, StudentInput } from '../../domain/models'
 import { referenceClock } from '../../domain/dates'
 import { FormError, Modal } from '../../shared/Modal'
+import { formatPhone } from '../../shared/phone'
 
 export function StudentForm({
   student,
@@ -21,6 +22,7 @@ export function StudentForm({
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
   const [level, setLevel] = useState(student?.level ?? '')
+  const [phone, setPhone] = useState(formatPhone(student?.phone ?? ''))
   const [primaryBookId, setPrimaryBookId] = useState(student?.primaryBookId ?? '')
   const compatible = books.filter((book) => book.levels.some((item) => item === level))
   const previousBook = books.find((book) => book.id === primaryBookId)
@@ -155,8 +157,9 @@ export function StudentForm({
               type="tel"
               name="phone"
               maxLength={50}
-              defaultValue={student?.phone}
-              placeholder="(00) 00000-0000"
+              value={phone}
+              onChange={(event) => setPhone(formatPhone(event.target.value))}
+              placeholder="(11) 98765-4321"
               autoComplete="off"
             />
           </label>

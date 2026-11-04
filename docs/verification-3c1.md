@@ -58,4 +58,6 @@ Retorno sugerido: “O cadastro atende; pode seguir para o acervo” ou “No pa
 
 ## Próximo recorte e limites
 
-Após revisar este cadastro, avançar para acervo e vínculo pedagógico 3C2. B4 continua aberto para recuperação real e acesso/permissões do aluno. Antes do portal conectado 3D, concluir essas evidências. Publicação da demo não hospeda o piloto e não autoriza uso com dados reais.
+Cristian aprovou o cadastro em 04/11/2026 e autorizou o acervo 3C2, solicitando apenas máscara de telefone com DDD. O formulário compartilhado passa a formatar números nacionais de dez/onze dígitos como (11) 3456-7890 e (11) 98765-4321. Valores incompletos, internacionais ou legados continuam editáveis sem truncamento nem inclusão de DDD inventado. A conferência integrada verifica celular na criação e telefone fixo na edição, com persistência.
+
+B4 continua aberto para recuperação real e acesso/permissões do aluno. Antes do portal conectado 3D, concluir essas evidências. Publicação da demo não hospeda o piloto e não autoriza uso com dados reais.

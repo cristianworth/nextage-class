@@ -107,6 +107,8 @@ Primeiro recorte: [connect-teacher-students-3c1](../openspec/changes/connect-tea
 
 Atualização em 04/11/2026: Cristian solicitou continuar a implementação e receber pedidos de validação com instruções claras. O 3C1 está implementado; completar sua conferência navegador → API → PostgreSQL em ambiente de testes isolado antes de pedir revisão de uso. Testes técnicos repetitivos são responsabilidade da assistência. A revisão verifica adequação do cadastro; Cristian pode dispensá-la explicitamente. B4 mantém recuperação e identidade real do aluno pendentes; a conferência integrada com identidade fictícia não os encerra.
 
+Aceite posterior em 04/11/2026: Cristian confirmou que o cadastro atende, solicitou máscara de telefone com DDD e autorizou avançar ao acervo 3C2. O marco de revisão do 3C1 está cumprido. Próximo resultado: sequências, unidades numeradas, apoios e sequência principal persistidos pela API, reutilizando a demo como referência. Commits e push foram autorizados quando necessários, com verificações da entrega.
+
 ### Passagem do 3B em 26/10/2026
 
 Cristian solicitou preparar o handoff e continuar a partir do 3B, sem concluir sua implementação neste chat. B1–B3 permanecem concluídos e B4 aberto. Primeiro o sucessor confere o estado e alinha um recorte pequeno; depois completa a validação do acesso antes de avançar ao 3C. A criação de contas fictícias com senha conhecida e a ordem da conexão ao PostgreSQL hospedado foram propostas recentes, não tarefas já executadas ou decisões confirmadas. Não é necessário executar toda a lista discutida para realizar a passagem. Contexto, evidências e protocolo em [handoff do 3B](handoffs/2026-10-26-resume-3b.md).
