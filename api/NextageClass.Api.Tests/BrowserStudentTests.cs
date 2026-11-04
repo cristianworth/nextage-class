@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using NextageClass.Api.Catalog;
 using NextageClass.Api.Students;
 using Npgsql;
 using Xunit.Abstractions;
@@ -28,7 +29,7 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
         using var client = application.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", application.Token(teacher.ToString()));
         var root = Path.GetFullPath(Path.Combine(application.Services.GetRequiredService<IWebHostEnvironment>().ContentRootPath, "../.."));
-        var marker = $"Aluno de integração {Guid.NewGuid():N}";
+        var marker = $"Lia Exemplo {Guid.NewGuid().ToString("N")[..8]}";
         var start = new ProcessStartInfo("node")
         {
             WorkingDirectory = Path.Combine(root, "web"),
@@ -72,6 +73,7 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
             Assert.Equal("Dados fictícios", reader.GetString(4));
             Assert.Equal("Conversação", reader.GetString(5));
             Assert.Equal("https://example.test/aula", reader.GetString(6));
+            Assert.NotNull(saved.PrimaryBookId);
         }
         finally
         {
@@ -83,6 +85,9 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
             // Track rows even when a browser assertion fails after creation.
             foreach (var person in (await client.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Where(item => item.Name.StartsWith(marker, StringComparison.Ordinal)))
                 database.TrackStudent(person.Id);
+            var catalog = (await client.GetFromJsonAsync<CatalogData>("/api/catalog"))!;
+            foreach (var book in catalog.Books.Where(item => item.Title.StartsWith(marker, StringComparison.Ordinal))) database.TrackBook(book.Id);
+            foreach (var material in catalog.Materials.Where(item => item.Title.StartsWith(marker, StringComparison.Ordinal))) database.TrackMaterial(material.Id);
         }
     }
 }

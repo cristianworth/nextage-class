@@ -4,7 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { AuthScreen } from '../features/auth/AuthScreen'
 import type { AuthMode } from '../features/auth/AuthScreen'
 import { usePilotAccess } from '../features/auth/usePilotAccess'
-import { TeacherAccountsPage } from '../features/accounts/TeacherAccountsPage'
+import { TeacherWorkspace } from '../features/accounts/TeacherWorkspace'
 import { FormError } from '../shared/Modal'
 import { Brand } from '../shared/Brand'
 import '../features/auth/auth.css'
@@ -121,11 +121,7 @@ function ConnectedPilot({ client }: { client: SupabaseClient }) {
         ) : !access.profile ? (
           <p role="status">Carregando seu espaço…</p>
         ) : access.profile.role === 'teacher' ? (
-          <TeacherAccountsPage
-            key={access.profile.userId}
-            client={client}
-            profile={access.profile}
-          />
+          <TeacherWorkspace key={access.profile.userId} client={client} profile={access.profile} />
         ) : (
           <section className="panel pilot-welcome" aria-label="Acesso do aluno">
             <p className="eyebrow">SEU ESPAÇO DE APRENDIZADO</p>

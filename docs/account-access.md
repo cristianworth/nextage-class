@@ -24,7 +24,7 @@ O piloto usa o cliente oficial supabase-js 2.118.0 para entrada, ativação e re
 
 O papel exibido vem da API. Ao sair ou mudar de conta, formulários e dados do contexto anterior são descartados; respostas atrasadas são ignoradas. Se sair falhar, o conteúdo protegido fica oculto e há uma ação para tentar novamente. A renovação de token pode repetir uma chamada recusada com 401 uma única vez, sem perder o formulário.
 
-A demo da porta 5173 continua independente. O piloto da porta 5174 oferece acesso e cadastro/convites; a rotina completa da professora será conectada no 3C e a consulta do aluno no 3D. Não há importação automática do localStorage da demo. Ver [roteiro e evidências do 3B](verification-3b.md).
+A demo da porta 5173 continua independente. O piloto da porta 5174 oferece acesso, cadastro/convites e acervo administrativo com vínculo principal do aluno. Agenda e registros continuam no 3C3/3C4 e a consulta do aluno no 3D. Não há importação automática do localStorage da demo. Ver [roteiro do 3B](verification-3b.md) e [acervo 3C2](verification-3c2.md).
 
 ## Schema e migrações
 
@@ -33,6 +33,8 @@ database/migrations/001_account_access.sql cria cadastro mínimo e perfis de ace
 Migrações são explícitas: ./scripts/migrate-api.ps1 no banco local. O executor incorpora os arquivos SQL, serializa a aplicação com lock de migração, registra checksum e executa cada nova migração em transação. A leitura não modifica o schema. Uma migração já aplicada não pode ser reescrita silenciosamente; acrescentar outra para evoluir o modelo.
 
 O projeto Supabase foi inspecionado vazio antes da primeira migração. Cadastro e perfis foram criados no schema app; as permissões de schema para anon/authenticated foram verificadas como falsas. A migração 002 também habilita RLS na tabela técnica de histórico, sem alterar o checksum da 001. Ausência de políticas públicas é intencional: o cliente não lê essas tabelas diretamente. Ver [RLS e políticas](https://supabase.com/docs/guides/database/postgres/row-level-security).
+
+A migração 003 acrescenta sequências/materiais com RLS e vínculo principal opcional; foi aplicada somente ao banco local nesta entrega 3C2. O acervo administrativo passa pela mesma política Teacher da API, sem conceder consulta direta às tabelas. A aplicação da 003 no banco hospedado acompanha sua conexão no 3E.
 
 ## Configuração
 

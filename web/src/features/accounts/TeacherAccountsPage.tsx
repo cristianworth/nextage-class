@@ -3,8 +3,8 @@ import type { FormEvent } from 'react'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { invitationSchema, pilotRequest } from '../../data/pilot-client'
 import type { AccessProfile, Invitation } from '../../data/pilot-client'
-import { errorMessage, studentSchema } from '../../domain/models'
-import type { Student } from '../../domain/models'
+import { bookSchema, errorMessage, studentSchema } from '../../domain/models'
+import type { Book, Student } from '../../domain/models'
 import { matchesSearch } from '../../domain/students'
 import { formatDate } from '../../domain/dates'
 import { StudentForm } from '../students/StudentForm'
@@ -25,6 +25,7 @@ export function TeacherAccountsPage({
   profile: AccessProfile
 }) {
   const [students, setStudents] = useState<Student[]>([])
+  const [books, setBooks] = useState<Book[]>([])
   const [invitations, setInvitations] = useState<Invitation[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -40,13 +41,16 @@ export function TeacherAccountsPage({
     Promise.all([
       pilotRequest(client, profile.userId, '/api/students', { signal: controller.signal }),
       pilotRequest(client, profile.userId, '/api/invitations', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/books', { signal: controller.signal }),
     ])
-      .then(([people, invites]) => {
+      .then(([people, invites, sequences]) => {
         const validStudents = studentSchema.array().parse(people)
         const validInvitations = invitationSchema.array().parse(invites)
+        const validBooks = bookSchema.array().parse(sequences)
         if (!controller.signal.aborted) {
           setStudents(validStudents)
           setInvitations(validInvitations)
+          setBooks(validBooks)
           setLoading(false)
         }
       })
@@ -121,6 +125,16 @@ export function TeacherAccountsPage({
                         year: 'numeric',
                       })}
                     </p>
+                    {student.primaryBookId && (
+                      <p className="muted">
+                        Sequência:{' '}
+                        {books.find((book) => book.id === student.primaryBookId)?.title ??
+                          'Não encontrada'}
+                        {!books
+                          .find((book) => book.id === student.primaryBookId)
+                          ?.levels.includes(student.level) && ' · não atende este nível'}
+                      </p>
+                    )}
                     <button
                       className="button"
                       aria-label={`Editar ${student.name}`}
@@ -158,8 +172,7 @@ export function TeacherAccountsPage({
         <StudentForm
           key={editor?.id ?? 'new'}
           student={editor ?? undefined}
-          books={[]}
-          includeSequence={false}
+          books={books}
           onClose={() => setEditor(undefined)}
           onSave={async (input) => {
             const student = studentSchema.parse(

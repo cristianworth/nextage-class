@@ -13,6 +13,8 @@
 
 ## Sources of truth
 
+- 3C2 em 04/11/2026: acervo e vínculo principal implementados e conferidos tecnicamente (31 HTTP, dois cenários navegador/API/banco reais, 14 simulados do piloto; regressões da demo aprovadas). Migração 003 aplicada/repetida somente no banco local, dados anteriores preservados. Revisão de uso sugerida antes da agenda 3C3; registros/progresso no servidor continuam no 3C4. Não declarar B4 ou piloto completo. Ver docs/verification-3c2.md.
+
 - Aceite em 04/11/2026: Cristian aprovou o cadastro 3C1, pediu máscara de telefone com DDD e autorizou seguir ao acervo 3C2. Commits e push estão liberados quando necessários, após as verificações relevantes; não criar atividade artificial. Essa autorização não implica contratar serviços ou publicar o piloto. B4 segue aberto para recuperação e aluno reais.
 
 - Continuação em 04/11/2026: Cristian reforçou que a assistência deve implementar e executar as verificações técnicas, solicitando validação humana com objetivo/passos/resultado esperado. O 3C1 passou na conferência navegador → API → PostgreSQL isolado em computador/celular; emissão de identidade simulada, sem conta ou e-mail novo. Revisão de uso do cadastro antecede o 3C2 e pode ser dispensada explicitamente. B4 continua aberto para recuperação e aluno reais. Ver docs/verification-3c1.md.

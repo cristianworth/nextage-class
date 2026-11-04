@@ -22,7 +22,7 @@ export function MaterialsPage({
   onEditBook: (book: Book) => void
   onNew: () => void
   onOpen: (material: Material) => void
-  onExamples: () => void
+  onExamples?: () => void
 }) {
   const [search, setSearch] = useState('')
   const [level, setLevel] = useState('')
@@ -57,19 +57,21 @@ export function MaterialsPage({
           <button className="button" onClick={onNewBook}>
             Nova sequência
           </button>
-          <button
-            className="button"
-            onClick={() => {
-              try {
-                onExamples()
-                setError('')
-              } catch (cause) {
-                setError(errorMessage(cause))
-              }
-            }}
-          >
-            Adicionar exemplos
-          </button>
+          {onExamples && (
+            <button
+              className="button"
+              onClick={() => {
+                try {
+                  onExamples()
+                  setError('')
+                } catch (cause) {
+                  setError(errorMessage(cause))
+                }
+              }}
+            >
+              Adicionar exemplos
+            </button>
+          )}
           <button className="button primary" onClick={onNew}>
             <Icon name="plus" size={17} />
             Novo material

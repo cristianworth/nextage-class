@@ -11,27 +11,35 @@ export function BookForm({
   onClose,
 }: {
   book?: Book
-  onSave: (input: BookInput) => void
+  onSave: (input: BookInput) => void | Promise<void>
   onClose: () => void
 }) {
   const [levels, setLevels] = useState<string[]>(book?.levels ?? [])
   const [error, setError] = useState('')
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const [saving, setSaving] = useState(false)
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (saving) return
     try {
-      onSave({
+      setSaving(true)
+      setError('')
+      await onSave({
         title: String(new FormData(event.currentTarget).get('title')),
         levels: levels as BookInput['levels'],
       })
     } catch (cause) {
       setError(errorMessage(cause))
+    } finally {
+      setSaving(false)
     }
   }
   return (
     <Modal
       title={book ? 'Editar sequência' : 'Nova sequência'}
       subtitle="Organize um livro ou suas próprias aulas em uma sequência de unidades."
-      onClose={onClose}
+      onClose={() => {
+        if (!saving) onClose()
+      }}
     >
       <form onSubmit={submit}>
         <label className="field">
@@ -50,11 +58,11 @@ export function BookForm({
         </p>
         <FormError message={error} />
         <div className="form-actions">
-          <button type="button" className="button" onClick={onClose}>
+          <button type="button" className="button" onClick={onClose} disabled={saving}>
             Cancelar
           </button>
-          <button className="button primary" type="submit">
-            Salvar sequência
+          <button className="button primary" type="submit" disabled={saving}>
+            {saving ? 'Salvando…' : 'Salvar sequência'}
           </button>
         </div>
       </form>

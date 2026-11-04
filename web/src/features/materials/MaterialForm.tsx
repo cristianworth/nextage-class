@@ -13,21 +13,25 @@ export function MaterialForm({
 }: {
   material?: Material
   books: Book[]
-  onSave: (input: MaterialInput) => void
+  onSave: (input: MaterialInput) => void | Promise<void>
   onClose: () => void
 }) {
   const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
   const [kind, setKind] = useState(material?.bookId ? 'unit' : 'support')
   const [bookId, setBookId] = useState(material?.bookId ?? '')
   const [levels, setLevels] = useState<string[]>(
     material?.levels ?? (material ? [material.level] : []),
   )
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (saving) return
     const data = new FormData(event.currentTarget)
     try {
+      setSaving(true)
+      setError('')
       if (kind === 'support' && !levels.length) throw new Error('Selecione ao menos um nível.')
-      onSave({
+      await onSave({
         title: String(data.get('title')),
         level: (kind === 'unit'
           ? books.find((book) => book.id === bookId)?.levels[0]
@@ -42,13 +46,17 @@ export function MaterialForm({
       })
     } catch (cause) {
       setError(errorMessage(cause))
+    } finally {
+      setSaving(false)
     }
   }
   return (
     <Modal
       title={material ? 'Editar material' : 'Novo material'}
       subtitle="Um texto para apoiar os próximos encontros."
-      onClose={onClose}
+      onClose={() => {
+        if (!saving) onClose()
+      }}
     >
       <form onSubmit={submit}>
         <label className="field">
@@ -137,11 +145,11 @@ export function MaterialForm({
         </p>
         <FormError message={error} />
         <div className="form-actions">
-          <button type="button" className="button" onClick={onClose}>
+          <button type="button" className="button" onClick={onClose} disabled={saving}>
             Cancelar
           </button>
-          <button type="submit" className="button primary">
-            Salvar material
+          <button type="submit" className="button primary" disabled={saving}>
+            {saving ? 'Salvando…' : 'Salvar material'}
           </button>
         </div>
       </form>

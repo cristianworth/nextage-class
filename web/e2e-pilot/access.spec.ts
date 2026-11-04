@@ -93,6 +93,8 @@ async function mockServices(
       return route.fulfill(options.unlinked ? { status: 403, json: {} } : { json: profile(id) })
     }
     if (path === '/api/students') return route.fulfill({ json: [person] })
+    if (path === '/api/books') return route.fulfill({ json: [] })
+    if (path === '/api/catalog') return route.fulfill({ json: { books: [], materials: [] } })
     if (path === '/api/invitations') return route.fulfill({ json: [] })
     if (path.endsWith('/invitation')) calls.invites++
     return route.fulfill({ status: 404, json: {} })
@@ -107,6 +109,90 @@ async function login(page: Page, role = 'teacher') {
 async function assertFits(page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 }
+
+test('catalog forms wait for confirmation and preserve their fields for retry', async ({
+  page,
+}) => {
+  await mockServices(page)
+  const book = {
+    id: 'book-example',
+    title: 'Viagens',
+    levels: ['A1'],
+    createdAt: person.createdAt,
+    updatedAt: person.createdAt,
+  }
+  const material = {
+    id: 'material-example',
+    title: 'Chegadas',
+    content: 'Texto próprio',
+    level: 'A1',
+    levels: ['A1'],
+    createdAt: person.createdAt,
+    updatedAt: person.createdAt,
+  }
+  let bookCalls = 0
+  let materialCalls = 0
+  let releaseBook!: () => void
+  let releaseMaterial!: () => void
+  const bookGate = new Promise<void>((resolve) => {
+    releaseBook = resolve
+  })
+  const materialGate = new Promise<void>((resolve) => {
+    releaseMaterial = resolve
+  })
+  await page.route('**/api/books', async (route) => {
+    if (route.request().method() === 'GET') return route.fulfill({ json: [] })
+    bookCalls++
+    if (bookCalls === 1) {
+      await bookGate
+      return route.fulfill({ status: 503, json: {} })
+    }
+    return route.fulfill({ status: 201, json: book })
+  })
+  await page.route('**/api/materials', async (route) => {
+    materialCalls++
+    if (materialCalls === 1) {
+      await materialGate
+      return route.fulfill({ status: 503, json: {} })
+    }
+    return route.fulfill({ status: 201, json: material })
+  })
+  await page.goto('/')
+  await login(page)
+  await page
+    .getByRole('navigation', { name: 'Área da professora' })
+    .getByRole('button', { name: 'Acervo', exact: true })
+    .click()
+  await page.getByRole('button', { name: 'Nova sequência', exact: true }).click()
+  const dialog = page.getByRole('dialog')
+  await dialog.getByLabel('Título da sequência').fill(book.title)
+  await dialog.getByRole('checkbox', { name: 'A1', exact: true }).check()
+  await dialog.getByRole('button', { name: 'Salvar sequência', exact: true }).click()
+  await expect(dialog.getByRole('button', { name: 'Salvando…' })).toBeDisabled()
+  await expect(dialog.getByRole('button', { name: 'Cancelar', exact: true })).toBeDisabled()
+  await dialog.locator('form').evaluate((form) => (form as HTMLFormElement).requestSubmit())
+  expect(bookCalls).toBe(1)
+  releaseBook()
+  await expect(dialog.getByRole('alert')).toBeVisible()
+  await expect(dialog.getByLabel('Título da sequência')).toHaveValue(book.title)
+  await dialog.getByRole('button', { name: 'Salvar sequência', exact: true }).click()
+  await expect(dialog).toHaveCount(0)
+  expect(bookCalls).toBe(2)
+  await page.getByRole('button', { name: 'Novo material', exact: true }).click()
+  await dialog.getByLabel('Título', { exact: false }).first().fill(material.title)
+  await dialog.getByRole('checkbox', { name: 'A1', exact: true }).check()
+  await dialog.getByLabel(/^Conteúdo do material/).fill(material.content)
+  await dialog.getByRole('button', { name: 'Salvar material', exact: true }).click()
+  await expect(dialog.getByRole('button', { name: 'Salvando…' })).toBeDisabled()
+  await expect(dialog.getByRole('button', { name: 'Cancelar', exact: true })).toBeDisabled()
+  releaseMaterial()
+  await expect(dialog.getByRole('alert')).toBeVisible()
+  await expect(dialog.getByLabel(/^Conteúdo do material/)).toHaveValue(material.content)
+  await dialog.getByRole('button', { name: 'Salvar material', exact: true }).click()
+  await expect(dialog).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: material.title, exact: true })).toBeVisible()
+  expect(materialCalls).toBe(2)
+})
 
 test('student editing preserves the form on failure and reloads the confirmed server data', async ({
   page,
@@ -127,7 +213,7 @@ test('student editing preserves the form on failure and reloads the confirmed se
   await page.getByRole('button', { name: `Editar ${person.name}`, exact: true }).click()
   const dialog = page.getByRole('dialog')
   await expect(dialog.getByLabel('Nome do aluno')).toHaveValue(person.name)
-  await expect(dialog.getByLabel('Sequência principal')).toHaveCount(0)
+  await expect(dialog.getByLabel('Sequência principal')).toHaveValue('')
   await dialog.getByLabel('Nome do aluno').fill('Aluno Atualizado')
   await dialog.getByRole('combobox', { name: 'Nível', exact: true }).selectOption('B1')
   await dialog.getByRole('button', { name: 'Salvar alterações', exact: true }).click()
@@ -238,7 +324,7 @@ test('failed async student creation preserves the form; success allows an invita
   await dialog.getByRole('button', { name: 'Cadastrar aluno' }).click()
   await expect(dialog.getByRole('alert')).toBeVisible()
   await expect(dialog.getByLabel('Nome do aluno')).toHaveValue(person.name)
-  await expect(dialog.getByLabel('Sequência principal')).toHaveCount(0)
+  await expect(dialog.getByLabel('Sequência principal')).toHaveValue('')
   await dialog.getByRole('button', { name: 'Cadastrar aluno' }).click()
   await expect(dialog).toHaveCount(0)
   await expect(page.getByRole('heading', { name: person.name })).toBeVisible()

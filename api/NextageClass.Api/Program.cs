@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using NextageClass.Api.Access;
+using NextageClass.Api.Catalog;
 using NextageClass.Api.Invitations;
 using NextageClass.Api.Infrastructure;
 using NextageClass.Api.Students;
@@ -27,6 +28,7 @@ builder.Services.AddHealthChecks()
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ApiFailureHandler>();
 builder.Services.AddScoped<StudentStore>();
+builder.Services.AddScoped<CatalogStore>();
 builder.Services.AddScoped<StudentInvitationService>();
 builder.Services.AddSingleton<IInvitationProvider, SupabaseInvitationProvider>();
 
@@ -50,6 +52,23 @@ app.MapHealthChecks("/api/health/ready", new HealthCheckOptions
     ResponseWriter = WriteHealthResponse
 });
 app.MapGet("/api/session", async (CurrentAccess current) => Results.Ok(await current.GetAsync())).RequireAuthorization("Member");
+var catalog = app.MapGroup("/api").RequireAuthorization("Teacher");
+catalog.MapGet("/catalog", async (CatalogStore store, CancellationToken cancellationToken) => await store.ReadAsync(cancellationToken));
+catalog.MapGet("/books", async (CatalogStore store, CancellationToken cancellationToken) => await store.ListBooksAsync(cancellationToken));
+catalog.MapPost("/books", async (BookInput input, CatalogStore store, CancellationToken cancellationToken) =>
+{
+    var book = await store.SaveBookAsync(input, null, cancellationToken);
+    return Results.Created($"/api/books/{book.Id}", book);
+});
+catalog.MapPut("/books/{bookId}", async (string bookId, BookInput input, CatalogStore store, CancellationToken cancellationToken) =>
+    Results.Ok(await store.SaveBookAsync(input, bookId, cancellationToken)));
+catalog.MapPost("/materials", async (MaterialInput input, CatalogStore store, CancellationToken cancellationToken) =>
+{
+    var material = await store.SaveMaterialAsync(input, null, cancellationToken);
+    return Results.Created($"/api/materials/{material.Id}", material);
+});
+catalog.MapPut("/materials/{materialId}", async (string materialId, MaterialInput input, CatalogStore store, CancellationToken cancellationToken) =>
+    Results.Ok(await store.SaveMaterialAsync(input, materialId, cancellationToken)));
 var students = app.MapGroup("/api/students").RequireAuthorization("Teacher");
 students.MapGet("", async (StudentStore store, CancellationToken cancellationToken) => await store.ListAsync(cancellationToken));
 students.MapPost("", async (StudentInput input, StudentStore store, CancellationToken cancellationToken) =>

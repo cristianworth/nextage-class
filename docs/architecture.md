@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Status: etapas 1 e 2 concluídas. Base ASP.NET Core/PostgreSQL do 3A executável e verificada. No 3B, cadastro mínimo, perfis de acesso, convites e telas de autenticação estão implementados; a conferência integrada real continua pendente. Modelos e contratos de agenda, acervo e acompanhamento pedagógico no servidor seguem no 3C/3D.
+Status: etapas 1 e 2 concluídas. Base ASP.NET Core/PostgreSQL do 3A executável e verificada. No 3B, cadastro mínimo, perfis de acesso, convites e telas de autenticação estão implementados; recuperação e acesso real do aluno continuam pendentes. Cadastro 3C1 aprovado e acervo 3C2 implementado/conferido tecnicamente; agenda e acompanhamento pedagógico no servidor seguem no 3C3/3C4, com portal conectado no 3D.
 
 ## Stack
 
@@ -18,7 +18,7 @@ No início do 3B, Cristian escolheu Supabase para banco hospedado e autenticaç�
 
 ## Estrutura do código
 
-O 3C1 reaproveita o formulário da demo no piloto e acrescenta edição transacional de alunos pela API. Nome do cadastro e do perfil vinculado permanecem coerentes, preservando identidade/convite. Acervo, agenda e registros ainda serão conectados nos próximos recortes; nenhum documento local da demo é importado automaticamente. Ver [evidências 3C1](verification-3c1.md).
+O 3C1 reaproveita o formulário da demo no piloto e acrescenta edição transacional de alunos pela API. Nome do cadastro e do perfil vinculado permanecem coerentes, preservando identidade/convite. O 3C2 conecta sequências, unidades e apoios pelo CatalogStore e salva o principal na transação do aluno. Unidades herdam níveis na leitura; restrição única no banco protege seus números sob concorrência. A leitura administrativa usa um snapshot coerente, sem conceder acesso direto ao navegador. Agenda e registros seguem no 3C3/3C4; nenhum documento local da demo é importado automaticamente. Ver [cadastro](verification-3c1.md) e [acervo conectado](verification-3c2.md).
 
 ```text
 nextage-class/

@@ -23,9 +23,13 @@ public sealed class AccessDatabase : IAsyncLifetime
         ?? throw new InvalidOperationException("Defina NEXTAGE_TEST_CONNECTION para os testes com PostgreSQL real.");
     private readonly List<Guid> users = [];
     private readonly List<string> students = [];
+    private readonly List<string> books = [];
+    private readonly List<string> materials = [];
     private Guid? teacherId;
 
     public void TrackStudent(string id) => students.Add(id);
+    public void TrackBook(string id) => books.Add(id);
+    public void TrackMaterial(string id) => materials.Add(id);
 
     public async Task<Guid> AddTeacherAsync()
     {
@@ -80,6 +84,12 @@ public sealed class AccessDatabase : IAsyncLifetime
         batch.BatchCommands.Add(invitations);
         batch.BatchCommands.Add(profiles);
         batch.BatchCommands.Add(registrations);
+        var content = new NpgsqlBatchCommand("DELETE FROM app.materials WHERE id = ANY($1)");
+        content.Parameters.AddWithValue(materials.ToArray());
+        var catalog = new NpgsqlBatchCommand("DELETE FROM app.books WHERE id = ANY($1)");
+        catalog.Parameters.AddWithValue(books.ToArray());
+        batch.BatchCommands.Add(content);
+        batch.BatchCommands.Add(catalog);
         await batch.ExecuteNonQueryAsync();
     }
 }

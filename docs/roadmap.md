@@ -1,6 +1,6 @@
 # Roadmap do Nextage Class
 
-Revisado em 29/10/2026 após a publicação da demo e a validação humana do acesso da professora. Cada entrega distingue implementação técnica, revisão de uso e recursos ainda planejados. Sem estimativas de prazo artificiais.
+Revisado em 04/11/2026 após o aceite do cadastro e a implementação/conferência técnica do acervo conectado. Cada entrega distingue implementação técnica, revisão de uso e recursos ainda planejados. Sem estimativas de prazo artificiais.
 
 ## Etapas e ordem
 
@@ -95,9 +95,9 @@ Cristian solicitou replanejar e iniciar a próxima implementação. A demo públ
 
 | Ordem | Recorte | Resultado e dependência |
 | --- | --- | --- |
-| Atual | **3C1 — Cadastro conectado** | Reusar o formulário da demo para cadastrar/editar alunos pela API, preservar identidade e convites e conferir recarga/erros. Não exige criar conta de aluno ou importar exemplos |
+| Concluído | **3C1 — Cadastro conectado** | Cadastro/edição pela API conferidos e aprovados por Cristian; máscara com DDD acrescentada. Identidade e convites preservados |
 | Em paralelo no planejamento | **B4 restante** | Conferir recuperação real e acesso/permissões de aluno com identidade/destinatário de teste alinhados. Não enviar convites novos por inferência |
-| Depois de revisar 3C1 | **3C2 — Acervo e vínculo pedagógico** | Persistir sequências, unidades, apoios e sequência principal do aluno; preservar históricos ao evoluir o schema |
+| Atual | **3C2 — Acervo e vínculo pedagógico** | Sequências, unidades, apoios e sequência principal implementados e conferidos tecnicamente; revisão de uso pendente. Histórico/progresso conectados entram no 3C4 |
 | Seguinte | **3C3 — Agenda no servidor** | Aulas pontuais/semanais, bloqueios e remarcações com conflitos verificados no servidor |
 | Seguinte | **3C4 — Registros e preparação** | Histórico, continuidade, planejamento e homework persistidos; reusar cenários da demo como comparação |
 | Após 3B/3C | **3D — Portal conectado** | Consulta autorizada e solicitações; manter os limites de conteúdo da demo e validar isolamento real |
@@ -108,6 +108,8 @@ Primeiro recorte: [connect-teacher-students-3c1](../openspec/changes/connect-tea
 Atualização em 04/11/2026: Cristian solicitou continuar a implementação e receber pedidos de validação com instruções claras. O 3C1 está implementado; completar sua conferência navegador → API → PostgreSQL em ambiente de testes isolado antes de pedir revisão de uso. Testes técnicos repetitivos são responsabilidade da assistência. A revisão verifica adequação do cadastro; Cristian pode dispensá-la explicitamente. B4 mantém recuperação e identidade real do aluno pendentes; a conferência integrada com identidade fictícia não os encerra.
 
 Aceite posterior em 04/11/2026: Cristian confirmou que o cadastro atende, solicitou máscara de telefone com DDD e autorizou avançar ao acervo 3C2. O marco de revisão do 3C1 está cumprido. Próximo resultado: sequências, unidades numeradas, apoios e sequência principal persistidos pela API, reutilizando a demo como referência. Commits e push foram autorizados quando necessários, com verificações da entrega.
+
+Reavaliação após os três recortes do 3C2: acervo e vínculo principal estão implementados e conferidos com API/PostgreSQL reais em computador/celular. Migração aditiva local preservou os dados existentes; nenhuma conta ou exemplo foi importado. Revisão de uso sugerida em [verification-3c2.md](verification-3c2.md). A ordem segue adequada: revisar acervo, conectar agenda 3C3 e depois registros/preparação 3C4. B4 permanece aberto; banco hospedado, envio operacional, backup/restauração e implantação continuam no 3E.
 
 ### Passagem do 3B em 26/10/2026
 
