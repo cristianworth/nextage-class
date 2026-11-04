@@ -44,11 +44,11 @@ public sealed class StudentStore(NpgsqlDataSource source)
         var values = input.Validated();
         var student = new StudentData(Guid.NewGuid().ToString(), values.Name, values.Level, values.StartDate,
             values.Phone!, values.Occupation!, values.Interests!, values.MeetingUrl!, DateTime.UtcNow);
-        await using var command = source.CreateCommand("INSERT INTO app.students(id, name, level, start_date, phone, occupation, interests, meeting_url, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)");
+        await using var command = source.CreateCommand("INSERT INTO app.students(id, name, level, start_date, phone, occupation, interests, meeting_url, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING created_at");
         foreach (var value in new object[] { student.Id, student.Name, student.Level, student.StartDate, student.Phone, student.Occupation, student.Interests, student.MeetingUrl, student.CreatedAt })
             command.Parameters.AddWithValue(value);
-        await command.ExecuteNonQueryAsync(cancellationToken);
-        return student;
+        var persistedCreation = (DateTime)(await command.ExecuteScalarAsync(cancellationToken))!;
+        return student with { CreatedAt = persistedCreation };
     }
 
     public async Task<StudentData> UpdateAsync(string id, StudentInput input, CancellationToken cancellationToken)

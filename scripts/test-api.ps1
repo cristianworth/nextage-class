@@ -1,3 +1,4 @@
+param([switch]$Browser)
 $ErrorActionPreference = 'Stop'
 $repository = Split-Path $PSScriptRoot -Parent
 if (-not $env:NEXTAGE_TEST_CONNECTION) {
@@ -8,5 +9,7 @@ if (-not $env:NEXTAGE_TEST_CONNECTION) {
     $testConnection.set_Item('Database', 'nextage_class_tests')
     $env:NEXTAGE_TEST_CONNECTION = $testConnection.get_ConnectionString()
 }
-& (Join-Path $PSScriptRoot 'dotnet.ps1') test api/NextageClass.slnx --logger 'trx;LogFileName=api-tests.trx' --results-directory work/test-results
+$testCategory = if ($Browser) { 'Category=Browser' } else { 'Category!=Browser' }
+$report = if ($Browser) { 'browser-api-tests.trx' } else { 'api-tests.trx' }
+& (Join-Path $PSScriptRoot 'dotnet.ps1') test api/NextageClass.slnx --filter $testCategory --logger "trx;LogFileName=$report" --results-directory work/test-results
 exit $LASTEXITCODE

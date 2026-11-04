@@ -69,6 +69,20 @@ public sealed class StudentInvitationTests(AccessDatabase database)
     }
 
     [Fact]
+    public async Task CreationResponseMatchesThePersistedStudentIncludingTimestampPrecision()
+    {
+        await using var application = Application(database, new FakeProvider());
+        using var client = await TeacherAsync(application);
+        using var response = await client.PostAsJsonAsync("/api/students", new StudentInput(" Creation response ", "A1", new DateOnly(2026, 11, 4)));
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        var created = await response.Content.ReadFromJsonAsync<StudentData>();
+        Assert.NotNull(created);
+        database.TrackStudent(created.Id);
+        var persisted = (await client.GetFromJsonAsync<List<StudentData>>("/api/students"))!.Single(item => item.Id == created.Id);
+        Assert.Equal(created, persisted);
+    }
+
+    [Fact]
     public async Task ConfirmedInviteLinksExactlyTheChosenStudentWithStudentRole()
     {
         var provider = new FakeProvider();

@@ -36,8 +36,19 @@ Processo ativo retorna 200; prontidão consulta PostgreSQL real e retorna 200 ou
 
 O início local prepara dois bancos na mesma instância isolada: nextage_class para a API de desenvolvimento e nextage_class_tests para testes automatizados. test-api deriva a conexão de testes sem alterar a configuração privada da aplicação. Assim, a professora fictícia dos testes não disputa o vínculo único com a conta inicial do piloto. Os testes não devem usar o banco do piloto; NEXTAGE_TEST_CONNECTION explícita continua disponível para um banco de testes próprio.
 
+### Navegador com API e banco reais
+
+O comando padrão test-api.ps1 seleciona testes HTTP (Category!=Browser). Para executar a integração completa de cadastro do 3C1, instalar também as dependências npm da raiz/web e Edge ou Chromium do Playwright:
+
+```powershell
+$env:PLAYWRIGHT_CHANNEL = 'msedge'
+./scripts/test-api.ps1 -Browser
+```
+
+Essa seleção (Category=Browser) inicia Kestrel em loopback com porta dinâmica e Vite na porta 4179; ambos são encerrados ao terminar. A API e o PostgreSQL são reais, com banco de nome terminado em _tests. Apenas o provedor Auth é simulado pela fixture; os tokens assinados continuam sujeitos à validação real da API e às permissões do banco. Não usa credenciais pessoais ou chave administrativa, não cria contas no provedor e não envia convites. Os registros fictícios são removidos ao final. Ver [evidências e limites](verification-3c1.md).
+
 ## Outro ambiente e limites
 
-Sem os scripts Windows, usar o SDK fixado, um PostgreSQL próprio de desenvolvimento e as variáveis ConnectionStrings__NextageClass/Supabase__Url para a API e NEXTAGE_TEST_CONNECTION para testes. Supabase__Url é a URL HTTPS do projeto; o script de execução também encontra essa URL em work/supabase/project.json. Executar dotnet restore/build/test na solução api/NextageClass.slnx. Testes de integração exigem banco real e falham se a configuração não existe; não são ignorados silenciosamente.
+Sem os scripts Windows, usar o SDK fixado, um PostgreSQL próprio de desenvolvimento e as variáveis ConnectionStrings__NextageClass/Supabase__Url para a API e NEXTAGE_TEST_CONNECTION para testes. Supabase__Url é a URL HTTPS do projeto; o script de execução também encontra essa URL em work/supabase/project.json. Executar dotnet restore/build na solução api/NextageClass.slnx; dotnet test com --filter 'Category!=Browser' para HTTP ou --filter 'Category=Browser' para navegador. Testes de integração exigem banco real e falham se a configuração não existe; não são ignorados silenciosamente.
 
 Pacotes usam versões fixas e packages.lock.json. Identidade, cadastro mínimo, convites e telas de recuperação estão implementados no 3B; a conferência real continua pendente em [verification-3b.md](verification-3b.md). Agenda, acervo e acompanhamento pedagógico no servidor seguem no 3C/3D. Não há endpoint de cadastro público ou importação automática de localStorage. Credenciais e instância local não servem como configuração de produção.

@@ -15,3 +15,9 @@ POST/GET /api/students e formulário compartilhado já existem. O cadastro é re
 ## Risks / Trade-offs
 
 Cadastro sem acervo ainda não permite vincular sequência principal; isso é explícito no 3C2. Testes de navegador simulam Auth/API; testes HTTP usam PostgreSQL real em banco separado. Não tratá-los como teste humano de recuperação/aluno.
+
+## Complemento de verificação — 04/11/2026
+
+Cristian autorizou prosseguir e solicitar validação somente quando necessária, com roteiro concreto. Acrescentar uma execução do navegador contra a API real em Kestrel e PostgreSQL de testes. A fixture existente assina identidades efêmeras; apenas as respostas do provedor Auth são simuladas. A API continua validando assinatura e permissões reais, sem caminho alternativo de autenticação no produto. Executar separadamente da suíte HTTP, limpar somente os registros da execução e não usar credenciais nem sessões pessoais. Revisão de uso do cadastro antecede o 3C2.
+
+O cenário integrado revelou precisão diferente entre o DateTime de criação em memória e o timestamptz gravado. O POST passa a obter created_at por INSERT RETURNING, para devolver exatamente o valor persistido e mantê-lo estável na recarga/edição, sem migrar dados existentes.

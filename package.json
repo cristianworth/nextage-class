@@ -11,8 +11,8 @@
     "test": "npm --prefix web test",
     "test:e2e": "npm --prefix web run test:e2e",
     "test:e2e:pilot": "npm --prefix web run test:e2e:pilot",
-    "format": "prettier --write web/src web/e2e web/e2e-pilot web/e2e-public web/*.ts web/index.html",
-    "format:check": "prettier --check web/src web/e2e web/e2e-pilot web/e2e-public web/*.ts web/index.html"
+    "format": "prettier --write web/src web/e2e web/e2e-pilot web/e2e-public web/e2e-connected web/*.ts web/index.html",
+    "format:check": "prettier --check web/src web/e2e web/e2e-pilot web/e2e-public web/e2e-connected web/*.ts web/index.html"
   },
   "engines": {
     "node": ">=24.0.0"

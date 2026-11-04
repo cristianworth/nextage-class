@@ -47,6 +47,8 @@ Ao configurar a integração, usar uma versão identificada e começar pelo flux
 
 Uma tarefa marcada não basta. Conferir critérios de aceite, efeitos plausíveis, resultado visual quando houver e persistência quando aplicável. Registrar limitações e o que não foi testado. Revisão por IA e validação estrutural de documentos complementam essa evidência.
 
+Orientação reforçada por Cristian em 04/11/2026: a assistência executa os testes técnicos e repetitivos, inclusive navegador/API/banco quando viável. Pedidos de revisão devem explicar o objetivo, os passos mínimos e o resultado esperado. Cristian avalia adequação de uso e decisões de produto; não precisa reproduzir uma bateria já executada. Ações na caixa de e-mail e definição/recuperação de senha pessoal continuam com o titular. Distinguir esses marcos das simulações técnicas; uma revisão prevista pode ser dispensada explicitamente por Cristian.
+
 Antes de commit ou merge, procurar e ler o changelog. Se existir, avaliar o impacto e consultar Cristian sobre versão/changelog, salvo autorização já dada. Não criar changelog ou incremento de versão antecipadamente. O repositório público e os pushes foram autorizados; hospedagem da aplicação depende do recorte operacional.
 
 ## Continuidade entre chats
