@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using NextageClass.Api.Catalog;
+using NextageClass.Api.Scheduling;
 using NextageClass.Api.Students;
 using Npgsql;
 using Xunit.Abstractions;
@@ -88,6 +89,8 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
             var catalog = (await client.GetFromJsonAsync<CatalogData>("/api/catalog"))!;
             foreach (var book in catalog.Books.Where(item => item.Title.StartsWith(marker, StringComparison.Ordinal))) database.TrackBook(book.Id);
             foreach (var material in catalog.Materials.Where(item => item.Title.StartsWith(marker, StringComparison.Ordinal))) database.TrackMaterial(material.Id);
+            var agenda = (await client.GetFromJsonAsync<ScheduleData>("/api/agenda"))!;
+            foreach (var block in agenda.Blocks.Where(item => item.Title.StartsWith(marker, StringComparison.Ordinal))) database.TrackScheduleBlock(block.Id);
         }
     }
 }

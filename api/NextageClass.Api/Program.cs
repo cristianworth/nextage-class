@@ -4,6 +4,7 @@ using NextageClass.Api.Access;
 using NextageClass.Api.Catalog;
 using NextageClass.Api.Invitations;
 using NextageClass.Api.Infrastructure;
+using NextageClass.Api.Scheduling;
 using NextageClass.Api.Students;
 using Npgsql;
 
@@ -29,6 +30,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ApiFailureHandler>();
 builder.Services.AddScoped<StudentStore>();
 builder.Services.AddScoped<CatalogStore>();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddScoped<ScheduleStore>();
 builder.Services.AddScoped<StudentInvitationService>();
 builder.Services.AddSingleton<IInvitationProvider, SupabaseInvitationProvider>();
 
@@ -52,6 +55,12 @@ app.MapHealthChecks("/api/health/ready", new HealthCheckOptions
     ResponseWriter = WriteHealthResponse
 });
 app.MapGet("/api/session", async (CurrentAccess current) => Results.Ok(await current.GetAsync())).RequireAuthorization("Member");
+var agenda = app.MapGroup("/api/agenda").RequireAuthorization("Teacher");
+agenda.MapGet("", (ScheduleStore store, CancellationToken cancellationToken) => store.ReadAsync(cancellationToken));
+agenda.MapPost("/lessons", (ScheduleLessonInput input, ScheduleStore store, CancellationToken cancellationToken) => store.AddLessonAsync(input, cancellationToken));
+agenda.MapPost("/blocks", (ScheduleBlockInput input, ScheduleStore store, CancellationToken cancellationToken) => store.AddBlockAsync(input, cancellationToken));
+agenda.MapDelete("/blocks/{id}", (string id, ScheduleStore store, CancellationToken cancellationToken) => store.RemoveBlockAsync(id, cancellationToken));
+agenda.MapPost("/reschedules", (RescheduleInput input, ScheduleStore store, CancellationToken cancellationToken) => store.RescheduleAsync(input, cancellationToken));
 var catalog = app.MapGroup("/api").RequireAuthorization("Teacher");
 catalog.MapGet("/catalog", async (CatalogStore store, CancellationToken cancellationToken) => await store.ReadAsync(cancellationToken));
 catalog.MapGet("/books", async (CatalogStore store, CancellationToken cancellationToken) => await store.ListBooksAsync(cancellationToken));

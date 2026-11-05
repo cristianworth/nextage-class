@@ -10,17 +10,20 @@ export function BlockDetails({
   onClose,
 }: {
   block: ScheduleBlock
-  onRemove: () => void
+  onRemove: () => void | Promise<void>
   onClose: () => void
 }) {
   const [confirm, setConfirm] = useState(false)
   const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
   const weekly = block.repeat === 'weekly'
   return (
     <Modal
       title={block.title}
       subtitle={`${formatHour(block.startHour)} – ${formatHour(block.endHour)} · Horário de Brasília`}
-      onClose={onClose}
+      onClose={() => {
+        if (!busy) onClose()
+      }}
     >
       <p>
         {weekly
@@ -37,24 +40,36 @@ export function BlockDetails({
       )}
       <FormError message={error} />
       <div className="form-actions">
-        <button className="button" onClick={onClose}>
+        <button className="button" onClick={onClose} disabled={busy}>
           Manter bloqueio
         </button>
         <button
           className="button danger"
-          onClick={() => {
+          disabled={busy}
+          onClick={async () => {
+            if (busy) return
             if (!confirm) {
               setConfirm(true)
               return
             }
+            setBusy(true)
+            setError('')
             try {
-              onRemove()
+              await onRemove()
             } catch (cause) {
               setError(errorMessage(cause))
+            } finally {
+              setBusy(false)
             }
           }}
         >
-          {confirm ? 'Confirmar remoção' : weekly ? 'Remover bloqueio semanal' : 'Remover bloqueio'}
+          {busy
+            ? 'Removendo…'
+            : confirm
+              ? 'Confirmar remoção'
+              : weekly
+                ? 'Remover bloqueio semanal'
+                : 'Remover bloqueio'}
         </button>
       </div>
     </Modal>

@@ -64,7 +64,7 @@ Demo das etapas 1 e 2 publicada no GitHub Pages e conferida em computador/celula
 
 Base ASP.NET Core/PostgreSQL executável; cadastro, convites e telas de acesso implementados, com conferência integrada real do 3B ainda pendente. Rotina completa persistida e operação do piloto seguem no [roadmap](docs/roadmap.md). A publicação demonstrativa não conclui o piloto.
 
-Cristian validou ativação e entrada/saída da professora e aprovou o cadastro conectado. O piloto local oferece cadastro com telefone/DDD, acervo de sequências/unidades/apoios e sequência principal persistidos pela API. O acervo foi conferido tecnicamente e aguarda revisão de uso; recuperação e acesso real do aluno continuam pendentes. A demo pública permanece independente. [Cadastro conectado](docs/verification-3c1.md) · [Acervo conectado](docs/verification-3c2.md).
+Cristian validou ativação e entrada/saída da professora e aprovou o cadastro conectado. O piloto local persiste pela API o cadastro com DDD, o acervo, a sequência principal e a agenda da professora com aulas pontuais, séries semanais, bloqueios e remarcações. Acervo e agenda foram conferidos tecnicamente. Recuperação e acesso real do aluno continuam pendentes. [Cadastro conectado](docs/verification-3c1.md) · [Acervo conectado](docs/verification-3c2.md) · [Agenda conectada](docs/verification-3c3.md).
 
 O projeto é desenvolvido com assistência de IA. Cristian guia o produto, define prioridades e acompanha decisões; Nara valida a rotina de ensino. A IA participa do desenvolvimento, sem recursos de IA no produto. [Visão e processo](docs/product-vision.md).
 

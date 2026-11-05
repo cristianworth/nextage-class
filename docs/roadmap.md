@@ -98,7 +98,7 @@ Cristian solicitou replanejar e iniciar a próxima implementação. A demo públ
 | Concluído | **3C1 — Cadastro conectado** | Cadastro/edição pela API conferidos e aprovados por Cristian; máscara com DDD acrescentada. Identidade e convites preservados |
 | Em paralelo no planejamento | **B4 restante** | Conferir recuperação real e acesso/permissões de aluno com identidade/destinatário de teste alinhados. Não enviar convites novos por inferência |
 | Atual | **3C2 — Acervo e vínculo pedagógico** | Sequências, unidades, apoios e sequência principal implementados e conferidos tecnicamente; revisão de uso pendente. Histórico/progresso conectados entram no 3C4 |
-| Seguinte | **3C3 — Agenda no servidor** | Aulas pontuais/semanais, bloqueios e remarcações com conflitos verificados no servidor |
+| Atual | **3C3 — Agenda no servidor** | Aulas pontuais e semanais, bloqueios e remarcações conectados. Conferência técnica concluída e revisão de uso sugerida |
 | Seguinte | **3C4 — Registros e preparação** | Histórico, continuidade, planejamento e homework persistidos; reusar cenários da demo como comparação |
 | Após 3B/3C | **3D — Portal conectado** | Consulta autorizada e solicitações; manter os limites de conteúdo da demo e validar isolamento real |
 | Antes de dados reais | **3E — Operação** | Banco hospedado, implantação do piloto, e-mail operacional, backup/restauração e revisão de uso |
@@ -110,6 +110,8 @@ Atualização em 04/11/2026: Cristian solicitou continuar a implementação e re
 Aceite posterior em 04/11/2026: Cristian confirmou que o cadastro atende, solicitou máscara de telefone com DDD e autorizou avançar ao acervo 3C2. O marco de revisão do 3C1 está cumprido. Próximo resultado: sequências, unidades numeradas, apoios e sequência principal persistidos pela API, reutilizando a demo como referência. Commits e push foram autorizados quando necessários, com verificações da entrega.
 
 Reavaliação após os três recortes do 3C2: acervo e vínculo principal estão implementados e conferidos com API/PostgreSQL reais em computador/celular. Migração aditiva local preservou os dados existentes; nenhuma conta ou exemplo foi importado. Revisão de uso sugerida em [verification-3c2.md](verification-3c2.md). A ordem segue adequada: revisar acervo, conectar agenda 3C3 e depois registros/preparação 3C4. B4 permanece aberto; banco hospedado, envio operacional, backup/restauração e implantação continuam no 3E.
+
+Em 05/11/2026, Cristian autorizou seguir à próxima implementação. O 3C3 concluiu os três recortes de persistência, interface e conferência integrada. A migração 004 foi aplicada somente ao PostgreSQL local e preservou os dados anteriores. A ordem segue adequada. Revisar a agenda e conectar os registros e a preparação no 3C4. A revisão de uso do acervo e a validação do B4 continuam registradas separadamente. [Evidências e roteiro do 3C3](verification-3c3.md).
 
 ### Passagem do 3B em 26/10/2026
 

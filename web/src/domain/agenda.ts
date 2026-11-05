@@ -10,7 +10,11 @@ export function findLesson(state: Workspace, id: string): Lesson | undefined {
   return series ? occurrenceAt(series, Number(match![2])) : undefined
 }
 
-export function lessonsInRange(state: Workspace, start: string, end: string) {
+export function lessonsInRange(
+  state: Pick<Workspace, 'lessons' | 'series'>,
+  start: string,
+  end: string,
+) {
   const materializedIds = new Set(state.lessons.map((lesson) => lesson.id))
   const generated = state.series
     .flatMap((series) => occurrencesInRange(series, start, end))
@@ -21,7 +25,12 @@ export function lessonsInRange(state: Workspace, start: string, end: string) {
   ].sort((a, b) => a.date.localeCompare(b.date) || a.hour - b.hour)
 }
 
-export function upcomingLessons(state: Workspace, now = new Date(), studentId?: string, limit = 3) {
+export function upcomingLessons(
+  state: Pick<Workspace, 'lessons' | 'series'>,
+  now = new Date(),
+  studentId?: string,
+  limit = 3,
+) {
   const today = referenceClock(now).date
   const materializedIds = new Set(state.lessons.map((lesson) => lesson.id))
   const candidates = state.lessons.filter(
@@ -57,7 +66,7 @@ export function blockApplies(block: ScheduleBlock, date: string) {
   return block.repeat === 'once' ? date === block.date : daysBetween(block.date, date) % 7 === 0
 }
 
-export function blockAt(state: Workspace, date: string, hour: number) {
+export function blockAt(state: Pick<Workspace, 'blocks'>, date: string, hour: number) {
   return state.blocks.find(
     (block) => blockApplies(block, date) && hour >= block.startHour && hour < block.endHour,
   )

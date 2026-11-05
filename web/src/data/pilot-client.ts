@@ -31,7 +31,7 @@ export async function pilotRequest(
   client: SupabaseClient,
   userId: string,
   path: string,
-  options: { body?: unknown; method?: 'POST' | 'PUT'; signal?: AbortSignal } = {},
+  options: { body?: unknown; method?: 'POST' | 'PUT' | 'DELETE'; signal?: AbortSignal } = {},
 ): Promise<unknown> {
   const {
     data: { session },

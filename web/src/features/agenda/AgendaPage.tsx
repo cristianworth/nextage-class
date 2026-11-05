@@ -10,7 +10,7 @@ import {
   weekDays,
   weekStart,
 } from '../../domain/dates'
-import type { Lesson, ScheduleBlock, Workspace } from '../../domain/models'
+import type { Lesson, ScheduleBlock, Student, Workspace } from '../../domain/models'
 import { blockAt, lessonsInRange, upcomingLessons } from '../../domain/agenda'
 import { Icon } from '../../shared/Icon'
 import { EmptyState } from '../../shared/Modal'
@@ -23,13 +23,19 @@ export function AgendaPage({
   onOpen,
   onBlock,
   onOpenBlock,
+  onRefresh,
+  showRecords = true,
 }: {
-  state: Workspace
+  state: Pick<Workspace, 'lessons' | 'series' | 'blocks' | 'records'> & {
+    students: Pick<Student, 'id' | 'name' | 'level'>[]
+  }
   now: Date
   onNew: (prefill: LessonPrefill) => void
   onOpen: (lesson: Lesson) => void
   onBlock: (prefill: LessonPrefill) => void
   onOpenBlock: (block: ScheduleBlock) => void
+  onRefresh?: () => void
+  showRecords?: boolean
 }) {
   const today = referenceClock(now).date
   const [week, setWeek] = useState(weekStart(today))
@@ -63,6 +69,11 @@ export function AgendaPage({
           <p className="muted">Agenda organizada. Mais espaço para ensinar.</p>
         </div>
         <div className="heading-actions">
+          {onRefresh && (
+            <button className="button" onClick={onRefresh}>
+              Atualizar agenda
+            </button>
+          )}
           <button className="button" onClick={() => onBlock({ date: selectedDay })}>
             Bloquear horário
           </button>
@@ -75,7 +86,7 @@ export function AgendaPage({
           </button>
         </div>
       </div>
-      <div className="stats-grid">
+      <div className={showRecords ? 'stats-grid' : 'stats-grid schedule-stats'}>
         <Stat icon="calendar" value={weekLessons.length} label="Aulas nesta semana" tone="green" />
         <Stat
           icon="users"
@@ -83,7 +94,9 @@ export function AgendaPage({
           label="Alunos na sua jornada"
           tone="sand"
         />
-        <Stat icon="book" value={pending} label="Aulas para registrar" tone="lavender" />
+        {showRecords && (
+          <Stat icon="book" value={pending} label="Aulas para registrar" tone="lavender" />
+        )}
       </div>
       <section className="calendar-panel panel" aria-label="Agenda semanal">
         <div className="calendar-toolbar">
@@ -225,10 +238,14 @@ export function AgendaPage({
         <div className="calendar-footer">
           <span>
             <span className="legend-dot" /> Aula agendada{' '}
-            <span className="legend-check">
-              <Icon name="check" size={11} />
-            </span>{' '}
-            Aula registrada
+            {showRecords && (
+              <>
+                <span className="legend-check">
+                  <Icon name="check" size={11} />
+                </span>{' '}
+                Aula registrada
+              </>
+            )}
           </span>
           <span>55 min de aula · 5 min de intervalo</span>
         </div>

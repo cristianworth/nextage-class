@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { chromium, expect } from '@playwright/test'
 import { createServer } from 'vite'
 import { verifyCatalog } from './catalog.mjs'
+import { verifySchedule } from './schedule.mjs'
 
 const required = (name) => {
   if (!process.env[name]) throw new Error(`Missing test fixture: ${name}`)
@@ -173,6 +174,7 @@ try {
   const anonymous = await page.request.get('/api/students')
   expect(anonymous.status()).toBe(401)
   await verifyCatalog(page, name, layout, original.id)
+  await verifySchedule(page, name, layout, original.id)
   await page.getByRole('button', { name: 'Sair', exact: true }).click()
   await expect(page.getByRole('heading', { name: `${name} editado`, exact: true })).toHaveCount(0)
   await login('student')
@@ -187,6 +189,10 @@ try {
     headers: { Authorization: `Bearer ${tokens.student}` },
   })
   expect(deniedCatalog.status()).toBe(403)
+  const deniedAgenda = await page.request.get('/api/agenda', {
+    headers: { Authorization: `Bearer ${tokens.student}` },
+  })
+  expect(deniedAgenda.status()).toBe(403)
   await page.getByRole('button', { name: 'Sair', exact: true }).click()
   await login('teacher')
   await expect(page.getByRole('heading', { name: `${name} editado`, exact: true })).toBeVisible()
@@ -197,7 +203,7 @@ try {
   expect((await invitations.json()).filter((item) => item.studentId === original.id)).toEqual([])
   expect(errors).toEqual([])
   expect(external).toEqual([])
-  console.log(`PASS ${layout}: students, catalog, primary sequence, reload, logout/login, 401/403.`)
+  console.log(`PASS ${layout}: students, catalog, schedule, reload, logout/login, 401/403.`)
 } catch (error) {
   if (page) await page.screenshot({ path: `${artifacts}/${layout}-failure.png`, fullPage: true })
   console.error(error instanceof Error ? error.message : 'Integrated browser test failed.')

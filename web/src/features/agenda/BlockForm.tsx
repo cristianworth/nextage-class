@@ -12,16 +12,20 @@ export function BlockForm({
   onClose,
 }: {
   prefill: LessonPrefill
-  onSave: (input: BlockInput) => void
+  onSave: (input: BlockInput) => void | Promise<void>
   onClose: () => void
 }) {
   const [weekly, setWeekly] = useState(false)
   const [error, setError] = useState('')
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const [busy, setBusy] = useState(false)
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (busy) return
+    setBusy(true)
+    setError('')
     const data = new FormData(event.currentTarget)
     try {
-      onSave({
+      await onSave({
         title: String(data.get('title')),
         date: String(data.get('date')),
         startHour: Number(data.get('startHour')),
@@ -31,13 +35,17 @@ export function BlockForm({
       })
     } catch (cause) {
       setError(errorMessage(cause))
+    } finally {
+      setBusy(false)
     }
   }
   return (
     <Modal
       title="Bloquear horário"
       subtitle="Reserve um período sem aulas, no horário de Brasília."
-      onClose={onClose}
+      onClose={() => {
+        if (!busy) onClose()
+      }}
     >
       <form onSubmit={submit}>
         <label className="field">
@@ -93,11 +101,11 @@ export function BlockForm({
         <p className="muted">Se houver conflito, avisamos e mantemos a agenda como está.</p>
         <FormError message={error} />
         <div className="form-actions">
-          <button className="button" type="button" onClick={onClose}>
+          <button className="button" type="button" onClick={onClose} disabled={busy}>
             Cancelar
           </button>
-          <button className="button primary" type="submit">
-            Salvar bloqueio
+          <button className="button primary" type="submit" disabled={busy}>
+            {busy ? 'Salvando…' : 'Salvar bloqueio'}
           </button>
         </div>
       </form>

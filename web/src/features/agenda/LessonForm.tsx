@@ -15,18 +15,22 @@ export function LessonForm({
   onSave,
   onClose,
 }: {
-  students: Student[]
+  students: Pick<Student, 'id' | 'name' | 'level'>[]
   prefill: LessonPrefill
-  onSave: (input: NewLessonInput) => void
+  onSave: (input: NewLessonInput) => void | Promise<void>
   onClose: () => void
 }) {
   const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
   const [weekly, setWeekly] = useState(false)
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (busy) return
+    setBusy(true)
+    setError('')
     const data = new FormData(event.currentTarget)
     try {
-      onSave({
+      await onSave({
         studentId: String(data.get('studentId')),
         date: String(data.get('date')),
         hour: Number(data.get('hour')),
@@ -35,13 +39,17 @@ export function LessonForm({
       })
     } catch (cause) {
       setError(errorMessage(cause))
+    } finally {
+      setBusy(false)
     }
   }
   return (
     <Modal
       title="Uma nova aula na agenda"
       subtitle="Agende uma aula individual, uma vez ou toda semana."
-      onClose={onClose}
+      onClose={() => {
+        if (!busy) onClose()
+      }}
     >
       <form onSubmit={submit}>
         <label className="field">
@@ -108,11 +116,11 @@ export function LessonForm({
         </div>
         <FormError message={error} />
         <div className="form-actions">
-          <button type="button" className="button" onClick={onClose}>
+          <button type="button" className="button" onClick={onClose} disabled={busy}>
             Cancelar
           </button>
-          <button className="button primary" type="submit">
-            Agendar aula
+          <button className="button primary" type="submit" disabled={busy}>
+            {busy ? 'Salvando…' : 'Agendar aula'}
           </button>
         </div>
       </form>

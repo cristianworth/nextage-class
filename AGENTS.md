@@ -13,6 +13,8 @@
 
 ## Sources of truth
 
+- 3C3 em 05/11/2026. Cristian autorizou avançar à agenda. API, grade e remarcações implementadas e conferidas com 37 testes HTTP e dois percursos integrados. Migração 004 aplicada e repetida no banco local com os dados anteriores preservados. O 3C4 conecta registros e preparação. Revisão de uso e B4 seguem conforme docs/verification-3c3.md e docs/roadmap.md.
+
 - 3C2 em 04/11/2026: acervo e vínculo principal implementados e conferidos tecnicamente (31 HTTP, dois cenários navegador/API/banco reais, 14 simulados do piloto; regressões da demo aprovadas). Migração 003 aplicada/repetida somente no banco local, dados anteriores preservados. Revisão de uso sugerida antes da agenda 3C3; registros/progresso no servidor continuam no 3C4. Não declarar B4 ou piloto completo. Ver docs/verification-3c2.md.
 
 - Aceite em 04/11/2026: Cristian aprovou o cadastro 3C1, pediu máscara de telefone com DDD e autorizou seguir ao acervo 3C2. Commits e push estão liberados quando necessários, após as verificações relevantes; não criar atividade artificial. Essa autorização não implica contratar serviços ou publicar o piloto. B4 segue aberto para recuperação e aluno reais.

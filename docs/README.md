@@ -6,7 +6,7 @@ Etapa 1 aprovada por Nara, conforme relato de Cristian em 24/10/2026. Revisão i
 
 A [demo pública](public-demo.md) das etapas 1/2 foi publicada e conferida em 29/10/2026; [evidências](verification-public-demo.md). O piloto com servidor continua separado, com B4 pendente.
 
-Acesso e cadastro [3C1](verification-3c1.md) aprovados por Cristian; [3C2 — acervo conectado](verification-3c2.md) implementado e conferido tecnicamente, com revisão de uso pendente. Recuperação e acesso real do aluno seguem no B4, conforme [replanejamento](roadmap.md#retomada-após-o-acesso-da-professora--29102026).
+Acesso da professora e cadastro 3C1 aprovados por Cristian. Acervo e agenda foram conferidos tecnicamente e aguardam revisão de uso. Recuperação e acesso real do aluno seguem no B4. [Cadastro 3C1](verification-3c1.md) · [Acervo 3C2](verification-3c2.md) · [Agenda 3C3](verification-3c3.md) · [Roadmap](roadmap.md).
 
 | Documento                                                      | Finalidade                                                                |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------- |

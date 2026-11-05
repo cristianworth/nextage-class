@@ -24,7 +24,7 @@ O piloto usa o cliente oficial supabase-js 2.118.0 para entrada, ativação e re
 
 O papel exibido vem da API. Ao sair ou mudar de conta, formulários e dados do contexto anterior são descartados; respostas atrasadas são ignoradas. Se sair falhar, o conteúdo protegido fica oculto e há uma ação para tentar novamente. A renovação de token pode repetir uma chamada recusada com 401 uma única vez, sem perder o formulário.
 
-A demo da porta 5173 continua independente. O piloto da porta 5174 oferece acesso, cadastro/convites e acervo administrativo com vínculo principal do aluno. Agenda e registros continuam no 3C3/3C4 e a consulta do aluno no 3D. Não há importação automática do localStorage da demo. Ver [roteiro do 3B](verification-3b.md) e [acervo 3C2](verification-3c2.md).
+A demo usa a porta 5173 e armazenamento próprio. O piloto da porta 5174 oferece acesso, cadastro, convites, acervo com sequência principal e agenda administrativa. Os registros entram no 3C4 e a consulta conectada do aluno no 3D. [Roteiro do 3B](verification-3b.md) · [Acervo 3C2](verification-3c2.md) · [Agenda 3C3](verification-3c3.md).
 
 ## Schema e migrações
 

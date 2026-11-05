@@ -12,25 +12,36 @@ export function RescheduleForm({
   onClose,
 }: {
   lesson: Lesson
-  onSave: (target: Pick<LessonInput, 'date' | 'hour'>, scope: RescheduleScope) => void
+  onSave: (
+    target: Pick<LessonInput, 'date' | 'hour'>,
+    scope: RescheduleScope,
+  ) => void | Promise<void>
   onClose: () => void
 }) {
   const [scope, setScope] = useState<RescheduleScope>('single')
   const [error, setError] = useState('')
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const [busy, setBusy] = useState(false)
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (busy) return
+    setBusy(true)
+    setError('')
     const data = new FormData(event.currentTarget)
     try {
-      onSave({ date: String(data.get('date')), hour: Number(data.get('hour')) }, scope)
+      await onSave({ date: String(data.get('date')), hour: Number(data.get('hour')) }, scope)
     } catch (cause) {
       setError(errorMessage(cause))
+    } finally {
+      setBusy(false)
     }
   }
   return (
     <Modal
       title="Remarcar aula"
       subtitle={`Horário atual: ${formatDate(lesson.date)} às ${formatHour(lesson.hour)}.`}
-      onClose={onClose}
+      onClose={() => {
+        if (!busy) onClose()
+      }}
     >
       <form onSubmit={submit}>
         {lesson.seriesId && (
@@ -79,11 +90,11 @@ export function RescheduleForm({
         </p>
         <FormError message={error} />
         <div className="form-actions">
-          <button className="button" type="button" onClick={onClose}>
+          <button className="button" type="button" onClick={onClose} disabled={busy}>
             Cancelar
           </button>
-          <button className="button primary" type="submit">
-            Salvar remarcação
+          <button className="button primary" type="submit" disabled={busy}>
+            {busy ? 'Salvando…' : 'Salvar remarcação'}
           </button>
         </div>
       </form>

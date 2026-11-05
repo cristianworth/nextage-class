@@ -25,11 +25,13 @@ public sealed class AccessDatabase : IAsyncLifetime
     private readonly List<string> students = [];
     private readonly List<string> books = [];
     private readonly List<string> materials = [];
+    private readonly List<string> scheduleBlocks = [];
     private Guid? teacherId;
 
     public void TrackStudent(string id) => students.Add(id);
     public void TrackBook(string id) => books.Add(id);
     public void TrackMaterial(string id) => materials.Add(id);
+    public void TrackScheduleBlock(string id) => scheduleBlocks.Add(id);
 
     public async Task<Guid> AddTeacherAsync()
     {
@@ -83,6 +85,15 @@ public sealed class AccessDatabase : IAsyncLifetime
         registrations.Parameters.AddWithValue(students.ToArray());
         batch.BatchCommands.Add(invitations);
         batch.BatchCommands.Add(profiles);
+        var lessons = new NpgsqlBatchCommand("DELETE FROM app.schedule_lessons WHERE student_id = ANY($1)");
+        lessons.Parameters.AddWithValue(students.ToArray());
+        var series = new NpgsqlBatchCommand("DELETE FROM app.schedule_series WHERE student_id = ANY($1)");
+        series.Parameters.AddWithValue(students.ToArray());
+        var blocks = new NpgsqlBatchCommand("DELETE FROM app.schedule_blocks WHERE id = ANY($1)");
+        blocks.Parameters.AddWithValue(scheduleBlocks.ToArray());
+        batch.BatchCommands.Add(lessons);
+        batch.BatchCommands.Add(series);
+        batch.BatchCommands.Add(blocks);
         batch.BatchCommands.Add(registrations);
         var content = new NpgsqlBatchCommand("DELETE FROM app.materials WHERE id = ANY($1)");
         content.Parameters.AddWithValue(materials.ToArray());
