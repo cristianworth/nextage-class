@@ -269,6 +269,43 @@ test('login errors are friendly; recovery does not confirm an account exists', a
   await expect(page.getByRole('heading', { name: 'Recupere seu acesso' })).toBeVisible()
 })
 
+for (const failure of ['network', 'unavailable', 'rate-limit'] as const) {
+  test(`Auth ${failure} is distinguished from rejected credentials during login and recovery`, async ({
+    page,
+  }) => {
+    await mockServices(page)
+    await page.route('https://auth.nextage.test/auth/v1/**', async (route) => {
+      if (route.request().method() === 'OPTIONS') return route.fallback()
+      const path = new URL(route.request().url()).pathname
+      if (!path.endsWith('/token') && !path.endsWith('/recover')) return route.fallback()
+      if (failure === 'network') return route.abort('failed')
+      return route.fulfill({
+        status: failure === 'rate-limit' ? 429 : 503,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        json: {
+          error_code: failure === 'rate-limit' ? 'over_request_rate_limit' : 'unexpected_failure',
+          msg: 'PRIVATE PROVIDER DETAIL',
+        },
+      })
+    })
+    const expected =
+      failure === 'rate-limit'
+        ? 'Muitas tentativas de acesso'
+        : 'O serviço de acesso está indisponível'
+    await page.goto('/')
+    await login(page)
+    await expect(page.getByRole('alert')).toContainText(expected)
+    await expect(page.getByRole('alert')).not.toContainText('Confira o e-mail e a senha')
+    await expect(page.getByText('PRIVATE PROVIDER DETAIL')).toHaveCount(0)
+    await page.getByRole('button', { name: 'Esqueci minha senha' }).click()
+    await page.getByLabel('E-mail').fill('teacher@example.test')
+    await page.getByRole('button', { name: 'Solicitar recuperação', exact: true }).click()
+    await expect(page.getByRole('alert')).toContainText(expected)
+    await expect(page.getByText('Se houver uma conta', { exact: false })).toHaveCount(0)
+    await expect(page.getByText('PRIVATE PROVIDER DETAIL')).toHaveCount(0)
+  })
+}
+
 test('server role controls the screen, signout removes forms and persisted context', async ({
   page,
 }) => {

@@ -60,6 +60,18 @@ npm run spec -- validate --all --strict
 
 Os testes do piloto usam a porta 4178 e guardam capturas em work/playwright-pilot. A demo usa 4177; os testes não alteram o armazenamento da prévia manual.
 
+## Incidente de disponibilidade — 04/11/2026
+
+Cristian relatou falha no login e na solicitação de recuperação. Consulta administrativa ao projeto Nextage Class confirmou INACTIVE; sondagem pública do Auth falhou na conexão. Os serviços locais 5174/5080 estavam ativos. Isso comprova indisponibilidade externa, sem comprovar senha incorreta. A consulta de logs não retornou registros nesse estado; não atribuir o incidente a SMTP, limite de envios ou destinatário sem evidência.
+
+Reativação do mesmo projeto solicitada e aceita, com transição para COMING_UP/RESTORING. Não foram recriados usuário/projeto, alterados senha, plano ou vínculo, nem enviados e-mails pela assistência. A interface passa a diferenciar falha de conexão/serviço do Auth e HTTP 429 de credenciais recusadas; detalhes internos continuam ocultos e recuperação bem-sucedida mantém resposta condicional. Referências: [pausa/retomada de projeto](https://supabase.com/docs/guides/platform/free-project-pausing) e [erros do Auth](https://supabase.com/docs/guides/auth/debugging/error-codes).
+
+Dezessete cenários de navegador do piloto aprovados, incluindo três novos para falha de rede, serviço HTTP 503 e limite HTTP 429 tanto no login quanto na recuperação. Credenciais inválidas mantêm a orientação própria e detalhes do provedor não aparecem na interface. Build do piloto, formatação e 21 itens OpenSpec estritos aprovados. Não houve alteração nas regras ou dados do servidor/demo.
+
+Após a retomada, /auth/v1/health respondeu 200 com a chave publicável do piloto. Consulta administrativa da identidade inicial retornou 200, mesmo ID e e-mail confirmado. Evidência sem segredos em work/supabase/auth-readiness-20261104.json. Isso comprova disponibilidade e preservação da identidade, sem testar ou alterar a senha do titular.
+
+Reativar serviço não conclui o teste humano de recuperação. Cristian deve recarregar o piloto e tentar entrar; se as credenciais forem recusadas com serviço disponível, solicitar recuperação uma vez pela própria tela e conferir o e-mail. B4 permanece aberto até essa evidência humana e a conferência real do aluno.
+
 ## Pendências externas atuais do B4
 
 1. Conferir recuperação de senha e políticas reais do Auth. Chave administrativa, retorno, ativação e entrada/saída da professora já foram conferidos; não pedir repetição por leitura de evidência antiga.

@@ -1,10 +1,23 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import type { SupabaseClient } from '@supabase/supabase-js'
+import { isAuthRetryableFetchError } from '@supabase/supabase-js'
+import type { AuthError, SupabaseClient } from '@supabase/supabase-js'
 import { FormError } from '../../shared/Modal'
 
 export type AuthMode = 'signin' | 'forgot' | 'activate' | 'recover'
 class AuthFormError extends Error {}
+
+function providerFailure(error: AuthError, fallback: string) {
+  if (isAuthRetryableFetchError(error))
+    return new AuthFormError(
+      'O serviço de acesso está indisponível. Tente novamente em alguns instantes.',
+    )
+  if (error.status === 429)
+    return new AuthFormError(
+      'Muitas tentativas de acesso. Aguarde alguns minutos antes de tentar novamente.',
+    )
+  return new AuthFormError(fallback)
+}
 const TITLES = {
   signin: 'Entre no seu espaço',
   forgot: 'Recupere seu acesso',
@@ -42,7 +55,8 @@ export function AuthScreen({
       if (mode === 'signin') {
         const response = await client.auth.signInWithPassword({ email, password })
         if (response.error)
-          throw new AuthFormError(
+          throw providerFailure(
+            response.error,
             'Não foi possível entrar. Confira o e-mail e a senha e tente novamente.',
           )
       } else if (mode === 'forgot') {
@@ -50,7 +64,8 @@ export function AuthScreen({
           redirectTo: `${window.location.origin}/auth/recover`,
         })
         if (response.error)
-          throw new AuthFormError(
+          throw providerFailure(
+            response.error,
             'Não foi possível solicitar a recuperação agora. Tente novamente mais tarde.',
           )
         setNotice(
@@ -63,7 +78,8 @@ export function AuthScreen({
           throw new AuthFormError('As senhas precisam ser iguais.')
         const response = await client.auth.updateUser({ password })
         if (response.error)
-          throw new AuthFormError(
+          throw providerFailure(
+            response.error,
             'Não foi possível salvar a senha. Confira o link e tente novamente.',
           )
         onNavigate('signin')
