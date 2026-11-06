@@ -27,6 +27,12 @@ Ver [proposta](proposal.md). `CurrentAccess` resolve o perfil ativo e já existe
 - Dados do catálogo/progresso mudam entre consultas → usar transação de leitura consistente quando necessário e validar nível/vínculo no servidor a cada solicitação.
 - Ajustes de interface já relatados no histórico/menu → continuam registrados no roadmap para acabamento, sem transformar esta proposta em redesign.
 
+## D1 — Recorte aprovado em 06/11/2026
+
+A consulta autenticada usa somente o vínculo ativo, sem receber ID de aluno como autoridade. A resposta inclui identificação mínima, link próprio, até seis próximos encontros efetivos e histórico compartilhado com material e homework; a definição de próximo encontro inclui aulas em andamento até seu término, como na demo. Consultas e geração de recorrências preservam exceções materializadas e não expõem informações de outras pessoas. O histórico não contém notas, motivo de falta ou plano.
+
+A interface D1 oferece aulas e histórico. Acervo e solicitações só devem aparecer como disponíveis quando os respectivos recortes estiverem conectados, sem enviar dados fictícios ao piloto. Verificar no JSON de dois alunos fictícios a ausência de campos reservados, referências cruzadas, limites de seis e remarcações; cobrir 401/403, recarga, saída, troca de identidade, erro e responsividade com API/PostgreSQL de teste reais e identidade simulada. B4 real mantém seu escopo.
+
 ## Migration Plan
 
 Adicionar migrações locais não destrutivas somente para persistência necessária dos pedidos; preservar schema privado/RLS e dados atuais. Testar aplicação repetida e preservação em `nextage_class_tests` antes de desenvolvimento local, com backup prévio. Não aplicar no projeto hospedado nesta mudança sem autorização específica. Para recuo antes do uso real, desativar rotas/interface novas preservando dados e migrações; qualquer restauração ou remoção de pedidos exige plano e autorização próprios.

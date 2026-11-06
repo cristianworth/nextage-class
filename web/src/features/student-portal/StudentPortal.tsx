@@ -18,9 +18,9 @@ export function StudentPortal({
   requests,
 }: {
   view: StudentOverview
-  library: StudentLibraryView
+  library?: StudentLibraryView
   now: Date
-  requests: StudentRequestActions
+  requests?: StudentRequestActions
 }) {
   const [page, setPage] = useState('agenda')
   const [search, setSearch] = useState('')
@@ -65,22 +65,26 @@ export function StudentPortal({
           <Icon name="book" size={17} />
           Meu histórico
         </button>
-        <button
-          className={`button ${page === 'library' ? 'primary' : ''}`}
-          aria-current={page === 'library' ? 'page' : undefined}
-          onClick={() => setPage('library')}
-        >
-          <Icon name="library" size={17} />
-          Meu acervo
-        </button>
-        <button
-          className={`button ${page === 'requests' ? 'primary' : ''}`}
-          aria-current={page === 'requests' ? 'page' : undefined}
-          onClick={() => setPage('requests')}
-        >
-          <Icon name="clock" size={17} />
-          Solicitações
-        </button>
+        {library && (
+          <button
+            className={`button ${page === 'library' ? 'primary' : ''}`}
+            aria-current={page === 'library' ? 'page' : undefined}
+            onClick={() => setPage('library')}
+          >
+            <Icon name="library" size={17} />
+            Meu acervo
+          </button>
+        )}
+        {requests && (
+          <button
+            className={`button ${page === 'requests' ? 'primary' : ''}`}
+            aria-current={page === 'requests' ? 'page' : undefined}
+            onClick={() => setPage('requests')}
+          >
+            <Icon name="clock" size={17} />
+            Solicitações
+          </button>
+        )}
       </nav>
       {page === 'agenda' ? (
         <div className="student-overview-grid">
@@ -155,9 +159,9 @@ export function StudentPortal({
             )}
           </section>
         </div>
-      ) : page === 'library' ? (
+      ) : page === 'library' && library ? (
         <StudentLibrary view={library} />
-      ) : page === 'requests' ? (
+      ) : page === 'requests' && requests ? (
         <StudentRequests {...requests} now={now} />
       ) : (
         <section aria-label="Histórico do aluno">

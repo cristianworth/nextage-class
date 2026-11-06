@@ -1,0 +1,11 @@
+# 3D1 — Consulta própria do aluno
+
+Em 06/11/2026, Cristian autorizou registrar o detalhamento do D1 e implementá-lo sem aguardar revisão pessoal por etapa. A API fornece `GET /api/student/overview` somente a perfil de aluno ativo e resolve o vínculo no servidor; um parâmetro de aluno na consulta não altera a identidade. A resposta contém identificação mínima, link próprio, até seis próximas aulas efetivas (inclusive em andamento até 55 minutos), histórico, cópia de material e homework compartilhado. Não inclui notas, motivo de falta, plano ou informações de outros alunos. A consulta usa leitura consistente e respeita as exceções e o identificador de ocorrências semanais remarcadas. A interface do piloto oferece aulas e histórico; acervo e pedidos só aparecem quando forem conectados.
+
+## Evidências novas
+
+- 44 testes de API em PostgreSQL isolado, incluindo duas identidades fictícias, manipulação de parâmetro, 401 anônimo, 403 para professora e rota administrativa, ausência de dados privados no JSON, semanal remarcada e término de aula no horário de Brasília. Uma execução inicial da suíte identificou colisão entre horários das fixtures; os dados fictícios foram separados e a suíte passou.
+- Dois percursos de navegador Edge em computador e celular com API e PostgreSQL de teste reais e identidade simulada: acesso do aluno, histórico e material próprio, ausência de nota privada e recarga. A primeira tentativa revelou conflito de nomes entre fixtures do teste anterior de acervo; os nomes foram isolados e ambos passaram.
+- 18 cenários de navegador do piloto com serviços simulados, incluindo erro e nova tentativa, ausência de vínculo, saída e troca de conta; 130 testes unitários do frontend aprovados.
+- A regressão da demo passou em 49 cenários de navegador; build do piloto e validação estrita da mudança OpenSpec também passaram. API local reiniciada, saúde pronta e piloto acessível na porta 5174.
+- Não houve migração, criação de conta real, envio de e-mail ou alteração no ambiente hospedado. B4 continua aberto para recuperação e acesso real do aluno; 3E trata operação e publicação. A revisão pessoal é opcional e está em [Pendente de Teste](pending-human-testing.md).

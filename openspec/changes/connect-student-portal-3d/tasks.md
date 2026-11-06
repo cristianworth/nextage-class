@@ -2,9 +2,9 @@
 
 ## 1. D1 — Consulta própria e isolamento
 
-- [ ] 1.1 Implementar consulta autenticada de perfil reduzido, até seis próximas aulas efetivas e histórico compartilhado; verificar com dois alunos, semanal remarcada, recarga e ausência explícita de campos privados no JSON.
-- [ ] 1.2 Conectar entrada e consulta de aluno do piloto sem alterar a demo; verificar com navegador, API e PostgreSQL reais de teste, identidade simulada, saída/troca e sessão sem vínculo.
-- [ ] 1.3 Documentar contrato, limites e evidências de D1, inclusive 401/403 e negativa das rotas teacher; atualizar `docs/pending-human-testing.md` sem exigir aceite opcional.
+- [x] 1.1 Implementar consulta autenticada pelo vínculo ativo, sem ID de aluno fornecido pelo cliente, com link próprio, até seis próximas aulas efetivas (incluindo em andamento) e histórico compartilhado; verificar com dois alunos, semanal remarcada, recarga, negação de acesso cruzado e ausência explícita de campos privados no JSON.
+- [x] 1.2 Conectar aulas e histórico do aluno no piloto sem alterar a demo nem oferecer acervo ou pedidos ainda não conectados; verificar com navegador, API e PostgreSQL reais de teste, identidade simulada, falha, recarga, saída/troca e sessão sem vínculo.
+- [x] 1.3 Documentar contrato, limites e evidências de D1, inclusive 401/403 e negativa das rotas teacher; atualizar `docs/pending-human-testing.md` sem exigir aceite opcional.
 
 ## 2. D2 — Acervo e continuidade
 

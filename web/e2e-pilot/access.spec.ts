@@ -96,6 +96,16 @@ async function mockServices(
     if (path === '/api/books') return route.fulfill({ json: [] })
     if (path === '/api/catalog') return route.fulfill({ json: { books: [], materials: [] } })
     if (path === '/api/lesson-records') return route.fulfill({ json: [] })
+    if (path === '/api/student/overview')
+      return route.fulfill({
+        json: {
+          student: { id: person.id, name: person.name, level: person.level },
+          meetingUrl: '',
+          upcoming: [],
+          history: [],
+          pendingHomework: [],
+        },
+      })
     if (path === '/api/invitations') return route.fulfill({ json: [] })
     if (path.endsWith('/invitation')) calls.invites++
     return route.fulfill({ status: 404, json: {} })
@@ -321,11 +331,11 @@ test('server role controls the screen, signout removes forms and persisted conte
   await expect(page.getByRole('heading', { name: 'Entre no seu espaço' })).toBeVisible()
   expect(await page.evaluate(() => localStorage.getItem('nextage-class:pilot-auth'))).toBeNull()
   await login(page, 'student')
-  await expect(page.getByRole('region', { name: 'Acesso do aluno' })).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Novo aluno' })).toHaveCount(0)
   await expect(page.getByText('Unsaved private context')).toHaveCount(0)
   await page.reload()
-  await expect(page.getByRole('region', { name: 'Acesso do aluno' })).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
 })
 
 test('an authenticated identity without an active link stays outside the application', async ({
@@ -337,6 +347,33 @@ test('an authenticated identity without an active link stays outside the applica
   await expect(page.getByRole('alert')).toContainText('ainda não está vinculado')
   await expect(page.getByRole('button', { name: 'Novo aluno' })).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Sair', exact: true })).toBeVisible()
+})
+
+test('student overview preserves access and allows retry when the service fails', async ({
+  page,
+}) => {
+  await mockServices(page)
+  let calls = 0
+  await page.route('**/api/student/overview', async (route) => {
+    calls++
+    if (calls === 1) return route.fulfill({ status: 503, json: {} })
+    return route.fulfill({
+      json: {
+        student: { id: person.id, name: person.name, level: person.level },
+        meetingUrl: '',
+        upcoming: [],
+        history: [],
+        pendingHomework: [],
+      },
+    })
+  })
+  await page.goto('/')
+  await login(page, 'student')
+  await expect(page.getByRole('alert')).toContainText('Não foi possível carregar suas aulas')
+  await page.getByRole('button', { name: 'Tentar novamente' }).click()
+  await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Meu acervo' })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Solicitações' })).toHaveCount(0)
 })
 
 test('failed async student creation preserves the form; success allows an invitation', async ({
@@ -448,7 +485,7 @@ for (const mode of ['activate', 'recover']) {
     await expect(page.getByRole('alert')).toHaveText('As senhas precisam ser iguais.')
     await page.getByLabel('Confirmar senha').fill(PASSWORD)
     await page.getByRole('button', { name: 'Salvar senha e continuar' }).click()
-    await expect(page.getByRole('region', { name: 'Acesso do aluno' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
     expect(calls.passwords).toEqual([PASSWORD])
     expect(new URL(page.url()).hash).toBe('')
   })
@@ -473,7 +510,7 @@ test('late teacher responses cannot appear after switching to a student', async 
   await expect(page.getByRole('heading', { name: 'Entre no seu espaço' })).toBeVisible()
   await login(page, 'student')
   release()
-  await expect(page.getByRole('region', { name: 'Acesso do aluno' })).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
   await expect(page.getByText('Previous account private name')).toHaveCount(0)
 })
 

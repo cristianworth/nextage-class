@@ -24,13 +24,25 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
     {
         Assert.EndsWith("_tests", new NpgsqlConnectionStringBuilder(database.Connection).Database);
         var teacher = await database.AddTeacherAsync();
-        var (student, _) = await database.AddStudentAsync();
+        var (student, studentId) = await database.AddStudentAsync();
         await using var application = new TestApplication(database.Connection);
         application.UseKestrel(options => options.Listen(IPAddress.Loopback, 0));
         using var client = application.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", application.Token(teacher.ToString()));
         var root = Path.GetFullPath(Path.Combine(application.Services.GetRequiredService<IWebHostEnvironment>().ContentRootPath, "../.."));
         var marker = $"Lia Exemplo {Guid.NewGuid().ToString("N")[..8]}";
+        var pastDate = new DateOnly(2025, 1, 6);
+        var past = await client.PostAsJsonAsync("/api/agenda/lessons", new ScheduleLessonInput(studentId, pastDate, layout == "desktop" ? 21 : 22, false, null));
+        past.EnsureSuccessStatusCode();
+        var pastLesson = Assert.Single((await past.Content.ReadFromJsonAsync<ScheduleData>())!.Lessons, item => item.StudentId == studentId);
+        var support = await client.PostAsJsonAsync("/api/materials", new MaterialInput("Student Shared " + Guid.NewGuid().ToString("N"), "Shared student text", Levels: ["A1"]));
+        support.EnsureSuccessStatusCode();
+        var supportMaterial = (await support.Content.ReadFromJsonAsync<MaterialData>())!;
+        database.TrackMaterial(supportMaterial.Id);
+        var entry = await client.PostAsJsonAsync("/api/lesson-records", new { lessonId = pastLesson.Id, attendance = "attended", content = "PRIVATE_STUDENT_NOTE", usedMaterialId = supportMaterial.Id, homework = marker + " homework" });
+        entry.EnsureSuccessStatusCode();
+        var future = await client.PostAsJsonAsync("/api/agenda/lessons", new ScheduleLessonInput(studentId, new DateOnly(2035, 1, 1), layout == "desktop" ? 7 : 8, false, null));
+        future.EnsureSuccessStatusCode();
         var start = new ProcessStartInfo("node")
         {
             WorkingDirectory = Path.Combine(root, "web"),

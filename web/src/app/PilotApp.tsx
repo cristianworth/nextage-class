@@ -5,6 +5,7 @@ import { AuthScreen } from '../features/auth/AuthScreen'
 import type { AuthMode } from '../features/auth/AuthScreen'
 import { usePilotAccess } from '../features/auth/usePilotAccess'
 import { TeacherWorkspace } from '../features/accounts/TeacherWorkspace'
+import { StudentConnected } from '../features/student-portal/StudentConnected'
 import { FormError } from '../shared/Modal'
 import { Brand } from '../shared/Brand'
 import '../features/auth/auth.css'
@@ -123,14 +124,7 @@ function ConnectedPilot({ client }: { client: SupabaseClient }) {
         ) : access.profile.role === 'teacher' ? (
           <TeacherWorkspace key={access.profile.userId} client={client} profile={access.profile} />
         ) : (
-          <section className="panel pilot-welcome" aria-label="Acesso do aluno">
-            <p className="eyebrow">SEU ESPAÇO DE APRENDIZADO</p>
-            <h1>Olá, {access.profile.displayName.split(' ')[0]}.</h1>
-            <p>
-              Seu acesso está confirmado. Seus próximos encontros e materiais serão compartilhados
-              neste espaço.
-            </p>
-          </section>
+          <StudentConnected key={access.profile.userId} client={client} profile={access.profile} />
         )}
       </main>
       <footer className="pilot-footer">Nextage Class · Um próximo passo a cada aula.</footer>

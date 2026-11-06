@@ -145,6 +145,33 @@ internal static class ScheduleRules
         return generated?.Id == id ? generated : null;
     }
 
+    internal static List<ScheduleLesson> UpcomingLessons(ScheduleData state, DateTimeOffset now, int limit)
+    {
+        var local = TimeZoneInfo.ConvertTime(now, ReferenceZone);
+        var today = DateOnly.FromDateTime(local.DateTime);
+        bool NotEnded(ScheduleLesson lesson) => lesson.Date > today ||
+            (lesson.Date == today && local.TimeOfDay < new TimeSpan(lesson.Hour, 55, 0));
+        var materialized = state.Lessons.Select(item => item.Id).ToHashSet();
+        var candidates = state.Lessons.Where(NotEnded).ToList();
+        foreach (var series in state.Series)
+        {
+            for (var position = 0; position < series.Segments.Count; position++)
+            {
+                var segment = series.Segments[position];
+                var index = (long)segment.FromIndex + Math.Max(0, (today.DayNumber - segment.Date.DayNumber) / 7);
+                var lastIndex = position + 1 < series.Segments.Count ? (long)series.Segments[position + 1].FromIndex - 1 : int.MaxValue;
+                var added = 0;
+                while (index <= lastIndex && index <= int.MaxValue && added < limit)
+                {
+                    var occurrence = OccurrenceInSegment(series, segment, (int)index++);
+                    if (occurrence is null) break;
+                    if (!materialized.Contains(occurrence.Id) && NotEnded(occurrence)) { candidates.Add(occurrence); added++; }
+                }
+            }
+        }
+        return candidates.OrderBy(item => item.Date).ThenBy(item => item.Hour).ThenBy(item => item.Id).Take(limit).ToList();
+    }
+
     private static ScheduleLesson? OccurrenceAt(ScheduleSeries series, int index)
     {
         var segment = series.Segments.FindLast(item => item.FromIndex <= index);
