@@ -1,4 +1,5 @@
 using System.Data;
+using NextageClass.Api.Infrastructure;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -37,6 +38,19 @@ public sealed class ScheduleStore(NpgsqlDataSource source, TimeProvider clock)
         var before = await LoadAsync(connection, transaction, cancellationToken);
         var now = clock.GetUtcNow().UtcDateTime;
         var after = change(before, now.AddTicks(-(now.Ticks % 10)));
+        var remaining = after.Lessons.Select(item => item.Id).ToHashSet();
+        await using (var planned = new NpgsqlCommand("SELECT lesson_id FROM app.lesson_plans", connection, transaction))
+        await using (var reader = await planned.ExecuteReaderAsync(cancellationToken))
+        {
+            while (await reader.ReadAsync(cancellationToken))
+            {
+                var id = reader.GetString(0);
+                if (remaining.Contains(id)) continue;
+                var moved = ScheduleRules.FindLesson(after, id)
+                    ?? throw new ApiFailure(400, "A alteração deixaria uma aula planejada fora do término da série. Nada foi alterado.");
+                after.Lessons.Add(moved);
+            }
+        }
         ScheduleRules.CheckConflicts(after);
         await SaveChangesAsync(connection, transaction, before, after, cancellationToken);
         await transaction.CommitAsync(cancellationToken);

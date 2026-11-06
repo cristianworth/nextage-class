@@ -1,6 +1,6 @@
 # 3C4 — Primeiro recorte: lançamento e histórico
 
-Em 05/11/2026, Cristian aprovou o plano do primeiro recorte e pediu revisão antes da ampliação. A base é `master` em `63ea890`. O recorte conecta o lançamento de aulas encerradas e a edição do mesmo registro no histórico; preparação, correção de homework e progresso seguem pendentes.
+Em 05/11/2026, Cristian aprovou o plano e depois validou o primeiro recorte. A base é `master` em `63ea890`. O recorte conecta o lançamento de aulas encerradas e a edição do mesmo registro no histórico; preparação, correção de homework e progresso seguem pendentes. Na revisão, Cristian apontou transbordamento de descrição no histórico e diferenças de organização do menu em relação à demo; esses pontos foram registrados no roadmap para acabamento visual.
 
 ## Implementação
 
@@ -17,7 +17,7 @@ Em 05/11/2026, Cristian aprovou o plano do primeiro recorte e pediu revisão ant
 
 ## Preparação para revisão de uso
 
-Antes de entregar um roteiro prático, a assistência deve preparar e conferir a API, o piloto e os serviços locais necessários. Cristian autorizou reiniciar a API do projeto para isso e autorizou commits e push quando necessários, após as verificações pertinentes. A revisão humana do primeiro recorte continua pendente antes de ampliar o 3C4.
+Antes de entregar um roteiro prático, a assistência deve preparar e conferir a API, o piloto e os serviços locais necessários. Cristian autorizou reiniciar a API do projeto para isso e autorizou commits e push quando necessários, após as verificações pertinentes. A revisão humana do primeiro recorte foi concluída.
 
 Em 05/11/2026, a API anterior foi reiniciada com o código atual e o piloto foi iniciado. A API respondeu `ready`, o piloto retornou HTTP 200 e a rota de registros respondeu HTTP 401 sem autenticação. Essas verificações de disponibilidade não substituem a revisão de uso.
 

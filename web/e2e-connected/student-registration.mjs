@@ -246,6 +246,16 @@ try {
       .filter({ hasText: `${name} editado` })
       .filter({ hasText: 'Conteúdo integrado corrigido' }),
   ).toHaveCount(1)
+  await page.getByRole('button', { name: 'Agenda', exact: true }).click()
+  const upcomingGrid = page.getByRole('region', { name: 'Agenda semanal' })
+  await upcomingGrid.getByRole('button', { name: 'Próxima semana' }).click()
+  if (layout === 'mobile') await upcomingGrid.locator('.mobile-days button').nth(1).click()
+  const upcomingHour = layout === 'mobile' ? 17 : 11
+  await upcomingGrid
+    .getByRole('button', { name: new RegExp(`${name} editado,.*${upcomingHour}:00`) })
+    .click()
+  await expect(dialog).toContainText('Conteúdo integrado corrigido')
+  await dialog.locator('.form-actions').getByRole('button', { name: 'Fechar', exact: true }).click()
   await page.getByRole('button', { name: 'Sair', exact: true }).click()
   await expect(page.getByRole('heading', { name: `${name} editado`, exact: true })).toHaveCount(0)
   await login('student')

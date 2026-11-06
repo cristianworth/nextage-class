@@ -4,7 +4,14 @@ import { z } from 'zod'
 import { pilotRequest } from '../../data/pilot-client'
 import type { AccessProfile } from '../../data/pilot-client'
 import { formatDate, hasLessonEnded, hasLessonStarted, lessonTime } from '../../domain/dates'
-import { blockSchema, lessonSchema, seriesSchema, studentSchema } from '../../domain/models'
+import {
+  blockSchema,
+  bookSchema,
+  lessonSchema,
+  materialSchema,
+  seriesSchema,
+  studentSchema,
+} from '../../domain/models'
 import type { Lesson, ScheduleBlock } from '../../domain/models'
 import { FormError, Modal } from '../../shared/Modal'
 import { AgendaPage } from '../agenda/AgendaPage'
@@ -15,6 +22,9 @@ import type { LessonPrefill } from '../agenda/LessonForm'
 import { RescheduleForm } from '../agenda/RescheduleForm'
 import { pilotRecordsSchema, TeacherRecordForm } from './TeacherRecords'
 import type { PilotRecord } from './TeacherRecords'
+import { previousAttendedRecord } from './pilot-lesson-context'
+import { pilotPlansSchema, TeacherPlanForm } from './TeacherPlanForm'
+import type { PilotPlan } from './TeacherPlanForm'
 
 const scheduleSchema = z.object({
   students: studentSchema.pick({ id: true, name: true, level: true, meetingUrl: true }).array(),
@@ -25,7 +35,7 @@ const scheduleSchema = z.object({
 
 type Editor =
   | { kind: 'new' | 'block'; prefill: LessonPrefill }
-  | { kind: 'lesson' | 'reschedule' | 'record'; lesson: Lesson }
+  | { kind: 'lesson' | 'reschedule' | 'record' | 'plan'; lesson: Lesson }
   | { kind: 'block-details'; block: ScheduleBlock }
   | null
 
@@ -38,6 +48,11 @@ export function TeacherSchedulePage({
 }) {
   const [schedule, setSchedule] = useState<z.infer<typeof scheduleSchema>>()
   const [records, setRecords] = useState<PilotRecord[]>([])
+  const [plans, setPlans] = useState<PilotPlan[]>([])
+  const [catalog, setCatalog] = useState<{
+    books: z.infer<typeof bookSchema>[]
+    materials: z.infer<typeof materialSchema>[]
+  }>({ books: [], materials: [] })
   const [editor, setEditor] = useState<Editor>(null)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
@@ -56,11 +71,19 @@ export function TeacherSchedulePage({
     Promise.all([
       pilotRequest(client, profile.userId, '/api/agenda', { signal: controller.signal }),
       pilotRequest(client, profile.userId, '/api/lesson-records', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/lesson-plans', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/catalog', { signal: controller.signal }),
     ])
-      .then(([data, saved]) => {
+      .then(([data, saved, prepared, content]) => {
         if (!controller.signal.aborted) {
           setSchedule(scheduleSchema.parse(data))
           setRecords(pilotRecordsSchema.parse(saved))
+          setPlans(pilotPlansSchema.parse(prepared))
+          setCatalog(
+            z
+              .object({ books: bookSchema.array(), materials: materialSchema.array() })
+              .parse(content),
+          )
         }
       })
       .catch(() => {
@@ -100,8 +123,12 @@ export function TeacherSchedulePage({
 
   const close = () => setEditor(null)
   const selectedStudent =
-    (editor?.kind === 'lesson' || editor?.kind === 'record') &&
+    (editor?.kind === 'lesson' || editor?.kind === 'record' || editor?.kind === 'plan') &&
     schedule.students.find((student) => student.id === editor.lesson.studentId)
+  const previous =
+    editor?.kind === 'lesson' ? previousAttendedRecord(records, editor.lesson) : undefined
+  const plan =
+    editor?.kind === 'lesson' ? plans.find((item) => item.lessonId === editor.lesson.id) : undefined
 
   return (
     <section aria-label="Agenda da professora">
@@ -177,7 +204,44 @@ export function TeacherSchedulePage({
               Abrir link da aula
             </a>
           )}
+          <div className="record-preview">
+            <p className="eyebrow">Última aula com presença</p>
+            {previous ? (
+              <>
+                <p>
+                  {formatDate(previous.lesson.date)} · {lessonTime(previous.lesson.hour)}
+                </p>
+                <p className="record-body">{previous.content}</p>
+                {previous.materialSnapshot && (
+                  <small>Material: {previous.materialSnapshot.title}</small>
+                )}
+              </>
+            ) : (
+              <p>Nenhuma aula anterior com presença registrada.</p>
+            )}
+          </div>
+          {plan && (
+            <div className="record-preview">
+              <p className="eyebrow">Preparação desta aula</p>
+              {plan.materialId && (
+                <p>
+                  {catalog.materials.find((item) => item.id === plan.materialId)?.title ??
+                    'Material indisponível'}
+                </p>
+              )}
+              {plan.notes && <p className="record-body">{plan.notes}</p>}
+            </div>
+          )}
           <div className="form-actions">
+            {!hasLessonEnded(editor.lesson.date, editor.lesson.hour, now) &&
+              !records.some((item) => item.lessonId === editor.lesson.id) && (
+                <button
+                  className="button"
+                  onClick={() => setEditor({ kind: 'plan', lesson: editor.lesson })}
+                >
+                  {plan ? 'Editar preparação' : 'Preparar aula'}
+                </button>
+              )}
             {hasLessonEnded(editor.lesson.date, editor.lesson.hour, now) && (
               <button
                 className="button primary"
@@ -201,6 +265,23 @@ export function TeacherSchedulePage({
             </button>
           </div>
         </Modal>
+      )}
+      {editor?.kind === 'plan' && selectedStudent && (
+        <TeacherPlanForm
+          client={client}
+          profile={profile}
+          lesson={editor.lesson}
+          name={selectedStudent.name}
+          plan={plans.find((item) => item.lessonId === editor.lesson.id)}
+          materials={catalog.materials}
+          books={catalog.books}
+          onClose={close}
+          onSaved={(next) => {
+            setPlans(next)
+            setEditor(null)
+            setNotice('Preparação salva.')
+          }}
+        />
       )}
       {editor?.kind === 'record' && selectedStudent && (
         <TeacherRecordForm
