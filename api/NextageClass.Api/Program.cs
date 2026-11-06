@@ -66,6 +66,7 @@ agenda.MapPost("/reschedules", (RescheduleInput input, ScheduleStore store, Canc
 var records = app.MapGroup("/api/lesson-records").RequireAuthorization("Teacher");
 records.MapGet("", (LessonRecordStore store, CancellationToken cancellationToken) => store.ReadAsync(cancellationToken));
 records.MapPost("", (LessonRecordInput input, LessonRecordStore store, CancellationToken cancellationToken) => store.SaveAsync(input, cancellationToken));
+records.MapPost("/homework", (HomeworkCorrectionInput input, LessonRecordStore store, CancellationToken cancellationToken) => store.CorrectHomeworkAsync(input, cancellationToken));
 var plans = app.MapGroup("/api/lesson-plans").RequireAuthorization("Teacher");
 plans.MapGet("", (LessonPlanStore store, CancellationToken cancellationToken) => store.ReadAsync(cancellationToken));
 plans.MapPost("", (LessonPlanInput input, LessonPlanStore store, CancellationToken cancellationToken) => store.SaveAsync(input, cancellationToken));

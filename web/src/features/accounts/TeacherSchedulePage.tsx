@@ -20,9 +20,9 @@ import { BlockForm } from '../agenda/BlockForm'
 import { LessonForm } from '../agenda/LessonForm'
 import type { LessonPrefill } from '../agenda/LessonForm'
 import { RescheduleForm } from '../agenda/RescheduleForm'
-import { pilotRecordsSchema, TeacherRecordForm } from './TeacherRecords'
+import { pilotRecordsSchema, PilotHomeworkItem, TeacherRecordForm } from './TeacherRecords'
 import type { PilotRecord } from './TeacherRecords'
-import { previousAttendedRecord } from './pilot-lesson-context'
+import { pendingHomework, previousAttendedRecord } from './pilot-lesson-context'
 import { pilotPlansSchema, TeacherPlanForm } from './TeacherPlanForm'
 import type { PilotPlan } from './TeacherPlanForm'
 
@@ -127,6 +127,7 @@ export function TeacherSchedulePage({
     schedule.students.find((student) => student.id === editor.lesson.studentId)
   const previous =
     editor?.kind === 'lesson' ? previousAttendedRecord(records, editor.lesson) : undefined
+  const pending = editor?.kind === 'lesson' ? pendingHomework(records, editor.lesson) : []
   const plan =
     editor?.kind === 'lesson' ? plans.find((item) => item.lessonId === editor.lesson.id) : undefined
 
@@ -144,6 +145,7 @@ export function TeacherSchedulePage({
             ...record,
             material: record.materialSnapshot?.title ?? '',
             materialSnapshot: record.materialSnapshot ?? undefined,
+            homework: record.homework ?? undefined,
           })),
         }}
         now={now}
@@ -193,6 +195,26 @@ export function TeacherSchedulePage({
             <span className="neutral-badge">
               {editor.lesson.seriesId ? 'Semanal' : 'Aula individual'}
             </span>
+          </div>
+          <div className="record-preview">
+            <p className="eyebrow">Homeworks pendentes anteriores</p>
+            {pending.length ? (
+              pending.map((item) => (
+                <div key={item.id}>
+                  <p>
+                    {formatDate(item.lesson.date)} · {lessonTime(item.lesson.hour)}
+                  </p>
+                  <PilotHomeworkItem
+                    client={client}
+                    profile={profile}
+                    record={item}
+                    onSaved={setRecords}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>Nenhum homework pendente anterior.</p>
+            )}
           </div>
           {selectedStudent.meetingUrl && (
             <a

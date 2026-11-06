@@ -99,11 +99,13 @@ Cristian solicitou replanejar e iniciar a próxima implementação. A demo públ
 | Em paralelo no planejamento | **B4 restante** | Conferir recuperação real e acesso/permissões de aluno com identidade/destinatário de teste alinhados. Não enviar convites novos por inferência |
 | Atual | **3C2 — Acervo e vínculo pedagógico** | Sequências, unidades, apoios e sequência principal implementados e conferidos tecnicamente; revisão de uso pendente. Histórico/progresso conectados entram no 3C4 |
 | Atual | **3C3 — Agenda no servidor** | Aulas pontuais e semanais, bloqueios e remarcações conectados. Conferência técnica concluída e revisão de uso sugerida |
-| Em andamento | **3C4 — Registros e preparação** | Lançamento e histórico aprovados; planejamento por ocorrência e última presença anterior conectados e conferidos tecnicamente, aguardando revisão. Homework e continuidade permanecem pendentes. [Lançamento](verification-3c4-first-slice.md) · [Preparação](verification-3c4-preparation.md) |
+| Em andamento | **3C4 — Registros e preparação** | Lançamento, histórico e preparação aprovados por Cristian; homework conectado e conferido tecnicamente, aguardando revisão. Continuidade por aluno e livro é o próximo recorte. [Lançamento](verification-3c4-first-slice.md) · [Preparação](verification-3c4-preparation.md) · [Homework](verification-3c4-homework.md) |
 | Após 3B/3C | **3D — Portal conectado** | Consulta autorizada e solicitações; manter os limites de conteúdo da demo e validar isolamento real |
 | Antes de dados reais | **3E — Operação** | Banco hospedado, implantação do piloto, e-mail operacional, backup/restauração e revisão de uso e acabamento visual do piloto |
 
 Na revisão do primeiro recorte do 3C4 em 05/11/2026, Cristian apontou transbordamento de descrição no histórico e navegação do piloto visualmente diferente da demo. Corrigir o transbordamento e revisar a organização do menu tomando a demo como referência antes do uso real; a revisão de acabamento visual deve cobrir computador e celular. Esses pontos não impedem a continuidade funcional do 3C4.
+
+Reavaliação após três recortes do 3C4: registros e preparação foram validados por Cristian; homework foi conectado e precisa de revisão de uso. A sequência continua adequada: conectar continuidade por aluno e livro depois da revisão do homework. B4 e operação hospedada mantêm escopo próprio.
 
 Primeiro recorte: [connect-teacher-students-3c1](../openspec/changes/connect-teacher-students-3c1/proposal.md). Demo pública permanece estática e independente; nova publicação do piloto não está autorizada por esta reordenação.
 

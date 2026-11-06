@@ -25,6 +25,7 @@ const recordSchema = z.object({
   attendance: z.enum(['attended', 'student-absent', 'teacher-absent']),
   content: z.string(),
   reason: z.string(),
+  homework: z.object({ description: z.string(), correctedAt: z.string().nullable() }).nullable(),
   materialSnapshot: materialSnapshotSchema.nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -79,6 +80,7 @@ export function TeacherRecordForm({
         attendance,
         content: values.get('content'),
         reason: values.get('reason'),
+        homework: values.get('homework'),
         ...(material === 'saved' ? {} : { usedMaterialId: material || null }),
       }
       const result = await pilotRequest(client, profile.userId, '/api/lesson-records', { body })
@@ -175,6 +177,16 @@ export function TeacherRecordForm({
             defaultValue={record?.content}
           />
         </label>
+        <label className="field">
+          Homework passado
+          <textarea
+            name="homework"
+            maxLength={2000}
+            rows={3}
+            defaultValue={record?.homework?.description}
+          />
+          <small>Alterar o texto deixa o homework pendente; limpar retira a tarefa.</small>
+        </label>
         {record && (
           <p className="muted form-hint">
             Última atualização: {formatTimestamp(record.updatedAt)}. Salvar altera este registro,
@@ -224,7 +236,7 @@ export function TeacherHistoryPage({
   const entries = records.filter(
     (item) =>
       (!student || item.lesson.studentId === student) &&
-      `${item.studentName} ${item.content} ${item.reason} ${item.materialSnapshot?.title ?? ''} ${item.materialSnapshot?.content ?? ''}`
+      `${item.studentName} ${item.content} ${item.reason} ${item.homework?.description ?? ''} ${item.materialSnapshot?.title ?? ''} ${item.materialSnapshot?.content ?? ''}`
         .toLocaleLowerCase('pt-BR')
         .includes(search.toLocaleLowerCase('pt-BR')),
   )
@@ -286,6 +298,12 @@ export function TeacherHistoryPage({
                 </>
               )}
               <p className="record-body">{item.content || 'Sem observações adicionais.'}</p>
+              <PilotHomeworkItem
+                client={client}
+                profile={profile}
+                record={item}
+                onSaved={setRecords}
+              />
               {item.reason && <p>Motivo: {item.reason}</p>}
               <p>Última atualização: {formatTimestamp(item.updatedAt)}</p>
             </div>
@@ -314,5 +332,59 @@ export function TeacherHistoryPage({
         />
       )}
     </section>
+  )
+}
+
+export function PilotHomeworkItem({
+  client,
+  profile,
+  record,
+  onSaved,
+}: {
+  client: SupabaseClient
+  profile: AccessProfile
+  record: PilotRecord
+  onSaved: (records: PilotRecord[]) => void
+}) {
+  const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
+  if (!record.homework) return null
+  const homework = record.homework
+  async function toggle() {
+    setSaving(true)
+    setError('')
+    try {
+      const result = await pilotRequest(client, profile.userId, '/api/lesson-records/homework', {
+        body: {
+          recordId: record.id,
+          corrected: !homework.correctedAt,
+          expectedDescription: homework.description,
+        },
+      })
+      onSaved(pilotRecordsSchema.parse(result))
+    } catch (cause) {
+      setError(errorMessage(cause))
+    } finally {
+      setSaving(false)
+    }
+  }
+  return (
+    <div className="homework-item">
+      <p className="eyebrow">Homework · {homework.correctedAt ? 'Corrigido' : 'Pendente'}</p>
+      <p className="record-body">{homework.description}</p>
+      {homework.correctedAt && (
+        <p className="muted form-hint">Corrigido em {formatTimestamp(homework.correctedAt)}</p>
+      )}
+      <button
+        className="button small"
+        type="button"
+        disabled={saving}
+        aria-pressed={!!homework.correctedAt}
+        onClick={toggle}
+      >
+        {homework.correctedAt ? 'Marcar como pendente' : 'Marcar como corrigido'}
+      </button>
+      <FormError message={error} />
+    </div>
   )
 }
