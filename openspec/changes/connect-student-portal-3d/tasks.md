@@ -8,8 +8,8 @@
 
 ## 2. D2 — Acervo e continuidade
 
-- [ ] 2.1 Implementar projeção própria do acervo compatível e continuidade no servidor; testar promoção de nível, cópia histórica, sequência vazia/incompatível/finalizada e isolamento de alunos.
-- [ ] 2.2 Conectar busca, filtros e leitura do acervo de aluno e verificar que navegar/recarregar não grava progresso ou homework; cobrir computador/celular e documentar evidências de D2.
+- [x] 2.1 Implementar projeção própria do acervo compatível e continuidade no servidor; testar promoção de nível, cópia histórica, sequência vazia/incompatível/finalizada e isolamento de alunos.
+- [x] 2.2 Conectar busca, filtros e leitura do acervo de aluno e verificar que navegar/recarregar não grava progresso ou homework; cobrir computador/celular e documentar evidências de D2.
 
 ## 3. D3 — Disponibilidade e pedidos
 

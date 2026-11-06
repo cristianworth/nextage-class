@@ -106,6 +106,10 @@ async function mockServices(
           pendingHomework: [],
         },
       })
+    if (path === '/api/student/library')
+      return route.fulfill({
+        json: { level: 'A1', sequences: [], materials: [], primary: { status: 'unassigned' } },
+      })
     if (path === '/api/invitations') return route.fulfill({ json: [] })
     if (path.endsWith('/invitation')) calls.invites++
     return route.fulfill({ status: 404, json: {} })
@@ -372,7 +376,7 @@ test('student overview preserves access and allows retry when the service fails'
   await expect(page.getByRole('alert')).toContainText('Não foi possível carregar suas aulas')
   await page.getByRole('button', { name: 'Tentar novamente' }).click()
   await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Meu acervo' })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Meu acervo' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Solicitações' })).toHaveCount(0)
 })
 

@@ -1,7 +1,25 @@
 # Roadmap do Nextage Class
 
-Revisado em 04/11/2026 após o aceite do cadastro e a implementação/conferência técnica do acervo conectado. Cada entrega distingue implementação técnica, revisão de uso e recursos ainda planejados. Sem estimativas de prazo artificiais.
+Atualizado em 06/11/2026. Este quadro é a referência para a ordem e o estado atual; as seções posteriores registram o histórico e os documentos vinculados trazem contratos e evidências. “Concluído tecnicamente” significa que a assistência implementou e verificou; revisão pessoal opcional não bloqueia o próximo recorte.
 
+## Onde estamos e o que vem depois
+
+| Ordem | Etapa / recorte | Situação e resultado |
+| --- | --- | --- |
+| Concluído | **0–2 — Base e demo** | Rotina da professora e simulação do aluno aprovadas; demo pública independente. |
+| Concluído tecnicamente | **3A — Servidor** | API e PostgreSQL locais executáveis. |
+| Parcial | **3B — Contas: B1–B3** | Autenticação, convites e telas implementados; acesso real da professora confirmado. |
+| Pendente em paralelo | **3B4 — Acesso real e recuperação** | Conferir recuperação e acesso/permissões de aluno reais, com identidade e destinatário alinhados. Mocks não encerram este recorte; não enviar convites por inferência. Necessário antes do uso real. [Detalhes](account-access.md). |
+| Concluído tecnicamente | **3C1–3C4 — Rotina da professora** | Cadastro, acervo, agenda, registros, preparação, homework e continuidade conectados. Revisões opcionais estão [aqui](pending-human-testing.md). |
+| Concluído tecnicamente | **3D1 — Aulas e histórico do aluno** | Consulta própria autorizada, com material e homework compartilhados. [Evidências](verification-3d1.md). |
+| Concluído tecnicamente | **3D2 — Acervo e continuidade do aluno** | Conteúdo do nível atual e sugestão da sequência; leitura sem alterar progresso. [Evidências](verification-3d2.md). |
+| Próximo | **3D3 — Disponibilidade e pedidos** | Aluno consulta horários e envia pedidos próprios, sem reserva enquanto pendentes. |
+| Depois do D3 | **3D4 — Decisão da professora** | Aprovar ou recusar cada pedido, revalidando conflitos e gravando decisão e agenda juntas. |
+| Depois do D4 | **3D5 — Integração** | Conferir o percurso completo, isolamento e regressões em computador e celular. |
+| Antes de dados reais | **3E — Operação e acabamento** | Definir implantação e e-mail, verificar backup/restauração e revisar histórico/menu no computador e celular. Depende também do B4 real. |
+| Condicionais | **4–6 — Evoluções futuras** | Integrações, recursos pedagógicos e expansão somente quando justificados. |
+
+O desenvolvimento local do 3D pode avançar com identidades fictícias enquanto B4 permanece aberto. O uso real depende do B4 e do 3E. [Plano técnico do 3D](../openspec/changes/connect-student-portal-3d/tasks.md) detalha as tarefas; não substitui este quadro.
 ## Etapas e ordem
 
 | Etapa | Resultado | Situação / critério de saída |
@@ -85,7 +103,7 @@ No B4, a chave privada já foi configurada e aceita; identidade inicial e víncu
 
 O provisionamento da primeira conta também exige separar o banco dos testes automatizados do banco de desenvolvimento. Os testes criam sua própria professora fictícia, e o produto permite uma única professora; compartilhar o banco causaria conflito com a conta provisionada. A preparação local deve manter nextage_class para desenvolvimento e nextage_class_tests para testes, sem apagar ou substituir o vínculo existente.
 
-## Reavaliação e autonomia
+## Histórico de reavaliações e autonomia
 
 ### Retomada após o acesso da professora — 29/10/2026
 
@@ -97,10 +115,10 @@ Cristian solicitou replanejar e iniciar a próxima implementação. A demo públ
 | --- | --- | --- |
 | Concluído | **3C1 — Cadastro conectado** | Cadastro/edição pela API conferidos e aprovados por Cristian; máscara com DDD acrescentada. Identidade e convites preservados |
 | Em paralelo no planejamento | **B4 restante** | Conferir recuperação real e acesso/permissões de aluno com identidade/destinatário de teste alinhados. Não enviar convites novos por inferência |
-| Atual | **3C2 — Acervo e vínculo pedagógico** | Sequências, unidades, apoios e sequência principal implementados e conferidos tecnicamente; revisão de uso pendente. Histórico/progresso conectados entram no 3C4 |
-| Atual | **3C3 — Agenda no servidor** | Aulas pontuais e semanais, bloqueios e remarcações conectados. Conferência técnica concluída e revisão de uso sugerida |
+| Histórico (concluído tecnicamente) | **3C2 — Acervo e vínculo pedagógico** | Sequências, unidades, apoios e sequência principal implementados e conferidos tecnicamente; revisão de uso pendente. Histórico/progresso conectados entram no 3C4 |
+| Histórico (concluído tecnicamente) | **3C3 — Agenda no servidor** | Aulas pontuais e semanais, bloqueios e remarcações conectados. Conferência técnica concluída e revisão de uso sugerida |
 | Concluído tecnicamente | **3C4 — Registros e preparação** | Lançamento, histórico e preparação aprovados por Cristian; homework e continuidade por aluno e livro conferidos tecnicamente. Revisão pessoal é opcional. [Lançamento](verification-3c4-first-slice.md) · [Preparação](verification-3c4-preparation.md) · [Homework](verification-3c4-homework.md) · [Continuidade](verification-3c4-progress.md) |
-| Em implementação | **3D — Portal conectado** | D1 consulta própria concluída tecnicamente; D2 acervo e continuidade é o próximo recorte, seguido de pedidos e decisão. [Proposta e recortes](../openspec/changes/connect-student-portal-3d/proposal.md) · [Evidências D1](verification-3d1.md). B4 real continua necessário para validar acesso do aluno |
+| Em implementação | **3D — Portal conectado** | D1 consulta própria e D2 acervo concluídos tecnicamente; D3 pedidos e D4 decisão são os próximos recortes. [Proposta e recortes](../openspec/changes/connect-student-portal-3d/proposal.md) · [Evidências D1](verification-3d1.md). B4 real continua necessário para validar acesso do aluno |
 | Antes de dados reais | **3E — Operação** | Banco hospedado, implantação do piloto, e-mail operacional, backup/restauração e revisão de uso e acabamento visual do piloto |
 
 Na revisão do primeiro recorte do 3C4 em 05/11/2026, Cristian apontou transbordamento de descrição no histórico e navegação do piloto visualmente diferente da demo. Corrigir o transbordamento e revisar a organização do menu tomando a demo como referência antes do uso real; a revisão de acabamento visual deve cobrir computador e celular. Esses pontos não impedem a continuidade funcional do 3C4.
@@ -125,7 +143,7 @@ Reavaliar o roadmap ao concluir cada etapa, a cada três chunks de uma etapa mai
 
 Em 06/11/2026, Cristian confirmou que a assistência deve executar as verificações e seguir após os comportamentos definidos passarem, sem exigir revisão humana em cada entrega. As revisões pessoais opcionais ficam reunidas em [Pendente de Teste](pending-human-testing.md); não confundir essa lista com as validações reais obrigatórias de B4 e 3E.
 
-Reavaliação após D1 em 06/11/2026: a consulta autenticada de aulas e histórico foi conectada e conferida com identidades fictícias; acervo e solicitações permanecem ocultos no piloto até seus próprios recortes. Prosseguir para D2 (acervo e continuidade). A revisão pessoal é opcional; B4 real e operação 3E seguem abertos. [Evidências D1](verification-3d1.md).
+Reavaliação após D1 em 06/11/2026: a consulta autenticada de aulas e histórico foi conectada e conferida com identidades fictícias; acervo e solicitações permanecem ocultos no piloto até seus próprios recortes. D2 (acervo e continuidade) foi concluído; prosseguir para D3 (disponibilidade e pedidos). A revisão pessoal é opcional; B4 real e operação 3E seguem abertos. [Evidências D1](verification-3d1.md).
 
 Etapas 4–6 permanecem evoluções condicionais. Não transformar possibilidades adiadas em obrigações para declarar o produto concluído.
 

@@ -35,6 +35,7 @@ builder.Services.AddScoped<ScheduleStore>();
 builder.Services.AddScoped<LessonRecordStore>();
 builder.Services.AddScoped<LessonPlanStore>();
 builder.Services.AddScoped<StudentOverviewStore>();
+builder.Services.AddScoped<StudentLibraryStore>();
 builder.Services.AddScoped<StudentInvitationService>();
 builder.Services.AddSingleton<IInvitationProvider, SupabaseInvitationProvider>();
 
@@ -59,6 +60,8 @@ app.MapHealthChecks("/api/health/ready", new HealthCheckOptions
 });
 app.MapGet("/api/session", async (CurrentAccess current) => Results.Ok(await current.GetAsync())).RequireAuthorization("Member");
 app.MapGet("/api/student/overview", async (CurrentAccess current, StudentOverviewStore store, CancellationToken cancellationToken) =>
+    await store.ReadAsync((await current.GetAsync())?.StudentId, cancellationToken)).RequireAuthorization("Student");
+app.MapGet("/api/student/library", async (CurrentAccess current, StudentLibraryStore store, CancellationToken cancellationToken) =>
     await store.ReadAsync((await current.GetAsync())?.StudentId, cancellationToken)).RequireAuthorization("Student");
 var agenda = app.MapGroup("/api/agenda").RequireAuthorization("Teacher");
 agenda.MapGet("", (ScheduleStore store, CancellationToken cancellationToken) => store.ReadAsync(cancellationToken));

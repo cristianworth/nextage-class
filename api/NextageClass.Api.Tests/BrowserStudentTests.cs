@@ -35,7 +35,7 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
         var past = await client.PostAsJsonAsync("/api/agenda/lessons", new ScheduleLessonInput(studentId, pastDate, layout == "desktop" ? 21 : 22, false, null));
         past.EnsureSuccessStatusCode();
         var pastLesson = Assert.Single((await past.Content.ReadFromJsonAsync<ScheduleData>())!.Lessons, item => item.StudentId == studentId);
-        var support = await client.PostAsJsonAsync("/api/materials", new MaterialInput("Student Shared " + Guid.NewGuid().ToString("N"), "Shared student text", Levels: ["A1"]));
+        var support = await client.PostAsJsonAsync("/api/materials", new MaterialInput("Student Shared " + layout + " " + Guid.NewGuid().ToString("N"), "Shared student text " + layout, Levels: ["A1"]));
         support.EnsureSuccessStatusCode();
         var supportMaterial = (await support.Content.ReadFromJsonAsync<MaterialData>())!;
         database.TrackMaterial(supportMaterial.Id);

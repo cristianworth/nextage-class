@@ -42,6 +42,37 @@ const overviewSchema = z.object({
   ),
 })
 
+const librarySchema = z.object({
+  level: studentSchema.shape.level,
+  sequences: z.array(
+    z.object({ id: z.string(), title: z.string(), levels: z.array(studentSchema.shape.level) }),
+  ),
+  materials: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      content: z.string(),
+      levels: z.array(studentSchema.shape.level),
+      sequenceId: z.string().nullable(),
+      sequenceTitle: z.string().nullable(),
+      lessonNumber: z
+        .number()
+        .int()
+        .nullable()
+        .transform((value) => value ?? undefined),
+      updatedAt: z.iso.datetime({ offset: true }),
+    }),
+  ),
+  primary: z.discriminatedUnion('status', [
+    z.object({ status: z.enum(['unassigned', 'unavailable']) }),
+    z.object({
+      status: z.enum(['current', 'finished', 'empty']),
+      id: z.string(),
+      title: z.string(),
+      currentItemId: z.string().nullable(),
+    }),
+  ]),
+})
 export function StudentConnected({
   client,
   profile,
@@ -50,6 +81,7 @@ export function StudentConnected({
   profile: AccessProfile
 }) {
   const [view, setView] = useState<z.infer<typeof overviewSchema>>()
+  const [library, setLibrary] = useState<z.infer<typeof librarySchema>>()
   const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
   const [now, setNow] = useState(() => new Date())
@@ -60,10 +92,17 @@ export function StudentConnected({
   useEffect(() => {
     const controller = new AbortController()
     setView(undefined)
+    setLibrary(undefined)
     setError('')
-    pilotRequest(client, profile.userId, '/api/student/overview', { signal: controller.signal })
-      .then((data) => {
-        if (!controller.signal.aborted) setView(overviewSchema.parse(data))
+    Promise.all([
+      pilotRequest(client, profile.userId, '/api/student/overview', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/student/library', { signal: controller.signal }),
+    ])
+      .then(([overview, catalog]) => {
+        if (!controller.signal.aborted) {
+          setView(overviewSchema.parse(overview))
+          setLibrary(librarySchema.parse(catalog))
+        }
       })
       .catch(() => {
         if (!controller.signal.aborted)
@@ -80,6 +119,6 @@ export function StudentConnected({
         </button>
       </div>
     )
-  if (!view) return <p role="status">Carregando suas aulas…</p>
-  return <StudentPortal view={view} now={now} />
+  if (!view || !library) return <p role="status">Carregando suas aulas…</p>
+  return <StudentPortal view={view} library={library} now={now} />
 }

@@ -298,18 +298,36 @@ try {
   await page.getByRole('button', { name: 'Sair', exact: true }).click()
   await expect(page.getByRole('heading', { name: `${name} editado`, exact: true })).toHaveCount(0)
   await login('student')
+  const recordsBeforeLibrary = await (
+    await page.request.get('/api/lesson-records', {
+      headers: { Authorization: tokens.teacher ? `Bearer ${tokens.teacher}` : '' },
+    })
+  ).json()
   await expect(page.getByRole('region', { name: 'Área do aluno', exact: true })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Meu acervo' })).toHaveCount(0)
+  await page.getByRole('button', { name: 'Meu acervo' }).click()
+  await page.getByLabel('Buscar no meu acervo').fill(`Shared student text ${layout}`)
+  await page.getByLabel('Tipo de conteúdo').selectOption('support')
+  await page.getByRole('button', { name: new RegExp(`^Ler Student Shared ${layout}`) }).click()
+  await expect(page.getByRole('region', { name: 'Leitura do material' })).toContainText(
+    `Shared student text ${layout}`,
+  )
+  await page.getByRole('button', { name: 'Minhas aulas' }).click()
   await expect(page.getByRole('button', { name: 'Solicitações' })).toHaveCount(0)
   await expect(page.getByText(`${name} homework`)).toBeVisible()
   await page.getByRole('button', { name: 'Meu histórico', exact: true }).click()
   await expect(page.getByText(`${name} homework`)).toBeVisible()
   await page.getByText('Ler material desta aula', { exact: true }).click()
-  await expect(page.getByText('Shared student text', { exact: true })).toBeVisible()
+  await expect(page.getByText(`Shared student text ${layout}`, { exact: true })).toBeVisible()
   await expect(page.getByText('PRIVATE_STUDENT_NOTE')).toHaveCount(0)
   await page.reload()
   await page.getByRole('button', { name: 'Meu histórico', exact: true }).click()
   await expect(page.getByText(`${name} homework`)).toBeVisible()
+  const recordsAfterLibrary = await (
+    await page.request.get('/api/lesson-records', {
+      headers: { Authorization: `Bearer ${tokens.teacher}` },
+    })
+  ).json()
+  expect(recordsAfterLibrary).toEqual(recordsBeforeLibrary)
   await expect(page.getByRole('button', { name: 'Novo aluno', exact: true })).toHaveCount(0)
   const denied = await page.request.put(`/api/students/${encodeURIComponent(original.id)}`, {
     headers: { Authorization: `Bearer ${tokens.student}` },

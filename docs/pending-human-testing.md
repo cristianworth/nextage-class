@@ -6,5 +6,6 @@ Lista de funcionalidades já verificadas tecnicamente que Cristian ainda não co
 - **Homework conectado (3C4):** lançamento, consulta, correção e pendências na próxima aula. [Evidências](verification-3c4-homework.md).
 - **Continuidade da sequência no piloto (3C4):** unidade em andamento/concluída, próxima sugestão e histórico. [Evidências](verification-3c4-progress.md).
 - **Consulta própria do aluno (3D1):** próximas aulas, link e histórico com material e homework compartilhados. [Evidências](verification-3d1.md).
+- **Acervo e continuidade do aluno (3D2):** busca, leitura dos materiais do nível atual e unidade sugerida. [Evidências](verification-3d2.md).
 
 Cadastro 3C1, agenda 3C3 e os recortes de lançamento/histórico e preparação do 3C4 têm aceite informado por Cristian. A revisão real de recuperação e acesso do aluno no B4 e as verificações operacionais do 3E continuam necessárias em seus próprios escopos; não são substituídas pelos testes técnicos nem por esta lista opcional.
