@@ -1,4 +1,4 @@
-import type { CourseReference, Lesson, MaterialSnapshot, Workspace } from './models'
+import type { CourseReference, Lesson, MaterialSnapshot, Student, Workspace } from './models'
 import { findLesson } from './agenda'
 import { compareMaterials } from './materials'
 
@@ -21,7 +21,7 @@ export function courseReference(
 }
 
 export function nextCourseMaterial(
-  state: Workspace,
+  state: Pick<Workspace, 'materials' | 'books'>,
   used: Pick<MaterialSnapshot, 'bookId' | 'lessonNumber' | 'level'>,
 ) {
   if (!used.bookId) return undefined
@@ -43,7 +43,9 @@ export function nextCourseMaterial(
 }
 
 export function courseSuggestion(
-  state: Workspace,
+  state: Pick<Workspace, 'materials' | 'books' | 'records' | 'lessons' | 'series'> & {
+    students: Pick<Student, 'id' | 'primaryBookId'>[]
+  },
   studentId: string,
   level: MaterialSnapshot['level'],
   before?: Lesson,

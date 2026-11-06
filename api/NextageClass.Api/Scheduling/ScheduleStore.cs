@@ -60,7 +60,7 @@ public sealed class ScheduleStore(NpgsqlDataSource source, TimeProvider clock)
     internal static async Task<ScheduleData> LoadAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, CancellationToken cancellationToken)
     {
         const string sql = """
-            SELECT id, name, level, meeting_url FROM app.students ORDER BY name, id;
+            SELECT id, name, level, meeting_url, primary_book_id FROM app.students ORDER BY name, id;
             SELECT id, student_id, lesson_date, hour, created_at, series_id, occurrence_index, rescheduled_at FROM app.schedule_lessons ORDER BY lesson_date, hour, id;
             SELECT id, student_id, created_at, end_date FROM app.schedule_series ORDER BY id;
             SELECT series_id, from_index, lesson_date, hour FROM app.schedule_segments ORDER BY series_id, from_index;
@@ -70,7 +70,7 @@ public sealed class ScheduleStore(NpgsqlDataSource source, TimeProvider clock)
         await using var reader = await query.ExecuteReaderAsync(cancellationToken);
         var students = new List<ScheduleStudent>();
         while (await reader.ReadAsync(cancellationToken))
-            students.Add(new(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
+            students.Add(new(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.IsDBNull(4) ? null : reader.GetString(4)));
         await reader.NextResultAsync(cancellationToken);
         var lessons = new List<ScheduleLesson>();
         while (await reader.ReadAsync(cancellationToken))

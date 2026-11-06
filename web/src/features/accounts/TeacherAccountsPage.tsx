@@ -3,13 +3,18 @@ import type { FormEvent } from 'react'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { invitationSchema, pilotRequest } from '../../data/pilot-client'
 import type { AccessProfile, Invitation } from '../../data/pilot-client'
-import { bookSchema, errorMessage, studentSchema } from '../../domain/models'
-import type { Book, Student } from '../../domain/models'
+import { bookSchema, errorMessage, materialSchema, studentSchema } from '../../domain/models'
+import type { Book, Material, Student } from '../../domain/models'
 import { matchesSearch } from '../../domain/students'
 import { formatDate } from '../../domain/dates'
 import { StudentForm } from '../students/StudentForm'
 import { EmptyState, FormError, Modal } from '../../shared/Modal'
 import { Icon } from '../../shared/Icon'
+import { pilotRecordsSchema } from './TeacherRecords'
+import type { PilotRecord } from './TeacherRecords'
+import { pilotCourseSuggestion } from './pilot-course-progress'
+import { materialLabel } from '../../domain/materials'
+import { z } from 'zod'
 
 const STATUS = {
   pending: 'Envio em confirmação',
@@ -26,6 +31,8 @@ export function TeacherAccountsPage({
 }) {
   const [students, setStudents] = useState<Student[]>([])
   const [books, setBooks] = useState<Book[]>([])
+  const [materials, setMaterials] = useState<Material[]>([])
+  const [records, setRecords] = useState<PilotRecord[]>([])
   const [invitations, setInvitations] = useState<Invitation[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -41,16 +48,22 @@ export function TeacherAccountsPage({
     Promise.all([
       pilotRequest(client, profile.userId, '/api/students', { signal: controller.signal }),
       pilotRequest(client, profile.userId, '/api/invitations', { signal: controller.signal }),
-      pilotRequest(client, profile.userId, '/api/books', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/catalog', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/lesson-records', { signal: controller.signal }),
     ])
-      .then(([people, invites, sequences]) => {
+      .then(([people, invites, content, history]) => {
         const validStudents = studentSchema.array().parse(people)
         const validInvitations = invitationSchema.array().parse(invites)
-        const validBooks = bookSchema.array().parse(sequences)
+        const validCatalog = z
+          .object({ books: bookSchema.array(), materials: materialSchema.array() })
+          .parse(content)
+        const validRecords = pilotRecordsSchema.parse(history)
         if (!controller.signal.aborted) {
           setStudents(validStudents)
           setInvitations(validInvitations)
-          setBooks(validBooks)
+          setBooks(validCatalog.books)
+          setMaterials(validCatalog.materials)
+          setRecords(validRecords)
           setLoading(false)
         }
       })
@@ -108,6 +121,7 @@ export function TeacherAccountsPage({
             <div className="pilot-student-grid">
               {visible.map((student) => {
                 const invitation = invitations.find((item) => item.studentId === student.id)
+                const course = pilotCourseSuggestion(student, books, materials, records)
                 return (
                   <article className="panel pilot-student-card" key={student.id}>
                     <div className="pilot-student-heading">
@@ -133,6 +147,17 @@ export function TeacherAccountsPage({
                         {!books
                           .find((book) => book.id === student.primaryBookId)
                           ?.levels.includes(student.level) && ' · não atende este nível'}
+                      </p>
+                    )}
+                    {course.book && (
+                      <p className="muted">
+                        {course.material
+                          ? `Continuidade: ${materialLabel(course.material)}`
+                          : course.finished
+                            ? 'Fim da sequência disponível.'
+                            : course.unavailable
+                              ? 'Continuidade indisponível; confira o acervo e o nível.'
+                              : 'Nenhuma unidade disponível.'}
                       </p>
                     )}
                     <button

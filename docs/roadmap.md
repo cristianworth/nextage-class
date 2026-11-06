@@ -99,13 +99,13 @@ Cristian solicitou replanejar e iniciar a próxima implementação. A demo públ
 | Em paralelo no planejamento | **B4 restante** | Conferir recuperação real e acesso/permissões de aluno com identidade/destinatário de teste alinhados. Não enviar convites novos por inferência |
 | Atual | **3C2 — Acervo e vínculo pedagógico** | Sequências, unidades, apoios e sequência principal implementados e conferidos tecnicamente; revisão de uso pendente. Histórico/progresso conectados entram no 3C4 |
 | Atual | **3C3 — Agenda no servidor** | Aulas pontuais e semanais, bloqueios e remarcações conectados. Conferência técnica concluída e revisão de uso sugerida |
-| Em andamento | **3C4 — Registros e preparação** | Lançamento, histórico e preparação aprovados por Cristian; homework conectado e conferido tecnicamente, aguardando revisão. Continuidade por aluno e livro é o próximo recorte. [Lançamento](verification-3c4-first-slice.md) · [Preparação](verification-3c4-preparation.md) · [Homework](verification-3c4-homework.md) |
+| Concluído tecnicamente | **3C4 — Registros e preparação** | Lançamento, histórico e preparação aprovados por Cristian; homework e continuidade por aluno e livro conferidos tecnicamente. Revisão pessoal é opcional. [Lançamento](verification-3c4-first-slice.md) · [Preparação](verification-3c4-preparation.md) · [Homework](verification-3c4-homework.md) · [Continuidade](verification-3c4-progress.md) |
 | Após 3B/3C | **3D — Portal conectado** | Consulta autorizada e solicitações; manter os limites de conteúdo da demo e validar isolamento real |
 | Antes de dados reais | **3E — Operação** | Banco hospedado, implantação do piloto, e-mail operacional, backup/restauração e revisão de uso e acabamento visual do piloto |
 
 Na revisão do primeiro recorte do 3C4 em 05/11/2026, Cristian apontou transbordamento de descrição no histórico e navegação do piloto visualmente diferente da demo. Corrigir o transbordamento e revisar a organização do menu tomando a demo como referência antes do uso real; a revisão de acabamento visual deve cobrir computador e celular. Esses pontos não impedem a continuidade funcional do 3C4.
 
-Reavaliação após três recortes do 3C4: registros e preparação foram validados por Cristian; homework foi conectado e precisa de revisão de uso. A sequência continua adequada: conectar continuidade por aluno e livro depois da revisão do homework. B4 e operação hospedada mantêm escopo próprio.
+Reavaliação em 06/11/2026: os recortes do 3C4 foram conectados e verificados tecnicamente, incluindo continuidade. Cristian validou registros e preparação; pode revisar homework e continuidade quando desejar. A próxima etapa do roadmap é o portal conectado 3D; a validação real do aluno e recuperação do B4 e a operação do 3E continuam em seus próprios escopos, sem criação de contas ou convites por inferência.
 
 Primeiro recorte: [connect-teacher-students-3c1](../openspec/changes/connect-teacher-students-3c1/proposal.md). Demo pública permanece estática e independente; nova publicação do piloto não está autorizada por esta reordenação.
 
@@ -122,6 +122,8 @@ Em 05/11/2026, Cristian autorizou seguir à próxima implementação. O 3C3 conc
 Cristian solicitou preparar o handoff e continuar a partir do 3B, sem concluir sua implementação neste chat. B1–B3 permanecem concluídos e B4 aberto. Primeiro o sucessor confere o estado e alinha um recorte pequeno; depois completa a validação do acesso antes de avançar ao 3C. A criação de contas fictícias com senha conhecida e a ordem da conexão ao PostgreSQL hospedado foram propostas recentes, não tarefas já executadas ou decisões confirmadas. Não é necessário executar toda a lista discutida para realizar a passagem. Contexto, evidências e protocolo em [handoff do 3B](handoffs/2026-10-26-resume-3b.md).
 
 Reavaliar o roadmap ao concluir cada etapa, a cada três chunks de uma etapa maior e imediatamente quando testes ou uso revelarem uma nova restrição. Primeiro corrigir regras/documentação afetadas, depois retomar a implementação. Cristian autorizou execução contínua em 25/10/2026: decisões rotineiras ficam com a assistência; ambiguidades materiais, tentativas repetidas sem progresso ou escolhas que dependam do uso devem voltar em pergunta com recomendação concreta.
+
+Em 06/11/2026, Cristian confirmou que a assistência deve executar as verificações e seguir após os comportamentos definidos passarem, sem exigir revisão humana em cada entrega. As revisões pessoais opcionais ficam reunidas em [Pendente de Teste](pending-human-testing.md); não confundir essa lista com as validações reais obrigatórias de B4 e 3E.
 
 Etapas 4–6 permanecem evoluções condicionais. Não transformar possibilidades adiadas em obrigações para declarar o produto concluído.
 

@@ -2,7 +2,10 @@ import { daysBetween, hasLessonEnded, referenceClock } from './dates'
 import type { Lesson, ScheduleBlock, Workspace } from './models'
 import { occurrenceAt, occurrencesInRange } from './recurrence'
 
-export function findLesson(state: Workspace, id: string): Lesson | undefined {
+export function findLesson(
+  state: Pick<Workspace, 'lessons' | 'series'>,
+  id: string,
+): Lesson | undefined {
   const stored = state.lessons.find((lesson) => lesson.id === id)
   if (stored) return stored
   const match = /^weekly\/(.+)\/(\d+)$/.exec(id)

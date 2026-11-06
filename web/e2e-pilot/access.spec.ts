@@ -95,6 +95,7 @@ async function mockServices(
     if (path === '/api/students') return route.fulfill({ json: [person] })
     if (path === '/api/books') return route.fulfill({ json: [] })
     if (path === '/api/catalog') return route.fulfill({ json: { books: [], materials: [] } })
+    if (path === '/api/lesson-records') return route.fulfill({ json: [] })
     if (path === '/api/invitations') return route.fulfill({ json: [] })
     if (path.endsWith('/invitation')) calls.invites++
     return route.fulfill({ status: 404, json: {} })

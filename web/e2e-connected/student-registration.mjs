@@ -174,6 +174,25 @@ try {
   const anonymous = await page.request.get('/api/students')
   expect(anonymous.status()).toBe(401)
   await verifyCatalog(page, name, layout, original.id)
+  const refreshedStudent = (
+    await (
+      await page.request.get('/api/students', {
+        headers: { Authorization: `Bearer ${tokens.teacher}` },
+      })
+    ).json()
+  ).find((item) => item.id === original.id)
+  for (const number of [1, 2]) {
+    const unit = await page.request.post('/api/materials', {
+      headers: { Authorization: `Bearer ${tokens.teacher}` },
+      data: {
+        title: `${name} — Unidade ${number}`,
+        content: 'Conteúdo fictício',
+        bookId: refreshedStudent.primaryBookId,
+        lessonNumber: number,
+      },
+    })
+    expect(unit.status()).toBe(201)
+  }
   await verifySchedule(page, name, layout, original.id)
   const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'America/Sao_Paulo' }).format(
     new Date(),
@@ -218,6 +237,10 @@ try {
     })
     .click()
   await dialog.getByRole('button', { name: 'Lançar aula', exact: true }).click()
+  await expect(dialog.getByLabel('Conteúdo utilizado')).toContainText(`${name} — Unidade 1`)
+  await expect(dialog.getByLabel('Concluí esta unidade')).not.toBeChecked()
+  await dialog.getByLabel('Concluí esta unidade').check()
+  await expect(dialog).toContainText('Unidade 2')
   await dialog.getByLabel('Conteúdo trabalhado').fill('Conteúdo integrado fictício')
   await dialog.getByLabel('Homework passado').fill('Praticar perguntas em casa')
   await dialog.getByRole('button', { name: 'Lançar aula', exact: true }).click()
@@ -254,6 +277,8 @@ try {
     .filter({ hasText: `${name} editado` })
     .filter({ hasText: 'Conteúdo integrado corrigido' })
   await expect(editedRecord).toContainText('Praticar perguntas em casa')
+  await expect(editedRecord).toContainText('Unidade 1')
+  await expect(editedRecord).toContainText('Unidade 2')
   await editedRecord.getByRole('button', { name: 'Marcar como pendente' }).click()
   await expect(editedRecord.getByRole('button', { name: 'Marcar como corrigido' })).toBeVisible()
   await page.getByRole('button', { name: 'Agenda', exact: true }).click()
@@ -265,6 +290,7 @@ try {
     .getByRole('button', { name: new RegExp(`${name} editado,.*${upcomingHour}:00`) })
     .click()
   await expect(dialog).toContainText('Conteúdo integrado corrigido')
+  await expect(dialog).toContainText('Unidade 2')
   await expect(dialog).toContainText('Praticar perguntas em casa')
   await dialog.getByRole('button', { name: 'Marcar como corrigido' }).click()
   await expect(dialog).toContainText('Nenhum homework pendente anterior.')

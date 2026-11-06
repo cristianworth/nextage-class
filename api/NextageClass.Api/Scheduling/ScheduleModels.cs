@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NextageClass.Api.Scheduling;
 
-public sealed record ScheduleStudent(string Id, string Name, string Level, string MeetingUrl);
+public sealed record ScheduleStudent(string Id, string Name, string Level, string MeetingUrl, string? PrimaryBookId = null);
 public sealed record ScheduleLesson(string Id, string StudentId, DateOnly Date, int Hour, DateTime CreatedAt,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SeriesId = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] int? OccurrenceIndex = null,

@@ -20,6 +20,7 @@ const record = (target: Lesson, attendance: PilotRecord['attendance']): PilotRec
   reason: '',
   materialSnapshot: null,
   homework: null,
+  courseProgress: null,
   createdAt: target.createdAt,
   updatedAt: target.createdAt,
   lesson: target,

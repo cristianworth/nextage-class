@@ -25,9 +25,13 @@ import type { PilotRecord } from './TeacherRecords'
 import { pendingHomework, previousAttendedRecord } from './pilot-lesson-context'
 import { pilotPlansSchema, TeacherPlanForm } from './TeacherPlanForm'
 import type { PilotPlan } from './TeacherPlanForm'
+import { pilotCourseSuggestion } from './pilot-course-progress'
+import { materialLabel } from '../../domain/materials'
 
 const scheduleSchema = z.object({
-  students: studentSchema.pick({ id: true, name: true, level: true, meetingUrl: true }).array(),
+  students: studentSchema
+    .pick({ id: true, name: true, level: true, meetingUrl: true, primaryBookId: true })
+    .array(),
   lessons: lessonSchema.array(),
   series: seriesSchema.array(),
   blocks: blockSchema.array(),
@@ -130,6 +134,16 @@ export function TeacherSchedulePage({
   const pending = editor?.kind === 'lesson' ? pendingHomework(records, editor.lesson) : []
   const plan =
     editor?.kind === 'lesson' ? plans.find((item) => item.lessonId === editor.lesson.id) : undefined
+  const course =
+    selectedStudent && editor && 'lesson' in editor
+      ? pilotCourseSuggestion(
+          selectedStudent,
+          catalog.books,
+          catalog.materials,
+          records,
+          editor.lesson,
+        )
+      : undefined
 
   return (
     <section aria-label="Agenda da professora">
@@ -146,6 +160,7 @@ export function TeacherSchedulePage({
             material: record.materialSnapshot?.title ?? '',
             materialSnapshot: record.materialSnapshot ?? undefined,
             homework: record.homework ?? undefined,
+            courseProgress: record.courseProgress ?? undefined,
           })),
         }}
         now={now}
@@ -254,6 +269,20 @@ export function TeacherSchedulePage({
               {plan.notes && <p className="record-body">{plan.notes}</p>}
             </div>
           )}
+          {course?.book && (
+            <div className="record-preview">
+              <p className="eyebrow">Continuidade da sequência</p>
+              <p>
+                {course.material
+                  ? materialLabel(course.material)
+                  : course.finished
+                    ? 'Fim da sequência disponível.'
+                    : course.unavailable
+                      ? 'Continuidade indisponível; confira o acervo e o nível.'
+                      : 'Nenhuma unidade disponível.'}
+              </p>
+            </div>
+          )}
           <div className="form-actions">
             {!hasLessonEnded(editor.lesson.date, editor.lesson.hour, now) &&
               !records.some((item) => item.lessonId === editor.lesson.id) && (
@@ -312,6 +341,7 @@ export function TeacherSchedulePage({
           lesson={editor.lesson}
           student={selectedStudent}
           record={records.find((item) => item.lessonId === editor.lesson.id)}
+          suggestedMaterialId={course?.material?.id}
           onClose={close}
           onSaved={(next) => {
             setRecords(next)

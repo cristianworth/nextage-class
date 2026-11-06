@@ -5,11 +5,12 @@ using NpgsqlTypes;
 
 namespace NextageClass.Api.Scheduling;
 
-public sealed record LessonRecordInput(string LessonId, string Attendance, string? Content, string? Reason, JsonElement UsedMaterialId, JsonElement Homework);
+public sealed record LessonRecordInput(string LessonId, string Attendance, string? Content, string? Reason, JsonElement UsedMaterialId, JsonElement Homework, JsonElement CourseCompleted);
 public sealed record HomeworkData(string Description, DateTime? CorrectedAt);
+public sealed record CourseProgressData(bool Completed, JsonElement? Next);
 public sealed record HomeworkCorrectionInput(string RecordId, bool Corrected, string ExpectedDescription);
 public sealed record LessonRecordData(string Id, string LessonId, string StudentName, string Level, string Attendance,
-    string Content, string Reason, JsonElement? MaterialSnapshot, DateTime CreatedAt, DateTime UpdatedAt, ScheduleLesson Lesson, HomeworkData? Homework = null);
+    string Content, string Reason, JsonElement? MaterialSnapshot, DateTime CreatedAt, DateTime UpdatedAt, ScheduleLesson Lesson, HomeworkData? Homework = null, CourseProgressData? CourseProgress = null);
 
 public sealed class LessonRecordStore(NpgsqlDataSource source, TimeProvider clock)
 {
@@ -35,6 +36,8 @@ public sealed class LessonRecordStore(NpgsqlDataSource source, TimeProvider cloc
             throw new ApiFailure(400, "Informe uma descrição válida de homework.");
         var submittedHomework = input.Homework.ValueKind == JsonValueKind.String ? input.Homework.GetString()!.Trim() : null;
         if (submittedHomework?.Length > 2000) throw new ApiFailure(400, "Use até 2.000 caracteres no homework.");
+        if (input.CourseCompleted.ValueKind is not (JsonValueKind.Undefined or JsonValueKind.True or JsonValueKind.False))
+            throw new ApiFailure(400, "Informe uma situação válida para a unidade.");
 
         await using var connection = await source.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
@@ -69,6 +72,38 @@ public sealed class LessonRecordStore(NpgsqlDataSource source, TimeProvider cloc
             snapshot = await material.ExecuteScalarAsync(cancellationToken) as string
                 ?? throw new ApiFailure(400, "Selecione um conteúdo compatível com o nível deste registro.");
         }
+        CourseProgressData? progress = null;
+        if (input.Attendance == "attended" && snapshot is not null)
+        {
+            var material = JsonSerializer.Deserialize<JsonElement>(snapshot);
+            if (material.TryGetProperty("bookId", out var bookId) && material.TryGetProperty("lessonNumber", out var unitNumber))
+            {
+                progress = previous?.CourseProgress;
+                var explicitResult = input.CourseCompleted.ValueKind is JsonValueKind.True or JsonValueKind.False;
+                var completed = explicitResult && input.CourseCompleted.GetBoolean();
+                if (input.UsedMaterialId.ValueKind != JsonValueKind.Undefined || (explicitResult && (progress is null || completed != progress.Completed)))
+                {
+                    JsonElement? next;
+                    if (!completed)
+                    {
+                        next = JsonSerializer.SerializeToElement(new { id = material.GetProperty("id").GetString(), title = material.GetProperty("title").GetString(), level, lessonNumber = unitNumber.GetInt32(), bookId = bookId.GetString(), bookTitle = material.GetProperty("bookTitle").GetString() });
+                    }
+                    else
+                    {
+                        const string nextSql = """
+                            SELECT jsonb_build_object('id',m.id,'title',m.title,'level',$3,'lessonNumber',m.lesson_number,'bookId',b.id,'bookTitle',b.title)::text
+                            FROM app.materials m JOIN app.books b ON b.id=m.book_id
+                            WHERE m.book_id=$1 AND m.lesson_number>$2 ORDER BY m.lesson_number LIMIT 1
+                            """;
+                        await using var query = new NpgsqlCommand(nextSql, connection, transaction);
+                        query.Parameters.AddWithValue(bookId.GetString()!); query.Parameters.AddWithValue(unitNumber.GetInt32()); query.Parameters.AddWithValue(level);
+                        var value = await query.ExecuteScalarAsync(cancellationToken) as string;
+                        next = value is null ? null : JsonSerializer.Deserialize<JsonElement>(value);
+                    }
+                    progress = new CourseProgressData(completed, next);
+                }
+            }
+        }
         if (!schedule.Lessons.Any(item => item.Id == lesson.Id))
         {
             await using var materialize = new NpgsqlCommand("INSERT INTO app.schedule_lessons(id, student_id, lesson_date, hour, created_at, series_id, occurrence_index, rescheduled_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)", connection, transaction);
@@ -84,11 +119,11 @@ public sealed class LessonRecordStore(NpgsqlDataSource source, TimeProvider cloc
         }
         var now = clock.GetUtcNow().UtcDateTime;
         await using (var save = new NpgsqlCommand("""
-            INSERT INTO app.lesson_records(lesson_id,id,student_name,level,attendance,content,reason,material_snapshot,created_at,updated_at,homework_description,homework_corrected_at)
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$9,$10,$11)
+            INSERT INTO app.lesson_records(lesson_id,id,student_name,level,attendance,content,reason,material_snapshot,created_at,updated_at,homework_description,homework_corrected_at,course_progress)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$9,$10,$11,$12)
             ON CONFLICT (lesson_id) DO UPDATE SET attendance=EXCLUDED.attendance,content=EXCLUDED.content,
                 reason=EXCLUDED.reason,material_snapshot=EXCLUDED.material_snapshot,updated_at=EXCLUDED.updated_at,
-                homework_description=EXCLUDED.homework_description,homework_corrected_at=EXCLUDED.homework_corrected_at
+                homework_description=EXCLUDED.homework_description,homework_corrected_at=EXCLUDED.homework_corrected_at,course_progress=EXCLUDED.course_progress
             """, connection, transaction))
         {
             save.Parameters.AddWithValue(lesson.Id);
@@ -102,6 +137,7 @@ public sealed class LessonRecordStore(NpgsqlDataSource source, TimeProvider cloc
             save.Parameters.AddWithValue(now);
             save.Parameters.AddWithValue(description);
             save.Parameters.AddWithValue(NpgsqlDbType.TimestampTz, (object?)correctedAt ?? DBNull.Value);
+            save.Parameters.AddWithValue(NpgsqlDbType.Jsonb, progress is null ? DBNull.Value : JsonSerializer.Serialize(progress, new JsonSerializerOptions(JsonSerializerDefaults.Web)));
             await save.ExecuteNonQueryAsync(cancellationToken);
         }
         var result = await ReadAsync(connection, transaction, cancellationToken);
@@ -135,7 +171,7 @@ public sealed class LessonRecordStore(NpgsqlDataSource source, TimeProvider cloc
     {
         const string sql = """
             SELECT r.id,r.lesson_id,r.student_name,r.level,r.attendance,r.content,r.reason,r.material_snapshot::text,r.created_at,r.updated_at,
-                l.student_id,l.lesson_date,l.hour,l.created_at,l.series_id,l.occurrence_index,l.rescheduled_at,r.homework_description,r.homework_corrected_at
+                l.student_id,l.lesson_date,l.hour,l.created_at,l.series_id,l.occurrence_index,l.rescheduled_at,r.homework_description,r.homework_corrected_at,r.course_progress::text
             FROM app.lesson_records r JOIN app.schedule_lessons l ON l.id=r.lesson_id ORDER BY l.lesson_date DESC,l.hour DESC,r.id
             """;
         await using var command = new NpgsqlCommand(sql, connection, transaction);
@@ -148,7 +184,8 @@ public sealed class LessonRecordStore(NpgsqlDataSource source, TimeProvider cloc
             JsonElement? snapshot = reader.IsDBNull(7) ? null : JsonSerializer.Deserialize<JsonElement>(reader.GetString(7));
             records.Add(new(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
                 reader.GetString(5), reader.GetString(6), snapshot, reader.GetDateTime(8), reader.GetDateTime(9), lesson,
-                reader.GetString(17).Length == 0 ? null : new HomeworkData(reader.GetString(17), reader.IsDBNull(18) ? null : reader.GetDateTime(18))));
+                reader.GetString(17).Length == 0 ? null : new HomeworkData(reader.GetString(17), reader.IsDBNull(18) ? null : reader.GetDateTime(18)),
+                reader.IsDBNull(19) ? null : JsonSerializer.Deserialize<CourseProgressData>(reader.GetString(19), new JsonSerializerOptions(JsonSerializerDefaults.Web))));
         }
         return records;
     }

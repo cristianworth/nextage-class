@@ -7,6 +7,7 @@ import type { AccessProfile } from '../../data/pilot-client'
 import {
   ATTENDANCE,
   bookSchema,
+  courseProgressSchema,
   errorMessage,
   lessonSchema,
   materialSchema,
@@ -14,7 +15,8 @@ import {
 } from '../../domain/models'
 import type { Lesson } from '../../domain/models'
 import { formatDate, formatTimestamp, lessonTime } from '../../domain/dates'
-import { catalogLabel, materialsForLevel } from '../../domain/materials'
+import { catalogLabel, materialLabel, materialsForLevel } from '../../domain/materials'
+import { nextCourseMaterial } from '../../domain/course-progress'
 import { FormError, Modal } from '../../shared/Modal'
 
 const recordSchema = z.object({
@@ -26,7 +28,10 @@ const recordSchema = z.object({
   content: z.string(),
   reason: z.string(),
   homework: z.object({ description: z.string(), correctedAt: z.string().nullable() }).nullable(),
-  materialSnapshot: materialSnapshotSchema.nullable(),
+  courseProgress: courseProgressSchema.nullable(),
+  materialSnapshot: materialSnapshotSchema
+    .extend({ updatedAt: z.iso.datetime({ offset: true }) })
+    .nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
   lesson: lessonSchema,
@@ -41,6 +46,7 @@ export function TeacherRecordForm({
   lesson,
   student,
   record,
+  suggestedMaterialId,
   onClose,
   onSaved,
 }: {
@@ -49,6 +55,7 @@ export function TeacherRecordForm({
   lesson: Lesson
   student: { name: string; level: string }
   record?: PilotRecord
+  suggestedMaterialId?: string
   onClose: () => void
   onSaved: (records: PilotRecord[]) => void
 }) {
@@ -56,10 +63,19 @@ export function TeacherRecordForm({
   const [attendance, setAttendance] = useState<PilotRecord['attendance']>(
     record?.attendance ?? 'attended',
   )
-  const [material, setMaterial] = useState(record?.materialSnapshot ? 'saved' : '')
+  const [material, setMaterial] = useState(
+    record?.materialSnapshot ? 'saved' : record ? '' : (suggestedMaterialId ?? ''),
+  )
+  const [completed, setCompleted] = useState(record?.courseProgress?.completed ?? false)
+  const [progressChanged, setProgressChanged] = useState(false)
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
   const level = record?.level ?? (student.level as PilotRecord['level'])
+  const selected =
+    material === 'saved'
+      ? record?.materialSnapshot
+      : catalog?.materials.find((item) => item.id === material)
+  const isUnit = !!selected?.bookId && !!selected.lessonNumber
   useEffect(() => {
     const controller = new AbortController()
     pilotRequest(client, profile.userId, '/api/catalog', { signal: controller.signal })
@@ -82,6 +98,11 @@ export function TeacherRecordForm({
         reason: values.get('reason'),
         homework: values.get('homework'),
         ...(material === 'saved' ? {} : { usedMaterialId: material || null }),
+        ...(attendance === 'attended' &&
+        isUnit &&
+        (!record || material !== 'saved' || progressChanged)
+          ? { courseCompleted: completed }
+          : {}),
       }
       const result = await pilotRequest(client, profile.userId, '/api/lesson-records', { body })
       onSaved(pilotRecordsSchema.parse(result))
@@ -123,7 +144,15 @@ export function TeacherRecordForm({
           Conteúdo utilizado
           <select
             value={material}
-            onChange={(event) => setMaterial(event.target.value)}
+            onChange={(event) => {
+              setMaterial(event.target.value)
+              setCompleted(
+                event.target.value === 'saved'
+                  ? (record?.courseProgress?.completed ?? false)
+                  : false,
+              )
+              setProgressChanged(false)
+            }}
             disabled={!catalog}
           >
             <option value="">Sem material</option>
@@ -161,6 +190,41 @@ export function TeacherRecordForm({
             material.
           </small>
         </label>
+        {attendance === 'attended' && isUnit && selected && catalog && (
+          <div className="course-panel">
+            <p>Unidade trabalhada: {catalogLabel(selected, catalog.books)}</p>
+            <label className="check-field">
+              <input
+                type="checkbox"
+                checked={completed}
+                onChange={(event) => {
+                  setCompleted(event.target.checked)
+                  setProgressChanged(true)
+                }}
+              />{' '}
+              Concluí esta unidade
+            </label>
+            <p className="course-continuation">
+              {(() => {
+                const next =
+                  material === 'saved' && record?.courseProgress && !progressChanged
+                    ? record.courseProgress.next
+                    : completed
+                      ? nextCourseMaterial(catalog, selected)
+                      : selected
+                return next
+                  ? `Continuidade indicada: ${materialLabel(next)}`
+                  : 'Fim da sequência disponível.'
+              })()}
+            </p>
+            {record && material === 'saved' && !record.courseProgress && (
+              <p className="muted form-hint">
+                Este registro anterior não possui resultado de sequência. Selecione a unidade
+                novamente para informar o resultado.
+              </p>
+            )}
+          </div>
+        )}
         {attendance !== 'attended' && (
           <label className="field">
             Motivo da falta <small>Opcional</small>
@@ -298,6 +362,19 @@ export function TeacherHistoryPage({
                 </>
               )}
               <p className="record-body">{item.content || 'Sem observações adicionais.'}</p>
+              {item.courseProgress && item.materialSnapshot && (
+                <div className="course-panel">
+                  <p>
+                    {materialLabel(item.materialSnapshot)} ·{' '}
+                    {item.courseProgress.completed ? 'Concluída' : 'Em andamento'}
+                  </p>
+                  <p>
+                    {item.courseProgress.next
+                      ? `Continuidade indicada: ${materialLabel(item.courseProgress.next)}`
+                      : 'Fim da sequência disponível.'}
+                  </p>
+                </div>
+              )}
               <PilotHomeworkItem
                 client={client}
                 profile={profile}
