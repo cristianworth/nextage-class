@@ -4,6 +4,7 @@ import type { AccessProfile } from '../../data/pilot-client'
 import { TeacherAccountsPage } from './TeacherAccountsPage'
 import { TeacherCatalogPage } from './TeacherCatalogPage'
 import { TeacherSchedulePage } from './TeacherSchedulePage'
+import { TeacherHistoryPage } from './TeacherRecords'
 
 export function TeacherWorkspace({
   client,
@@ -12,7 +13,9 @@ export function TeacherWorkspace({
   client: SupabaseClient
   profile: AccessProfile
 }) {
-  const [section, setSection] = useState<'students' | 'catalog' | 'schedule'>('students')
+  const [section, setSection] = useState<'students' | 'catalog' | 'schedule' | 'history'>(
+    'students',
+  )
   return (
     <>
       <nav className="catalog-tabs" aria-label="Área da professora">
@@ -37,10 +40,18 @@ export function TeacherWorkspace({
         >
           Agenda
         </button>
+        <button
+          className="button"
+          aria-pressed={section === 'history'}
+          onClick={() => setSection('history')}
+        >
+          Histórico
+        </button>
       </nav>
       {section === 'students' && <TeacherAccountsPage client={client} profile={profile} />}
       {section === 'catalog' && <TeacherCatalogPage client={client} profile={profile} />}
       {section === 'schedule' && <TeacherSchedulePage client={client} profile={profile} />}
+      {section === 'history' && <TeacherHistoryPage client={client} profile={profile} />}
     </>
   )
 }

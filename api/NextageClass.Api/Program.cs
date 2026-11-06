@@ -32,6 +32,7 @@ builder.Services.AddScoped<StudentStore>();
 builder.Services.AddScoped<CatalogStore>();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<ScheduleStore>();
+builder.Services.AddScoped<LessonRecordStore>();
 builder.Services.AddScoped<StudentInvitationService>();
 builder.Services.AddSingleton<IInvitationProvider, SupabaseInvitationProvider>();
 
@@ -61,6 +62,9 @@ agenda.MapPost("/lessons", (ScheduleLessonInput input, ScheduleStore store, Canc
 agenda.MapPost("/blocks", (ScheduleBlockInput input, ScheduleStore store, CancellationToken cancellationToken) => store.AddBlockAsync(input, cancellationToken));
 agenda.MapDelete("/blocks/{id}", (string id, ScheduleStore store, CancellationToken cancellationToken) => store.RemoveBlockAsync(id, cancellationToken));
 agenda.MapPost("/reschedules", (RescheduleInput input, ScheduleStore store, CancellationToken cancellationToken) => store.RescheduleAsync(input, cancellationToken));
+var records = app.MapGroup("/api/lesson-records").RequireAuthorization("Teacher");
+records.MapGet("", (LessonRecordStore store, CancellationToken cancellationToken) => store.ReadAsync(cancellationToken));
+records.MapPost("", (LessonRecordInput input, LessonRecordStore store, CancellationToken cancellationToken) => store.SaveAsync(input, cancellationToken));
 var catalog = app.MapGroup("/api").RequireAuthorization("Teacher");
 catalog.MapGet("/catalog", async (CatalogStore store, CancellationToken cancellationToken) => await store.ReadAsync(cancellationToken));
 catalog.MapGet("/books", async (CatalogStore store, CancellationToken cancellationToken) => await store.ListBooksAsync(cancellationToken));

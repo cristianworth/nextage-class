@@ -99,7 +99,7 @@ Cristian solicitou replanejar e iniciar a próxima implementação. A demo públ
 | Em paralelo no planejamento | **B4 restante** | Conferir recuperação real e acesso/permissões de aluno com identidade/destinatário de teste alinhados. Não enviar convites novos por inferência |
 | Atual | **3C2 — Acervo e vínculo pedagógico** | Sequências, unidades, apoios e sequência principal implementados e conferidos tecnicamente; revisão de uso pendente. Histórico/progresso conectados entram no 3C4 |
 | Atual | **3C3 — Agenda no servidor** | Aulas pontuais e semanais, bloqueios e remarcações conectados. Conferência técnica concluída e revisão de uso sugerida |
-| Seguinte | **3C4 — Registros e preparação** | Histórico, continuidade, planejamento e homework persistidos; reusar cenários da demo como comparação |
+| Em andamento | **3C4 — Registros e preparação** | Primeiro recorte de lançamento e histórico implementado e verificado tecnicamente, aguardando revisão; continuidade, planejamento e homework permanecem pendentes. [Evidências](verification-3c4-first-slice.md) |
 | Após 3B/3C | **3D — Portal conectado** | Consulta autorizada e solicitações; manter os limites de conteúdo da demo e validar isolamento real |
 | Antes de dados reais | **3E — Operação** | Banco hospedado, implantação do piloto, e-mail operacional, backup/restauração e revisão de uso |
 

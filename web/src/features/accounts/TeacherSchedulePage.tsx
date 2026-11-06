@@ -3,7 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 import { pilotRequest } from '../../data/pilot-client'
 import type { AccessProfile } from '../../data/pilot-client'
-import { formatDate, hasLessonStarted, lessonTime } from '../../domain/dates'
+import { formatDate, hasLessonEnded, hasLessonStarted, lessonTime } from '../../domain/dates'
 import { blockSchema, lessonSchema, seriesSchema, studentSchema } from '../../domain/models'
 import type { Lesson, ScheduleBlock } from '../../domain/models'
 import { FormError, Modal } from '../../shared/Modal'
@@ -13,6 +13,8 @@ import { BlockForm } from '../agenda/BlockForm'
 import { LessonForm } from '../agenda/LessonForm'
 import type { LessonPrefill } from '../agenda/LessonForm'
 import { RescheduleForm } from '../agenda/RescheduleForm'
+import { pilotRecordsSchema, TeacherRecordForm } from './TeacherRecords'
+import type { PilotRecord } from './TeacherRecords'
 
 const scheduleSchema = z.object({
   students: studentSchema.pick({ id: true, name: true, level: true, meetingUrl: true }).array(),
@@ -23,7 +25,7 @@ const scheduleSchema = z.object({
 
 type Editor =
   | { kind: 'new' | 'block'; prefill: LessonPrefill }
-  | { kind: 'lesson' | 'reschedule'; lesson: Lesson }
+  | { kind: 'lesson' | 'reschedule' | 'record'; lesson: Lesson }
   | { kind: 'block-details'; block: ScheduleBlock }
   | null
 
@@ -35,6 +37,7 @@ export function TeacherSchedulePage({
   profile: AccessProfile
 }) {
   const [schedule, setSchedule] = useState<z.infer<typeof scheduleSchema>>()
+  const [records, setRecords] = useState<PilotRecord[]>([])
   const [editor, setEditor] = useState<Editor>(null)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
@@ -50,9 +53,15 @@ export function TeacherSchedulePage({
     setSchedule(undefined)
     setError('')
     setNotice('')
-    pilotRequest(client, profile.userId, '/api/agenda', { signal: controller.signal })
-      .then((data) => {
-        if (!controller.signal.aborted) setSchedule(scheduleSchema.parse(data))
+    Promise.all([
+      pilotRequest(client, profile.userId, '/api/agenda', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/lesson-records', { signal: controller.signal }),
+    ])
+      .then(([data, saved]) => {
+        if (!controller.signal.aborted) {
+          setSchedule(scheduleSchema.parse(data))
+          setRecords(pilotRecordsSchema.parse(saved))
+        }
       })
       .catch(() => {
         if (!controller.signal.aborted) setError('Não foi possível carregar sua agenda.')
@@ -91,7 +100,7 @@ export function TeacherSchedulePage({
 
   const close = () => setEditor(null)
   const selectedStudent =
-    editor?.kind === 'lesson' &&
+    (editor?.kind === 'lesson' || editor?.kind === 'record') &&
     schedule.students.find((student) => student.id === editor.lesson.studentId)
 
   return (
@@ -102,9 +111,15 @@ export function TeacherSchedulePage({
         </p>
       )}
       <AgendaPage
-        state={{ ...schedule, records: [] }}
+        state={{
+          ...schedule,
+          records: records.map((record) => ({
+            ...record,
+            material: record.materialSnapshot?.title ?? '',
+            materialSnapshot: record.materialSnapshot ?? undefined,
+          })),
+        }}
         now={now}
-        showRecords={false}
         onRefresh={reload}
         onNew={(prefill) => setEditor({ kind: 'new', prefill })}
         onOpen={(lesson) => setEditor({ kind: 'lesson', lesson })}
@@ -163,6 +178,16 @@ export function TeacherSchedulePage({
             </a>
           )}
           <div className="form-actions">
+            {hasLessonEnded(editor.lesson.date, editor.lesson.hour, now) && (
+              <button
+                className="button primary"
+                onClick={() => setEditor({ kind: 'record', lesson: editor.lesson })}
+              >
+                {records.some((item) => item.lessonId === editor.lesson.id)
+                  ? 'Editar registro'
+                  : 'Lançar aula'}
+              </button>
+            )}
             {!hasLessonStarted(editor.lesson.date, editor.lesson.hour, now) && (
               <button
                 className="button primary"
@@ -176,6 +201,21 @@ export function TeacherSchedulePage({
             </button>
           </div>
         </Modal>
+      )}
+      {editor?.kind === 'record' && selectedStudent && (
+        <TeacherRecordForm
+          client={client}
+          profile={profile}
+          lesson={editor.lesson}
+          student={selectedStudent}
+          record={records.find((item) => item.lessonId === editor.lesson.id)}
+          onClose={close}
+          onSaved={(next) => {
+            setRecords(next)
+            setEditor(null)
+            setNotice('Registro salvo no histórico do aluno.')
+          }}
+        />
       )}
       {editor?.kind === 'reschedule' && (
         <RescheduleForm

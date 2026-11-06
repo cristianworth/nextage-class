@@ -4,6 +4,7 @@
 
 - Converse em português com Cristian. Use inglês natural para novos identificadores, nomes de arquivos, testes e comentários técnicos. A documentação de produto e os textos da interface começam em português.
 - Preferência atual: Cristian guia o produto, acompanha decisões e valida entregas; a assistência de IA implementa e verifica. Não reservar tarefas para Cristian programar, a menos que ele peça. Explique escolhas relevantes para que ele consiga acompanhar o desenvolvimento.
+- Para revisão prática, a assistência prepara o ambiente: encerra e reinicia a API do projeto quando necessário, inicia o piloto e os serviços necessários e confere que estão acessíveis antes de entregar o roteiro a Cristian.
 - IA auxilia o desenvolvimento. Não adicione recursos de IA ao produto.
 - Estado atual: etapas 1 e 2 concluídas. Aceite do 1F informado por Cristian em 24/10/2026; revisão integrada com Nara confirmada em 25/10/2026 (DEC-55). Dados locais v6; sequências autorais, percurso flexível, homework simples, consulta própria e acervo do nível atual com histórico preservado. Pedidos avulsos/semanais são independentes e combináveis; aprovação obrigatória, sem reserva enquanto pendentes. Próximo ciclo: piloto 3A–3E com ASP.NET Core/PostgreSQL; acesso por convite e e-mail/senha, sem cadastro público (DEC-56). Não confundir unidade do material com encontro da agenda.
 - Autonomia atual: Cristian autorizou execução contínua pelo roadmap em 25/10/2026. Reavaliar plano após cada etapa, a cada três chunks e ao surgir nova restrição. Atualizar documentos primeiro, depois continuar. Perguntar com recomendação quando depender da visão do usuário, houver ambiguidade material ou repetição sem progresso. Etapas condicionais 4–6 não viram escopo obrigatório automaticamente.
@@ -36,7 +37,7 @@
 ## Development and version control
 
 - Use OpenSpec de forma proporcional. Uma alteração pequena não exige uma proposta de produto inteira.
-- Não crie branches adicionais sem pedido de Cristian. Não configure remoto, publique ou faça push sem a autorização correspondente.
+- Não crie branches adicionais sem pedido de Cristian. Cristian autorizou commits e push quando necessários, após as verificações pertinentes; agrupe alterações em entregas coesas. Essa autorização não inclui configurar remoto, contratar serviços ou publicar o piloto.
 - Antes de commit ou merge, procure changelog e regras de versionamento. Se existir changelog, avalie a versão e pergunte sobre sua atualização, salvo autorização já dada para a entrega.
 - Preserve dados locais, credenciais, acervos privados, imagens de referência e arquivos temporários fora do histórico. A demo usa somente conteúdo fictício ou autorizado para publicação.
 - Valide o comportamento relevante e efeitos plausíveis. Revisão por IA e validação estrutural de OpenSpec não substituem testes ou conferência prática.

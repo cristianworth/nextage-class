@@ -175,6 +175,77 @@ try {
   expect(anonymous.status()).toBe(401)
   await verifyCatalog(page, name, layout, original.id)
   await verifySchedule(page, name, layout, original.id)
+  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'America/Sao_Paulo' }).format(
+    new Date(),
+  )
+  const previousMonday = new Date(`${today}T12:00:00Z`)
+  previousMonday.setUTCDate(
+    previousMonday.getUTCDate() - ((previousMonday.getUTCDay() + 6) % 7) - 7,
+  )
+  let chosenDay = -1
+  let chosenHour = -1
+  for (let day = 0; day < 5 && chosenDay < 0; day++) {
+    const date = new Date(previousMonday)
+    date.setUTCDate(date.getUTCDate() + day)
+    for (let hour = 7; hour <= 22; hour++) {
+      const past = await page.request.post('/api/agenda/lessons', {
+        headers: { Authorization: `Bearer ${tokens.teacher}` },
+        data: {
+          studentId: original.id,
+          date: date.toISOString().slice(0, 10),
+          hour,
+          weekly: false,
+          endDate: null,
+        },
+      })
+      if (past.status() === 200) {
+        chosenDay = day
+        chosenHour = hour
+        break
+      }
+      expect(past.status()).toBe(409)
+    }
+  }
+  expect(chosenDay).toBeGreaterThanOrEqual(0)
+  await page.reload()
+  await page.getByRole('button', { name: 'Agenda', exact: true }).click()
+  const grid = page.getByRole('region', { name: 'Agenda semanal' })
+  await grid.getByRole('button', { name: 'Semana anterior' }).click()
+  if (layout === 'mobile') await grid.locator('.mobile-days button').nth(chosenDay).click()
+  await grid
+    .getByRole('button', {
+      name: new RegExp(`${name} editado,.*${String(chosenHour).padStart(2, '0')}:00`),
+    })
+    .click()
+  await dialog.getByRole('button', { name: 'Lançar aula', exact: true }).click()
+  await dialog.getByLabel('Conteúdo trabalhado').fill('Conteúdo integrado fictício')
+  await dialog.getByRole('button', { name: 'Lançar aula', exact: true }).click()
+  await expect(dialog).toHaveCount(0)
+  await page.getByRole('button', { name: 'Histórico', exact: true }).click()
+  await expect(
+    page
+      .locator('.history-card')
+      .filter({ hasText: `${name} editado` })
+      .filter({ hasText: 'Conteúdo integrado fictício' }),
+  ).toHaveCount(1)
+  await page.reload()
+  await page.getByRole('button', { name: 'Histórico', exact: true }).click()
+  const record = page
+    .locator('.history-card')
+    .filter({ hasText: `${name} editado` })
+    .filter({ hasText: 'Conteúdo integrado fictício' })
+  await record.getByRole('button', { name: /Editar registro/ }).click()
+  await dialog.getByLabel('Conteúdo trabalhado').fill('Conteúdo integrado corrigido')
+  await dialog.getByRole('button', { name: 'Salvar registro', exact: true }).click()
+  await expect(dialog).toHaveCount(0)
+  await page.reload()
+  await page.getByRole('button', { name: 'Histórico', exact: true }).click()
+  await expect(
+    page
+      .locator('.history-card')
+      .filter({ hasText: `${name} editado` })
+      .filter({ hasText: 'Conteúdo integrado corrigido' }),
+  ).toHaveCount(1)
   await page.getByRole('button', { name: 'Sair', exact: true }).click()
   await expect(page.getByRole('heading', { name: `${name} editado`, exact: true })).toHaveCount(0)
   await login('student')

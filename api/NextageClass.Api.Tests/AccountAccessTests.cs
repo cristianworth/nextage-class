@@ -85,6 +85,9 @@ public sealed class AccessDatabase : IAsyncLifetime
         registrations.Parameters.AddWithValue(students.ToArray());
         batch.BatchCommands.Add(invitations);
         batch.BatchCommands.Add(profiles);
+        var records = new NpgsqlBatchCommand("DELETE FROM app.lesson_records WHERE lesson_id IN (SELECT id FROM app.schedule_lessons WHERE student_id = ANY($1))");
+        records.Parameters.AddWithValue(students.ToArray());
+        batch.BatchCommands.Add(records);
         var lessons = new NpgsqlBatchCommand("DELETE FROM app.schedule_lessons WHERE student_id = ANY($1)");
         lessons.Parameters.AddWithValue(students.ToArray());
         var series = new NpgsqlBatchCommand("DELETE FROM app.schedule_series WHERE student_id = ANY($1)");

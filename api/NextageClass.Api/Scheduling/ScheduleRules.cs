@@ -133,7 +133,7 @@ internal static class ScheduleRules
             throw new ApiFailure(400, "A data de término só vale para repetições e deve ser igual ou posterior ao início.");
     }
 
-    private static ScheduleLesson? FindLesson(ScheduleData state, string id)
+    internal static ScheduleLesson? FindLesson(ScheduleData state, string id)
     {
         var stored = state.Lessons.Find(item => item.Id == id);
         if (stored is not null) return stored;

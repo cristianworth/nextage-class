@@ -43,7 +43,7 @@ public sealed class ScheduleStore(NpgsqlDataSource source, TimeProvider clock)
         return after;
     }
 
-    private static async Task<ScheduleData> LoadAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, CancellationToken cancellationToken)
+    internal static async Task<ScheduleData> LoadAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, CancellationToken cancellationToken)
     {
         const string sql = """
             SELECT id, name, level, meeting_url FROM app.students ORDER BY name, id;
