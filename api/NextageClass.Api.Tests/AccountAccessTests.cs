@@ -76,6 +76,9 @@ public sealed class AccessDatabase : IAsyncLifetime
     {
         await using var source = NpgsqlDataSource.Create(Connection);
         await using var batch = source.CreateBatch();
+        var requests = new NpgsqlBatchCommand("DELETE FROM app.scheduling_requests WHERE student_id = ANY($1)");
+        requests.Parameters.AddWithValue(students.ToArray());
+        batch.BatchCommands.Add(requests);
         var invitations = new NpgsqlBatchCommand("DELETE FROM app.student_invitations WHERE student_id = ANY($1)");
         invitations.Parameters.AddWithValue(students.ToArray());
         var profiles = new NpgsqlBatchCommand("DELETE FROM app.access_profiles WHERE user_id = ANY($1) OR student_id = ANY($2)");

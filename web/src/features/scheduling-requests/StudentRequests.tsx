@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { SchedulingRequestInput } from '../../domain/models'
 import { errorMessage } from '../../domain/models'
@@ -18,8 +18,8 @@ import './scheduling-requests.css'
 
 export type StudentRequestActions = {
   items: StudentRequestView[]
-  availableHours: (input: Omit<SchedulingRequestInput, 'hour'>) => number[]
-  onSubmit: (input: SchedulingRequestInput) => void
+  availableHours: (input: Omit<SchedulingRequestInput, 'hour'>) => number[] | Promise<number[]>
+  onSubmit: (input: SchedulingRequestInput) => void | Promise<void>
 }
 
 export function StudentRequests({
@@ -35,29 +35,65 @@ export function StudentRequests({
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const period = { kind, date, endDate: kind === 'weekly' && endDate ? endDate : null }
-  const hours = availableHours(period)
+  const getHours = useRef(availableHours)
+  getHours.current = availableHours
+  const [hours, setHours] = useState<number[]>([])
+  const [loadingHours, setLoadingHours] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [hoursError, setHoursError] = useState('')
+  const [refreshHours, setRefreshHours] = useState(0)
   const validDay = isValidDate(date) && isWeekday(date) && date >= referenceClock(now).date
   const validEnd = !period.endDate || (isValidDate(period.endDate) && period.endDate >= date)
   const selectedHour = hour !== '' && hours.includes(Number(hour)) ? hour : ''
   const pendingCount = items.filter((request) => request.status === 'pending').length
+  useEffect(() => {
+    let active = true
+    if (!validDay || !validEnd) {
+      setHours([])
+      setLoadingHours(false)
+      return
+    }
+    setHours([])
+    setHoursError('')
+    setLoadingHours(true)
+    Promise.resolve()
+      .then(() =>
+        getHours.current({ kind, date, endDate: kind === 'weekly' && endDate ? endDate : null }),
+      )
+      .then((result) => {
+        if (active) setHours(result)
+      })
+      .catch(() => {
+        if (active) setHoursError('Não foi possível consultar os horários. Tente novamente.')
+      })
+      .finally(() => {
+        if (active) setLoadingHours(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [kind, date, endDate, validDay, validEnd, refreshHours])
 
   function changed() {
     setError('')
     setNotice('')
     setHour('')
   }
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError('')
     setNotice('')
+    setSaving(true)
     try {
-      onSubmit({ ...period, hour: Number(selectedHour) })
+      await onSubmit({ ...period, hour: Number(selectedHour) })
       setNotice(
         'Pedido enviado! Ele aguarda aprovação e ainda não reserva o horário. Você pode pedir outro dia ou horário.',
       )
       setHour('')
     } catch (cause) {
       setError(errorMessage(cause))
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -133,6 +169,19 @@ export function StudentRequests({
             <p className="student-note">Escolha uma data de segunda a sexta, a partir de hoje.</p>
           ) : !validEnd ? (
             <p className="student-note">O término deve ser igual ou posterior à primeira aula.</p>
+          ) : loadingHours ? (
+            <p role="status">Consultando horários…</p>
+          ) : hoursError ? (
+            <div>
+              <p role="alert">{hoursError}</p>
+              <button
+                type="button"
+                className="button"
+                onClick={() => setRefreshHours((value) => value + 1)}
+              >
+                Tentar novamente
+              </button>
+            </div>
           ) : !hours.length ? (
             <p className="student-note" role="status">
               Nenhum horário livre nesse período. Tente outra data ou, para uma aula avulsa, mude o
@@ -150,7 +199,7 @@ export function StudentRequests({
               aria-label="Horário disponível"
               required
               value={selectedHour}
-              disabled={!hours.length}
+              disabled={!hours.length || loadingHours || saving}
               onChange={(event) => {
                 setError('')
                 setNotice('')
@@ -182,7 +231,7 @@ export function StudentRequests({
               {notice}
             </p>
           )}
-          <button className="button primary" type="submit" disabled={!selectedHour}>
+          <button className="button primary" type="submit" disabled={!selectedHour || saving}>
             Enviar pedido
           </button>
         </form>

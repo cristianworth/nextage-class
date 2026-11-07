@@ -3,7 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 import { pilotRequest } from '../../data/pilot-client'
 import type { AccessProfile } from '../../data/pilot-client'
-import { lessonSchema, studentSchema } from '../../domain/models'
+import { lessonSchema, requestInputSchema, studentSchema } from '../../domain/models'
 import { FormError } from '../../shared/Modal'
 import { StudentPortal } from './StudentPortal'
 
@@ -73,6 +73,14 @@ const librarySchema = z.object({
     }),
   ]),
 })
+const requestsSchema = z.array(
+  requestInputSchema.safeExtend({
+    id: z.string(),
+    status: z.enum(['pending', 'approved', 'declined']),
+    createdAt: z.iso.datetime({ offset: true }),
+    decidedAt: z.iso.datetime({ offset: true }).nullable(),
+  }),
+)
 export function StudentConnected({
   client,
   profile,
@@ -82,6 +90,7 @@ export function StudentConnected({
 }) {
   const [view, setView] = useState<z.infer<typeof overviewSchema>>()
   const [library, setLibrary] = useState<z.infer<typeof librarySchema>>()
+  const [requests, setRequests] = useState<z.infer<typeof requestsSchema>>()
   const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
   const [now, setNow] = useState(() => new Date())
@@ -93,15 +102,18 @@ export function StudentConnected({
     const controller = new AbortController()
     setView(undefined)
     setLibrary(undefined)
+    setRequests(undefined)
     setError('')
     Promise.all([
       pilotRequest(client, profile.userId, '/api/student/overview', { signal: controller.signal }),
       pilotRequest(client, profile.userId, '/api/student/library', { signal: controller.signal }),
+      pilotRequest(client, profile.userId, '/api/student/requests', { signal: controller.signal }),
     ])
-      .then(([overview, catalog]) => {
+      .then(([overview, catalog, ownRequests]) => {
         if (!controller.signal.aborted) {
           setView(overviewSchema.parse(overview))
           setLibrary(librarySchema.parse(catalog))
+          setRequests(requestsSchema.parse(ownRequests))
         }
       })
       .catch(() => {
@@ -119,6 +131,34 @@ export function StudentConnected({
         </button>
       </div>
     )
-  if (!view || !library) return <p role="status">Carregando suas aulas…</p>
-  return <StudentPortal view={view} library={library} now={now} />
+  if (!view || !library || !requests) return <p role="status">Carregando suas aulas…</p>
+  return (
+    <StudentPortal
+      view={view}
+      library={library}
+      now={now}
+      requests={{
+        items: requests,
+        availableHours: async (input) => {
+          const query = new URLSearchParams({ kind: input.kind, date: input.date })
+          if (input.endDate) query.set('endDate', input.endDate)
+          return z
+            .array(z.number().int().min(7).max(22))
+            .parse(
+              await pilotRequest(
+                client,
+                profile.userId,
+                '/api/student/requests/availability?' + query,
+              ),
+            )
+        },
+        onSubmit: async (input) => {
+          const created = requestsSchema.element.parse(
+            await pilotRequest(client, profile.userId, '/api/student/requests', { body: input }),
+          )
+          setRequests((previous) => [created, ...(previous ?? [])])
+        },
+      }}
+    />
+  )
 }

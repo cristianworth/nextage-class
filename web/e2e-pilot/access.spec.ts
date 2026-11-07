@@ -110,6 +110,8 @@ async function mockServices(
       return route.fulfill({
         json: { level: 'A1', sequences: [], materials: [], primary: { status: 'unassigned' } },
       })
+    if (path === '/api/student/requests') return route.fulfill({ json: [] })
+    if (path === '/api/student/requests/availability') return route.fulfill({ json: [10, 11] })
     if (path === '/api/invitations') return route.fulfill({ json: [] })
     if (path.endsWith('/invitation')) calls.invites++
     return route.fulfill({ status: 404, json: {} })
@@ -377,7 +379,29 @@ test('student overview preserves access and allows retry when the service fails'
   await page.getByRole('button', { name: 'Tentar novamente' }).click()
   await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Meu acervo' })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Solicitações' })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Solicitações' })).toBeVisible()
+})
+
+test('request failure retains the period and hour for retry', async ({ page }) => {
+  await mockServices(page)
+  await page.route('**/api/student/requests', async (route) => {
+    if (route.request().method() === 'GET') return route.fulfill({ json: [] })
+    return route.fulfill({ status: 409, json: { title: 'Horário indisponível' } })
+  })
+  await page.goto('/')
+  await login(page, 'student')
+  await page.getByRole('button', { name: 'Solicitações' }).click()
+  await page.getByLabel('Tipo de pedido').selectOption('weekly')
+  await page.getByLabel('Primeira aula').fill('2038-01-04')
+  await page.getByLabel('Repetir até').fill('2038-02-01')
+  await expect(page.getByLabel('Horário disponível').locator('option[value="10"]')).toHaveCount(1)
+  await page.getByLabel('Horário disponível').selectOption('10')
+  await page.getByRole('button', { name: 'Enviar pedido' }).click()
+  await expect(page.getByRole('alert')).toContainText('Horário indisponível')
+  await expect(page.getByLabel('Primeira aula')).toHaveValue('2038-01-04')
+  await expect(page.getByLabel('Repetir até')).toHaveValue('2038-02-01')
+  await expect(page.getByLabel('Horário disponível')).toHaveValue('10')
+  await expect(page.getByText('Pedido enviado!', { exact: false })).toHaveCount(0)
 })
 
 test('failed async student creation preserves the form; success allows an invitation', async ({

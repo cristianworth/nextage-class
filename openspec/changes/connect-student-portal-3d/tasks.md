@@ -13,10 +13,10 @@
 
 ## 3. D3 — Disponibilidade e pedidos
 
-- [ ] 3.1 Criar migração aditiva para pedidos e restrições, testar aplicação/repetição e preservação de dados em PostgreSQL isolado; documentar limites e backup antes do banco local.
-- [ ] 3.2 Expor disponibilidade sem nomes ou motivos e verificar horário futuro, conflito distante, repetição sem término, remarcações e bloqueios, comparando cenários da demo.
-- [ ] 3.3 Persistir pedidos próprios avulsos/semanais independentes sem reserva; testar duplicatas do mesmo aluno, dois alunos no mesmo horário, isolamento e recarga; documentar contrato e evidências.
-- [ ] 3.4 Conectar formulário e acompanhamento do aluno, preservando campos em erro; verificar envio, combinações, recarga e troca de sessão em navegador com dados fictícios.
+- [x] 3.1 Criar migração aditiva para pedidos e restrições, testar aplicação/repetição e preservação de dados em PostgreSQL isolado; documentar limites e backup antes do banco local.
+- [x] 3.2 Expor disponibilidade sem nomes ou motivos e verificar horário futuro, conflito distante, repetição sem término, remarcações e bloqueios, comparando cenários da demo.
+- [x] 3.3 Persistir pedidos próprios avulsos/semanais independentes sem reserva; testar duplicatas do mesmo aluno, dois alunos no mesmo horário, isolamento e recarga; documentar contrato e evidências.
+- [x] 3.4 Conectar formulário e acompanhamento do aluno, preservando campos em erro; verificar envio, combinações, recarga e troca de sessão em navegador com dados fictícios.
 
 ## 4. D4 — Decisão da professora
 
