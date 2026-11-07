@@ -20,8 +20,8 @@
 
 ## 4. D4 — Decisão da professora
 
-- [ ] 4.1 Implementar aprovação/recusa com revalidação de todo o período sob o lock da agenda e transação única; testar aprovação concorrente, alteração concorrente, repetição de decisão e rollback.
-- [ ] 4.2 Conectar lista e decisão da professora e verificar feedback de conflito sem perda do pedido, recarga e atualização das próximas aulas do aluno; documentar evidências de D4.
+- [x] 4.1 Implementar aprovação/recusa com revalidação de todo o período sob o lock da agenda e transação única; testar aprovação concorrente, alteração concorrente, repetição de decisão e rollback.
+- [x] 4.2 Conectar lista e decisão da professora e verificar feedback de conflito sem perda do pedido, recarga e atualização das próximas aulas do aluno; documentar evidências de D4.
 
 ## 5. D5 — Integração e reavaliação
 

@@ -91,7 +91,7 @@ public sealed class ScheduleStore(NpgsqlDataSource source, TimeProvider clock)
         return new(students, lessons, [.. series.Values], blocks);
     }
 
-    private static async Task SaveChangesAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, ScheduleData before, ScheduleData after, CancellationToken cancellationToken)
+    internal static async Task SaveChangesAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, ScheduleData before, ScheduleData after, CancellationToken cancellationToken)
     {
         await using var batch = new NpgsqlBatch(connection, transaction);
         var oldSeries = before.Series.ToDictionary(item => item.Id);

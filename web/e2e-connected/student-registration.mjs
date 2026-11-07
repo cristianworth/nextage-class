@@ -313,15 +313,15 @@ try {
   )
   await page.getByRole('button', { name: 'Minhas aulas' }).click()
   await page.getByRole('button', { name: 'Solicitações' }).click()
-  await page.getByLabel('Data da aula').fill('2038-01-04')
+  await page.getByLabel('Data da aula').fill(layout === 'desktop' ? '2038-01-04' : '2038-01-05')
   await expect(page.getByLabel('Horário disponível').locator('option[value="16"]')).toHaveCount(1)
   await page.getByLabel('Horário disponível').selectOption('16')
   await page.getByRole('button', { name: 'Enviar pedido' }).click()
   await expect(page.getByText('Pedido enviado!', { exact: false })).toBeVisible()
   await expect(page.getByRole('region', { name: 'Meus pedidos' })).toContainText('Pendente')
   await page.getByLabel('Tipo de pedido').selectOption('weekly')
-  await page.getByLabel('Primeira aula').fill('2038-01-11')
-  await page.getByLabel('Repetir até').fill('2038-02-08')
+  await page.getByLabel('Primeira aula').fill(layout === 'desktop' ? '2038-01-11' : '2038-01-12')
+  await page.getByLabel('Repetir até').fill(layout === 'desktop' ? '2038-02-08' : '2038-02-09')
   await expect(page.getByLabel('Horário disponível').locator('option[value="15"]')).toHaveCount(1)
   await page.getByLabel('Horário disponível').selectOption('15')
   await page.getByRole('button', { name: 'Enviar pedido' }).click()
@@ -363,6 +363,32 @@ try {
   await page.getByRole('button', { name: 'Sair', exact: true }).click()
   await login('teacher')
   await expect(page.getByRole('heading', { name: `${name} editado`, exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Solicitações', exact: true }).click()
+  const ownRequest = page
+    .getByRole('article', { name: 'Pedido de Test student' })
+    .filter({ hasText: '16:00' })
+  await expect(ownRequest).toHaveCount(1)
+  await ownRequest.getByRole('button', { name: 'Aprovar pedido' }).click()
+  await expect(page.getByRole('status').filter({ hasText: 'aprovado' })).toBeVisible()
+  await page.reload()
+  await page.getByRole('button', { name: 'Solicitações', exact: true }).click()
+  await page.getByLabel('Situação do pedido').selectOption('approved')
+  await expect(
+    page
+      .getByRole('article', { name: 'Pedido de Test student' })
+      .filter({ hasText: '16:00' })
+      .first(),
+  ).toContainText('Aprovado')
+  await page.getByRole('button', { name: 'Sair', exact: true }).click()
+  await login('student')
+  await page.getByRole('button', { name: 'Solicitações', exact: true }).click()
+  await expect(page.getByRole('region', { name: 'Meus pedidos' })).toContainText('Aprovado')
+  await page.getByRole('button', { name: 'Minhas aulas', exact: true }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Próximas aulas' }).locator('..').locator('..'),
+  ).toContainText('16:00')
+  await page.getByRole('button', { name: 'Sair', exact: true }).click()
+  await login('teacher')
   const invitations = await page.request.get('/api/invitations', {
     headers: { Authorization: `Bearer ${tokens.teacher}` },
   })

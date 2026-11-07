@@ -13,23 +13,25 @@ export function TeacherRequestsPage({
   onDecide,
 }: {
   requests: SchedulingRequest[]
-  students: Student[]
+  students: Pick<Student, 'id' | 'name'>[]
   now: Date
-  onDecide: (id: string, decision: 'approved' | 'declined') => void
+  onDecide: (id: string, decision: 'approved' | 'declined') => void | Promise<void>
 }) {
   const [filter, setFilter] = useState('pending')
   const [feedback, setFeedback] = useState<{ id: string; message: string } | null>(null)
   const [notice, setNotice] = useState('')
+  const [saving, setSaving] = useState(false)
   const names = new Map(students.map((student) => [student.id, student.name]))
   const pendingCount = requests.filter((request) => request.status === 'pending').length
   const visible = requests
     .filter((request) => filter === 'all' || request.status === filter)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt) || b.id.localeCompare(a.id))
-  function decide(request: SchedulingRequest, decision: 'approved' | 'declined') {
+  async function decide(request: SchedulingRequest, decision: 'approved' | 'declined') {
     setFeedback(null)
     setNotice('')
+    setSaving(true)
     try {
-      onDecide(request.id, decision)
+      await onDecide(request.id, decision)
       setNotice(
         decision === 'approved'
           ? `Pedido de ${names.get(request.studentId)} aprovado. ${request.kind === 'weekly' ? 'Horário semanal confirmado' : 'Aula confirmada'} na agenda.`
@@ -37,6 +39,8 @@ export function TeacherRequestsPage({
       )
     } catch (cause) {
       setFeedback({ id: request.id, message: errorMessage(cause) })
+    } finally {
+      setSaving(false)
     }
   }
   return (
@@ -93,12 +97,16 @@ export function TeacherRequestsPage({
               {feedback?.id === request.id && <FormError message={feedback.message} />}
               {request.status === 'pending' && (
                 <div className="request-actions">
-                  <button className="button" onClick={() => decide(request, 'declined')}>
+                  <button
+                    className="button"
+                    disabled={saving}
+                    onClick={() => decide(request, 'declined')}
+                  >
                     Recusar pedido
                   </button>
                   <button
                     className="button primary"
-                    disabled={hasLessonStarted(request.date, request.hour, now)}
+                    disabled={saving || hasLessonStarted(request.date, request.hour, now)}
                     onClick={() => decide(request, 'approved')}
                   >
                     Aprovar pedido

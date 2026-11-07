@@ -36,6 +36,7 @@ builder.Services.AddScoped<LessonRecordStore>();
 builder.Services.AddScoped<LessonPlanStore>();
 builder.Services.AddScoped<StudentOverviewStore>();
 builder.Services.AddScoped<StudentRequestStore>();
+builder.Services.AddScoped<TeacherRequestStore>();
 builder.Services.AddScoped<StudentLibraryStore>();
 builder.Services.AddScoped<StudentInvitationService>();
 builder.Services.AddSingleton<IInvitationProvider, SupabaseInvitationProvider>();
@@ -68,6 +69,9 @@ var studentRequests = app.MapGroup("/api/student/requests").RequireAuthorization
 studentRequests.MapGet("", async (CurrentAccess current, StudentRequestStore store, CancellationToken ct) => await store.ListAsync((await current.GetAsync())?.StudentId, ct));
 studentRequests.MapGet("/availability", async (string kind, DateOnly date, DateOnly? endDate, CurrentAccess current, StudentRequestStore store, CancellationToken ct) => await store.AvailableAsync((await current.GetAsync())?.StudentId, kind, date, endDate, ct));
 studentRequests.MapPost("", async (StudentRequestInput input, CurrentAccess current, StudentRequestStore store, CancellationToken ct) => await store.SubmitAsync((await current.GetAsync())?.StudentId, input, ct));
+var teacherRequests = app.MapGroup("/api/teacher/requests").RequireAuthorization("Teacher");
+teacherRequests.MapGet("", (TeacherRequestStore store, CancellationToken ct) => store.ListAsync(ct));
+teacherRequests.MapPost("/{id}/decision", (string id, RequestDecisionInput input, TeacherRequestStore store, CancellationToken ct) => store.DecideAsync(id, input.Decision, ct));
 var agenda = app.MapGroup("/api/agenda").RequireAuthorization("Teacher");
 agenda.MapGet("", (ScheduleStore store, CancellationToken cancellationToken) => store.ReadAsync(cancellationToken));
 agenda.MapPost("/lessons", (ScheduleLessonInput input, ScheduleStore store, CancellationToken cancellationToken) => store.AddLessonAsync(input, cancellationToken));

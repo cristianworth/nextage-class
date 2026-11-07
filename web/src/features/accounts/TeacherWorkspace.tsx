@@ -5,6 +5,7 @@ import { TeacherAccountsPage } from './TeacherAccountsPage'
 import { TeacherCatalogPage } from './TeacherCatalogPage'
 import { TeacherSchedulePage } from './TeacherSchedulePage'
 import { TeacherHistoryPage } from './TeacherRecords'
+import { TeacherConnectedRequests } from './TeacherConnectedRequests'
 
 export function TeacherWorkspace({
   client,
@@ -13,9 +14,9 @@ export function TeacherWorkspace({
   client: SupabaseClient
   profile: AccessProfile
 }) {
-  const [section, setSection] = useState<'students' | 'catalog' | 'schedule' | 'history'>(
-    'students',
-  )
+  const [section, setSection] = useState<
+    'students' | 'catalog' | 'schedule' | 'history' | 'requests'
+  >('students')
   return (
     <>
       <nav className="catalog-tabs" aria-label="Área da professora">
@@ -47,11 +48,19 @@ export function TeacherWorkspace({
         >
           Histórico
         </button>
+        <button
+          className="button"
+          aria-pressed={section === 'requests'}
+          onClick={() => setSection('requests')}
+        >
+          Solicitações
+        </button>
       </nav>
       {section === 'students' && <TeacherAccountsPage client={client} profile={profile} />}
       {section === 'catalog' && <TeacherCatalogPage client={client} profile={profile} />}
       {section === 'schedule' && <TeacherSchedulePage client={client} profile={profile} />}
       {section === 'history' && <TeacherHistoryPage client={client} profile={profile} />}
+      {section === 'requests' && <TeacherConnectedRequests client={client} profile={profile} />}
     </>
   )
 }

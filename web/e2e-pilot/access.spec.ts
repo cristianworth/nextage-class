@@ -382,6 +382,39 @@ test('student overview preserves access and allows retry when the service fails'
   await expect(page.getByRole('button', { name: 'Solicitações' })).toBeVisible()
 })
 
+test('teacher sees a conflict and keeps the request pending', async ({ page }) => {
+  await mockServices(page)
+  const request = {
+    id: 'request-1',
+    studentId: person.id,
+    studentName: person.name,
+    kind: 'once',
+    date: '2038-01-04',
+    hour: 16,
+    endDate: null,
+    status: 'pending',
+    createdAt: '2026-10-25T12:00:00Z',
+    decidedAt: null,
+    bookingId: null,
+  }
+  await page.route('**/api/teacher/requests**', async (route) => {
+    if (route.request().method() === 'GET') return route.fulfill({ json: [request] })
+    return route.fulfill({ status: 409, json: { title: 'Conflito: horário ocupado.' } })
+  })
+  await page.goto('/')
+  await login(page)
+  await page.getByRole('button', { name: 'Solicitações', exact: true }).click()
+  const card = page.getByRole('article', { name: 'Pedido de Aluno Exemplo' })
+  await card.getByRole('button', { name: 'Aprovar pedido' }).click()
+  await expect(card.getByRole('alert')).toContainText('Conflito')
+  await expect(card).toContainText('Pendente')
+  await page.reload()
+  await page.getByRole('button', { name: 'Solicitações', exact: true }).click()
+  await expect(page.getByRole('article', { name: 'Pedido de Aluno Exemplo' })).toContainText(
+    'Pendente',
+  )
+})
+
 test('request failure retains the period and hour for retry', async ({ page }) => {
   await mockServices(page)
   await page.route('**/api/student/requests', async (route) => {
