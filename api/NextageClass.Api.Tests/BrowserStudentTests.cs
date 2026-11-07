@@ -25,6 +25,10 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
         Assert.EndsWith("_tests", new NpgsqlConnectionStringBuilder(database.Connection).Database);
         var teacher = await database.AddTeacherAsync();
         var (student, studentId) = await database.AddStudentAsync();
+        var (secondStudent, secondStudentId) = await database.AddStudentAsync();
+        await using (var source = NpgsqlDataSource.Create(database.Connection))
+        await using (var update = source.CreateCommand("UPDATE app.students SET name=$2,level=$3 WHERE id=$1"))
+        { update.Parameters.AddWithValue(secondStudentId); update.Parameters.AddWithValue("Test student 2 " + layout); update.Parameters.AddWithValue("B1"); await update.ExecuteNonQueryAsync(); }
         await using var application = new TestApplication(database.Connection);
         application.UseKestrel(options => options.Listen(IPAddress.Loopback, 0));
         using var client = application.CreateClient();
@@ -55,6 +59,7 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
         start.Environment["NEXTAGE_BROWSER_API"] = client.BaseAddress!.ToString();
         start.Environment["NEXTAGE_BROWSER_TEACHER_TOKEN"] = application.Token(teacher.ToString());
         start.Environment["NEXTAGE_BROWSER_STUDENT_TOKEN"] = application.Token(student.ToString());
+        start.Environment["NEXTAGE_BROWSER_SECOND_STUDENT_TOKEN"] = application.Token(secondStudent.ToString());
         start.Environment["NEXTAGE_BROWSER_NAME"] = marker;
         start.Environment["NEXTAGE_BROWSER_LAYOUT"] = layout;
         start.Environment["NEXTAGE_BROWSER_WIDTH"] = width.ToString();
@@ -66,7 +71,7 @@ public sealed class BrowserStudentTests(AccessDatabase database, ITestOutputHelp
         var standardError = process.StandardError.ReadToEndAsync();
         try
         {
-            using var timeout = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+            using var timeout = new CancellationTokenSource(TimeSpan.FromMinutes(3));
             await process.WaitForExitAsync(timeout.Token);
             var browserOutput = await standardOutput;
             var browserError = await standardError;

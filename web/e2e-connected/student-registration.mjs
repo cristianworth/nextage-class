@@ -18,6 +18,7 @@ const authUrl = 'https://test-project.supabase.co'
 const tokens = {
   teacher: required('NEXTAGE_BROWSER_TEACHER_TOKEN'),
   student: required('NEXTAGE_BROWSER_STUDENT_TOKEN'),
+  student2: required('NEXTAGE_BROWSER_SECOND_STUDENT_TOKEN'),
 }
 const user = (role) => ({
   id: JSON.parse(Buffer.from(tokens[role].split('.')[1], 'base64url').toString()).sub,
@@ -74,7 +75,12 @@ try {
     if (request.method() === 'OPTIONS') return route.fulfill({ status: 204, headers })
     if (url.pathname === '/auth/v1/token') {
       const body = request.postDataJSON()
-      if (body.email) currentRole = body.email.startsWith('student') ? 'student' : 'teacher'
+      if (body.email)
+        currentRole = body.email.startsWith('student2')
+          ? 'student2'
+          : body.email.startsWith('student')
+            ? 'student'
+            : 'teacher'
       return route.fulfill({
         headers,
         json: {
@@ -361,21 +367,55 @@ try {
   })
   expect(deniedAgenda.status()).toBe(403)
   await page.getByRole('button', { name: 'Sair', exact: true }).click()
+  await login('student2')
+  await expect(page.getByRole('region', { name: 'Área do aluno' })).toBeVisible()
+  await expect(page.getByText(`${name} homework`)).toHaveCount(0)
+  await page.getByRole('button', { name: 'Meu histórico' }).click()
+  await expect(page.getByText(`Shared student text ${layout}`)).toHaveCount(0)
+  await page.getByRole('button', { name: 'Meu acervo' }).click()
+  await expect(page.getByText(`Shared student text ${layout}`)).toHaveCount(0)
+  const secondOverview = await page.request.get('/api/student/overview', {
+    headers: { Authorization: `Bearer ${tokens.student2}` },
+  })
+  const secondBody = await secondOverview.text()
+  expect(secondBody).not.toContain('PRIVATE_STUDENT_NOTE')
+  expect(secondBody).not.toContain(`${name} homework`)
+  expect(
+    (
+      await page.request.get('/api/teacher/requests', {
+        headers: { Authorization: `Bearer ${tokens.student2}` },
+      })
+    ).status(),
+  ).toBe(403)
+  await page.getByRole('button', { name: 'Solicitações' }).click()
+  await expect(page.getByRole('region', { name: 'Meus pedidos' }).locator('article')).toHaveCount(0)
+  await page.getByLabel('Data da aula').fill(layout === 'desktop' ? '2038-01-04' : '2038-01-05')
+  await expect(page.getByLabel('Horário disponível').locator('option[value="16"]')).toHaveCount(1)
+  await page.getByLabel('Horário disponível').selectOption('16')
+  await page.getByRole('button', { name: 'Enviar pedido' }).click()
+  await expect(page.getByRole('region', { name: 'Meus pedidos' })).toContainText('Pendente')
+  await page.getByRole('button', { name: 'Sair', exact: true }).click()
   await login('teacher')
   await expect(page.getByRole('heading', { name: `${name} editado`, exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Solicitações', exact: true }).click()
   const ownRequest = page
-    .getByRole('article', { name: 'Pedido de Test student' })
+    .getByRole('article', { name: 'Pedido de Test student', exact: true })
     .filter({ hasText: '16:00' })
   await expect(ownRequest).toHaveCount(1)
   await ownRequest.getByRole('button', { name: 'Aprovar pedido' }).click()
   await expect(page.getByRole('status').filter({ hasText: 'aprovado' })).toBeVisible()
+  const competing = page
+    .getByRole('article', { name: `Pedido de Test student 2 ${layout}`, exact: true })
+    .filter({ hasText: '16:00' })
+  await competing.getByRole('button', { name: 'Aprovar pedido' }).click()
+  await expect(competing.getByRole('alert')).toContainText('Conflito')
+  await expect(competing).toContainText('Pendente')
   await page.reload()
   await page.getByRole('button', { name: 'Solicitações', exact: true }).click()
   await page.getByLabel('Situação do pedido').selectOption('approved')
   await expect(
     page
-      .getByRole('article', { name: 'Pedido de Test student' })
+      .getByRole('article', { name: 'Pedido de Test student', exact: true })
       .filter({ hasText: '16:00' })
       .first(),
   ).toContainText('Aprovado')

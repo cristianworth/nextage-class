@@ -10,4 +10,6 @@ Lista de funcionalidades já verificadas tecnicamente que Cristian ainda não co
 - **Disponibilidade e pedidos do aluno (3D3):** consulta de horários, envio avulso ou semanal e acompanhamento após recarga. [Evidências](verification-3d3.md).
 - **Decisão de pedidos pela professora (3D4):** aprovação, recusa, conflitos e reflexo na área do aluno. [Evidências](verification-3d4.md).
 
+As revisões opcionais do portal podem ser feitas juntas seguindo as [evidências da integração 3D5](verification-3d5.md).
+
 Cadastro 3C1, agenda 3C3 e os recortes de lançamento/histórico e preparação do 3C4 têm aceite informado por Cristian. A revisão real de recuperação e acesso do aluno no B4 e as verificações operacionais do 3E continuam necessárias em seus próprios escopos; não são substituídas pelos testes técnicos nem por esta lista opcional.

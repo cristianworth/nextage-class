@@ -25,5 +25,5 @@
 
 ## 5. D5 — Integração e reavaliação
 
-- [ ] 5.1 Executar percurso professora → dois alunos → professora com API/PostgreSQL reais de teste e identidade simulada em computador/celular; conferir isolamento, conflitos, conteúdo permitido, estados e regressões da demo.
-- [ ] 5.2 Atualizar roadmap, evidências e lista de revisões pessoais opcionais com testes efetivamente executados; manter B4 real e 3E abertos e preparar o próximo passo sem criar contas ou enviar e-mails por inferência.
+- [x] 5.1 Executar percurso professora → dois alunos → professora com API/PostgreSQL reais de teste e identidade simulada em computador/celular; conferir isolamento, conflitos, conteúdo permitido, estados e regressões da demo.
+- [x] 5.2 Atualizar roadmap, evidências e lista de revisões pessoais opcionais com testes efetivamente executados; manter B4 real e 3E abertos e preparar o próximo passo sem criar contas ou enviar e-mails por inferência.
