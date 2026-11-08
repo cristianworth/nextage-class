@@ -2,9 +2,9 @@
 
 ## E1 — Recuperação local isolada
 
-- [ ] 1.1 Inventariar dados e configurações necessários à recuperação: tabelas `app`, migrações, vínculos, identidades/Auth, segredos e configurações; distinguir o que uma cópia PostgreSQL cobre e o que depende do provedor. Definir dados fictícios e destino isolado sem substituir banco existente.
-- [ ] 1.2 Preparar procedimento ou ferramenta mínima de cópia e restauração local que identifique origem e destino, recuse origem igual ou destino não identificado, preserve credenciais fora de logs/Git e apresente falhas; não sobrescrever destino existente sem autorização.
-- [ ] 1.3 Restaurar dados fictícios em banco isolado, comparar alunos, vínculos, agenda, exceções, registros e cópias históricas, materiais, progresso e pedidos; testar cópia inválida e recusa de destino perigoso; registrar evidências e verificar que a origem permaneceu intacta.
+- [x] 1.1 Inventariar dados e configurações necessários à recuperação: tabelas `app`, migrações, vínculos, identidades/Auth, segredos e configurações; distinguir o que uma cópia PostgreSQL cobre e o que depende do provedor. Definir dados fictícios e destino isolado sem substituir banco existente.
+- [x] 1.2 Preparar procedimento ou ferramenta mínima de cópia e restauração local que identifique origem e destino, recuse origem igual ou destino não identificado, preserve credenciais fora de logs/Git e apresente falhas; não sobrescrever destino existente sem autorização.
+- [x] 1.3 Restaurar dados fictícios em banco isolado, comparar alunos, vínculos, agenda, exceções, registros e cópias históricas, materiais, progresso e pedidos; testar cópia inválida e recusa de destino perigoso; registrar evidências e verificar que a origem permaneceu intacta.
 
 ## E2 — Acabamento do piloto
 

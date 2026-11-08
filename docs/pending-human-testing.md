@@ -9,6 +9,7 @@ Lista de funcionalidades já verificadas tecnicamente que Cristian ainda não co
 - **Acervo e continuidade do aluno (3D2):** busca, leitura dos materiais do nível atual e unidade sugerida. [Evidências](verification-3d2.md).
 - **Disponibilidade e pedidos do aluno (3D3):** consulta de horários, envio avulso ou semanal e acompanhamento após recarga. [Evidências](verification-3d3.md).
 - **Decisão de pedidos pela professora (3D4):** aprovação, recusa, conflitos e reflexo na área do aluno. [Evidências](verification-3d4.md).
+- **Recuperação local fictícia (3E1):** ensaio de backup, restauração isolada e comparação de dados. [Evidências](verification-3e1.md).
 
 As revisões opcionais do portal podem ser feitas juntas seguindo as [evidências da integração 3D5](verification-3d5.md).
 
