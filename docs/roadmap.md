@@ -1,6 +1,6 @@
 # Roadmap do Nextage Class
 
-Atualizado em 07/11/2026. Este quadro é a referência para a ordem e o estado atual; as seções posteriores registram o histórico e os documentos vinculados trazem contratos e evidências. “Concluído tecnicamente” significa que a assistência implementou e verificou; revisão pessoal opcional não bloqueia o próximo recorte.
+Atualizado em 08/11/2026. Este quadro é a referência para a ordem e o estado atual; as seções posteriores registram o histórico e os documentos vinculados trazem contratos e evidências. “Concluído tecnicamente” significa que a assistência implementou e verificou; revisão pessoal opcional não bloqueia o próximo recorte.
 
 ## Onde estamos e o que vem depois
 
@@ -16,10 +16,21 @@ Atualizado em 07/11/2026. Este quadro é a referência para a ordem e o estado a
 | Concluído tecnicamente | **3D3 — Disponibilidade e pedidos** | Aluno consulta horários e envia pedidos próprios, sem reserva enquanto pendentes. [Evidências](verification-3d3.md). |
 | Concluído tecnicamente | **3D4 — Decisão da professora** | Aprovação ou recusa por pedido, com conflitos revalidados e decisão e agenda gravadas juntas. [Evidências](verification-3d4.md). |
 | Concluído tecnicamente | **3D5 — Integração** | Percurso com professora e dois alunos, isolamento e regressões em computador e celular. [Evidências](verification-3d5.md). |
-| Próximo planejamento | **3E — Operação e acabamento** | Definir implantação e e-mail, verificar backup/restauração e revisar histórico/menu no computador e celular. Depende também do B4 real. |
+| Planejado; próximo E1 | **3E — Operação e acabamento** | Começar pelo ensaio local isolado de backup/restauração; depois acabamento e operação. Uso real depende também do B4. [Plano 3E](../openspec/changes/prepare-pilot-operation-3e/tasks.md). |
 | Condicionais | **4–6 — Evoluções futuras** | Integrações, recursos pedagógicos e expansão somente quando justificados. |
 
 O 3D foi concluído tecnicamente com identidades fictícias; a validação real do B4 permanece aberta. O uso real depende do B4 e do 3E. [Plano técnico do 3D](../openspec/changes/connect-student-portal-3d/tasks.md) detalha as tarefas; não substitui este quadro.
+## Recortes do 3E
+
+| Recorte | Resultado planejado | Dependência ou limite |
+| --- | --- | --- |
+| **E1 — Recuperação local** | Inventariar dados e ensaiar cópia/restauração em banco isolado com dados fictícios e conferência de integridade. | Primeiro trabalho recomendado; não sobrescrever bancos existentes. |
+| **E2 — Acabamento** | Corrigir transbordamento do histórico e organizar menu tomando a demo como referência, em computador e celular. | Revisão pessoal é opcional; a assistência executa os testes. |
+| **E3 — Implantação** | Comparar e escolher hospedagem/SMTP e preparar configuração, backup, observabilidade e recuo. | Custo, provedor e publicação exigem decisões e autorizações apropriadas. |
+| **E4 — B4 real e envio** | Conferir recebimento, ativação, acesso e recuperação reais de acordo com o B4. | Identidade, destinatário e ações externas precisam de autorização específica. |
+| **E5 — Integração e liberação** | Verificar operação no ambiente autorizado e documentar prontidão para dados reais. | Depende das decisões, recuperação e evidências reais anteriores; testes simulados não as substituem. |
+
+A ordem E1/E2 pode avançar localmente. Hospedagem, SMTP, retenção, perda aceitável e tempo de recuperação ainda não foram escolhidos. Detalhes em [proposta](../openspec/changes/prepare-pilot-operation-3e/proposal.md), [desenho](../openspec/changes/prepare-pilot-operation-3e/design.md) e [tarefas](../openspec/changes/prepare-pilot-operation-3e/tasks.md).
 ## Etapas e ordem
 
 | Etapa | Resultado | Situação / critério de saída |
