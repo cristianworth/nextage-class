@@ -1,0 +1,16 @@
+*
+!global.json
+!api/
+!api/**
+!database/
+!database/migrations/
+!database/migrations/**
+!web/
+!web/**
+**/node_modules/
+**/bin/
+**/obj/
+**/dist/
+**/.env*
+**/test-results/
+**/playwright-report/

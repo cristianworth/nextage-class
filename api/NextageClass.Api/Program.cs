@@ -48,6 +48,8 @@ app.Use(async (context, next) =>
     context.Response.Headers.CacheControl = "no-store";
     await next();
 });
+if (Directory.Exists(app.Environment.WebRootPath))
+    app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -114,6 +116,25 @@ students.MapPut("/{studentId}", async (string studentId, StudentInput input, Stu
 students.MapPost("/{studentId}/invitation", async (string studentId, InvitationInput input, StudentInvitationService service, CancellationToken cancellationToken) =>
     Results.Ok(await service.InviteAsync(studentId, input, cancellationToken)));
 app.MapGet("/api/invitations", async (StudentInvitationService service, CancellationToken cancellationToken) => await service.ListAsync(cancellationToken)).RequireAuthorization("Teacher");
+app.MapFallback(async context =>
+{
+    if (context.Request.Path.StartsWithSegments("/api") ||
+        !(HttpMethods.IsGet(context.Request.Method) || HttpMethods.IsHead(context.Request.Method)))
+    {
+        context.Response.StatusCode = StatusCodes.Status404NotFound;
+        return;
+    }
+
+    var index = Path.Combine(app.Environment.WebRootPath, "index.html");
+    if (!File.Exists(index))
+    {
+        context.Response.StatusCode = StatusCodes.Status404NotFound;
+        return;
+    }
+
+    context.Response.ContentType = "text/html; charset=utf-8";
+    await context.Response.SendFileAsync(index);
+});
 app.Run();
 
 static Task WriteHealthResponse(HttpContext context, HealthReport report) =>

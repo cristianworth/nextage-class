@@ -16,7 +16,7 @@ Atualizado em 09/11/2026. Este quadro é a referência para a ordem e o estado a
 | Concluído tecnicamente | **3D3 — Disponibilidade e pedidos** | Aluno consulta horários e envia pedidos próprios, sem reserva enquanto pendentes. [Evidências](verification-3d3.md). |
 | Concluído tecnicamente | **3D4 — Decisão da professora** | Aprovação ou recusa por pedido, com conflitos revalidados e decisão e agenda gravadas juntas. [Evidências](verification-3d4.md). |
 | Concluído tecnicamente | **3D5 — Integração** | Percurso com professora e dois alunos, isolamento e regressões em computador e celular. [Evidências](verification-3d5.md). |
-| Em implementação; próximo E3 | **3E — Operação e acabamento** | E1 recuperação local e E2 acabamento verificados tecnicamente; E3 planejamento de implantação é o próximo recorte. Uso real depende de operação e B4. [Plano 3E](../openspec/changes/prepare-pilot-operation-3e/tasks.md). |
+| Em implementação: E3 | **3E — Operação e acabamento** | E1 e E2 verificados tecnicamente; E3 compara e prepara a implantação. Uso real depende de operação e B4. [Plano 3E](../openspec/changes/prepare-pilot-operation-3e/tasks.md). |
 | Condicionais | **4–6 — Evoluções futuras** | Integrações, recursos pedagógicos e expansão somente quando justificados. |
 
 O 3D foi concluído tecnicamente com identidades fictícias; a validação real do B4 permanece aberta. O uso real depende do B4 e do 3E. [Plano técnico do 3D](../openspec/changes/connect-student-portal-3d/tasks.md) detalha as tarefas; não substitui este quadro.
@@ -26,11 +26,11 @@ O 3D foi concluído tecnicamente com identidades fictícias; a validação real 
 | --- | --- | --- |
 | **E1 — Recuperação local** | Concluído tecnicamente: inventário, cópia e restauração de dados fictícios em banco isolado; integridade e recusas verificadas. [Evidências](verification-3e1.md). | Não comprova recuperação do Auth ou operação hospedada. |
 | **E2 — Acabamento** | Concluído tecnicamente: histórico legível e menu organizado tomando a demo como referência, em computador e celular. [Evidências](verification-3e2.md). | Revisão pessoal é opcional. |
-| **E3 — Implantação (próximo)** | Comparar e escolher hospedagem/SMTP e preparar configuração, backup, observabilidade e recuo. | Custo, provedor e publicação exigem decisões e autorizações apropriadas. |
+| **E3 — Implantação (em andamento)** | Render Free escolhido; comparação e preparo local parcial verificados. [Análise](hosting-options-3e.md) · [Evidências](verification-3e3.md). | Falta testar a imagem Docker, definir e-mail e recuperação; publicação exige autorização própria. |
 | **E4 — B4 real e envio** | Conferir recebimento, ativação, acesso e recuperação reais de acordo com o B4. | Identidade, destinatário e ações externas precisam de autorização específica. |
 | **E5 — Integração e liberação** | Verificar operação no ambiente autorizado e documentar prontidão para dados reais. | Depende das decisões, recuperação e evidências reais anteriores; testes simulados não as substituem. |
 
-E1 e E2 passaram tecnicamente; o próximo passo é comparar opções de implantação e alinhar escolhas no E3. Hospedagem, SMTP, retenção, perda aceitável e tempo de recuperação ainda não foram escolhidos. Detalhes em [proposta](../openspec/changes/prepare-pilot-operation-3e/proposal.md), [desenho](../openspec/changes/prepare-pilot-operation-3e/design.md) e [tarefas](../openspec/changes/prepare-pilot-operation-3e/tasks.md).
+E1 e E2 passaram tecnicamente. No E3, Cristian escolheu iniciar gratuitamente e preparar o Render Free; SMTP, retenção, perda aceitável e tempo de recuperação continuam em aberto. A escolha não publica o piloto. Detalhes em [comparação](hosting-options-3e.md), [proposta](../openspec/changes/prepare-pilot-operation-3e/proposal.md), [desenho](../openspec/changes/prepare-pilot-operation-3e/design.md) e [tarefas](../openspec/changes/prepare-pilot-operation-3e/tasks.md).
 ## Etapas e ordem
 
 | Etapa | Resultado | Situação / critério de saída |
