@@ -1,6 +1,6 @@
 # Direção técnica inicial
 
-Etapas 1 e 2 concluídas e base ASP.NET Core/PostgreSQL do 3A verificada. O 3B implementou perfis, convites e telas de autenticação. Recuperação e acesso real do aluno continuam pendentes. Cadastro 3C1 aprovado, acervo 3C2 e agenda 3C3 conferidos tecnicamente. O acompanhamento pedagógico segue no 3C4 e o portal conectado no 3D.
+Etapas 1 e 2 concluídas; base ASP.NET Core/PostgreSQL, rotina conectada 3C e portal conectado 3D verificados tecnicamente. O 3B implementou perfis, convites e telas de autenticação, com acesso real da professora confirmado; recuperação e acesso real do aluno continuam pendentes no B4. A operação 3E está em preparo. Consulte o [roadmap atual](roadmap.md); descrições por recorte abaixo preservam a evolução técnica.
 
 ## Stack
 

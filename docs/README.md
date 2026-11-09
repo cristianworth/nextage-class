@@ -1,17 +1,21 @@
 # Documentação do Nextage Class
 
-Etapa 1 aprovada por Nara, conforme relato de Cristian em 24/10/2026. Revisão integrada da etapa 2 com Nara aprovada conforme confirmação de Cristian em 25/10/2026. Próximo ciclo: piloto com servidor, dividido em 3A–3E no roadmap.
+As etapas 1 e 2 foram aprovadas conforme relato de Cristian. O piloto conectado 3C/3D foi verificado tecnicamente; a operação 3E está em andamento e B4 real permanece aberto. Consulte o [roadmap atual](roadmap.md).
 
 ## Visão atual
 
 A [demo pública](public-demo.md) das etapas 1/2 foi publicada e conferida em 29/10/2026; [evidências](verification-public-demo.md). O piloto com servidor continua separado, com B4 pendente.
 
-Acesso da professora e cadastro 3C1 aprovados por Cristian. Acervo e agenda foram conferidos tecnicamente e aguardam revisão de uso. Recuperação e acesso real do aluno seguem no B4. [Cadastro 3C1](verification-3c1.md) · [Acervo 3C2](verification-3c2.md) · [Agenda 3C3](verification-3c3.md) · [Roadmap](roadmap.md).
+Acesso da professora, cadastro, agenda, lançamento e preparação tiveram aceite informado por Cristian; as demais revisões pessoais opcionais estão em [Pendente de Teste](pending-human-testing.md). A recuperação real e o acesso real do aluno seguem no B4; E3 prepara a operação. [Roadmap atual](roadmap.md) · [Histórico do roadmap](roadmap-history.md).
 
 | Documento                                                      | Finalidade                                                                |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | [Visão do produto](product-vision.md)                          | Problema, público e limites                                               |
 | [Roadmap](roadmap.md)                                          | Estado das entregas e próximos recortes                                   |
+| [Histórico do roadmap](roadmap-history.md)                     | Evolução do planejamento e situações registradas em cada data             |
+| [Pendente de Teste](pending-human-testing.md)                  | Revisões pessoais opcionais e distinção das verificações reais necessárias |
+| [Operação e opções de hospedagem](hosting-options-3e.md)       | Alternativas, limitações e sinais para reavaliar a infraestrutura         |
+| [Verificação parcial do 3E3](verification-3e3.md)              | Preparo local, testes e limites da implantação                            |
 | [Decisões](decisions.md)                                       | Respostas validadas e regras de produto                                   |
 | [Consulta do aluno 2A](verification-2a.md)                     | Próximas aulas, histórico permitido, homework e evidências                |
 | [Acervo do aluno 2B](verification-2b.md)                       | Conteúdo compatível, continuidade, leitura e acesso após mudança de nível |

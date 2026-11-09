@@ -1,6 +1,6 @@
 # Visão do produto
 
-Status: etapas 1 e 2 concluídas e aprovadas conforme relato de Cristian; consulta/acervo do aluno e solicitações com aprovação estão na demo. Base do servidor 3A executável. No 3B, identidade, cadastro/convites e telas de acesso estão implementados, com conferência integrada real ainda pendente. Rotina completa persistida e operação do piloto seguem no 3C–3E. Estado detalhado em [roadmap.md](roadmap.md).
+Status: etapas 1 e 2 concluídas e aprovadas conforme relato de Cristian. Rotina conectada da professora (3C) e portal conectado (3D) verificados tecnicamente em ambiente local. O acesso real da professora foi confirmado; acesso real do aluno e recuperação de conta seguem no B4. A operação do piloto 3E está em andamento e ainda não foi liberada para dados reais. Estado e próximos passos em [roadmap.md](roadmap.md).
 
 ## Problema
 
