@@ -382,6 +382,115 @@ test('student overview preserves access and allows retry when the service fails'
   await expect(page.getByRole('button', { name: 'Solicitações' })).toBeVisible()
 })
 
+test('history keeps long record content inside its card', async ({ page }) => {
+  await mockServices(page)
+  const longText = 'A'.repeat(320)
+  const entry = {
+    id: 'record-long',
+    lessonId: 'lesson-long',
+    studentName: person.name,
+    level: 'A1',
+    attendance: 'student-absent',
+    content: longText,
+    reason: longText,
+    homework: null,
+    courseProgress: null,
+    materialSnapshot: {
+      id: 'material-long',
+      title: 'B'.repeat(120),
+      level: 'A1',
+      content: longText,
+      updatedAt: '2026-10-25T12:00:00Z',
+    },
+    createdAt: '2026-10-25T12:00:00Z',
+    updatedAt: '2026-10-25T12:00:00Z',
+    lesson: {
+      id: 'lesson-long',
+      studentId: person.id,
+      date: '2026-10-26',
+      hour: 10,
+      createdAt: '2026-10-25T12:00:00Z',
+    },
+  }
+  await page.route('**/api/lesson-records', (route) => route.fulfill({ json: [entry] }))
+  await page.goto('/')
+  await login(page)
+  await page.getByRole('button', { name: 'Histórico', exact: true }).click()
+  const card = page.locator('.history-card')
+  await expect(card).toBeVisible()
+  await card.getByText('Conteúdo do material utilizado').click()
+  await expect(card.locator('.material-text')).toHaveText(longText)
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 })
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const card = document.querySelector('.history-card')!.getBoundingClientRect()
+          const date = document.querySelector('.history-date')!.getBoundingClientRect()
+          const dateText = document.querySelector('.history-date strong')!.getBoundingClientRect()
+          const reason = [...document.querySelectorAll('.history-content p')]
+            .find((node) => node.textContent?.startsWith('Motivo:'))!
+            .getBoundingClientRect()
+          return (
+            document.documentElement.scrollWidth <= innerWidth &&
+            dateText.right <= date.right + 1 &&
+            reason.right <= card.right + 1
+          )
+        }),
+      )
+      .toBe(true)
+  }
+  await expect(card.locator('.record-body')).toHaveText(longText)
+})
+
+test('teacher navigation follows the demo order and works with keyboard on desktop and mobile', async ({
+  page,
+}, testInfo) => {
+  await mockServices(page)
+  await page.route('**/api/agenda', (route) =>
+    route.fulfill({ json: { students: [], lessons: [], series: [], blocks: [] } }),
+  )
+  await page.route('**/api/lesson-plans', (route) => route.fulfill({ json: [] }))
+  await page.route('**/api/teacher/requests', (route) => route.fulfill({ json: [] }))
+  await page.goto('/')
+  await login(page)
+  const nav = page.getByRole('navigation', { name: 'Área da professora' })
+  await expect(nav.getByRole('button')).toHaveText([
+    'Agenda',
+    'Alunos',
+    'Histórico',
+    'Acervo',
+    'Solicitações',
+  ])
+  await expect(nav.getByRole('button', { name: 'Alunos' })).toHaveAttribute('aria-current', 'page')
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 })
+    const history = nav.getByRole('button', { name: 'Histórico' })
+    await history.focus()
+    await expect(history).toBeFocused()
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('heading', { name: 'Histórico de aulas' })).toBeVisible()
+    await expect(history).toHaveAttribute('aria-current', 'page')
+    await expect(nav.getByRole('button', { name: 'Alunos' })).not.toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    await assertFits(page)
+    await page.screenshot({
+      path: testInfo.outputPath(width === 390 ? 'pilot-nav-mobile.png' : 'pilot-nav-desktop.png'),
+      fullPage: true,
+    })
+    await nav.getByRole('button', { name: 'Acervo' }).click()
+    await expect(page.getByRole('heading', { name: 'Seu acervo de materiais' })).toBeVisible()
+    await nav.getByRole('button', { name: 'Solicitações' }).click()
+    await expect(page.getByRole('heading', { name: 'Solicitações de horário' })).toBeVisible()
+    await nav.getByRole('button', { name: 'Agenda' }).click()
+    await expect(page.getByRole('heading', { name: 'Sua semana de aulas' })).toBeVisible()
+    await nav.getByRole('button', { name: 'Alunos' }).click()
+    await expect(page.getByRole('heading', { name: 'Seus alunos' })).toBeVisible()
+  }
+})
+
 test('teacher sees a conflict and keeps the request pending', async ({ page }) => {
   await mockServices(page)
   const request = {

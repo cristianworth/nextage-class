@@ -247,7 +247,8 @@ try {
   await expect(dialog.getByLabel('Concluí esta unidade')).not.toBeChecked()
   await dialog.getByLabel('Concluí esta unidade').check()
   await expect(dialog).toContainText('Unidade 2')
-  await dialog.getByLabel('Conteúdo trabalhado').fill('Conteúdo integrado fictício')
+  const longContent = 'Conteúdo integrado fictício ' + 'X'.repeat(400)
+  await dialog.getByLabel('Conteúdo trabalhado').fill(longContent)
   await dialog.getByLabel('Homework passado').fill('Praticar perguntas em casa')
   await dialog.getByRole('button', { name: 'Lançar aula', exact: true }).click()
   await expect(dialog).toHaveCount(0)
@@ -264,9 +265,18 @@ try {
     .locator('.history-card')
     .filter({ hasText: `${name} editado` })
     .filter({ hasText: 'Conteúdo integrado fictício' })
+  await expect(record.locator('.record-body').first()).toHaveText(longContent)
+  expect(
+    await record.evaluate((card) => {
+      const date = card.querySelector('.history-date').getBoundingClientRect()
+      const day = card.querySelector('.history-date strong').getBoundingClientRect()
+      return day.right <= date.right + 1 && document.documentElement.scrollWidth <= innerWidth
+    }),
+  ).toBe(true)
   await record.getByRole('button', { name: 'Marcar como corrigido' }).click()
   await expect(record.getByRole('button', { name: 'Marcar como pendente' })).toBeVisible()
   await record.getByRole('button', { name: /Editar registro/ }).click()
+  await expect(dialog.getByLabel('Conteúdo trabalhado')).toHaveValue(longContent)
   await dialog.getByLabel('Conteúdo trabalhado').fill('Conteúdo integrado corrigido')
   await dialog.getByRole('button', { name: 'Salvar registro', exact: true }).click()
   await expect(dialog).toHaveCount(0)

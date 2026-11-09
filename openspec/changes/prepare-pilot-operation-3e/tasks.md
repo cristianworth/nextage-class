@@ -8,8 +8,8 @@
 
 ## E2 — Acabamento do piloto
 
-- [ ] 2.1 Reproduzir e corrigir transbordamento de descrições no histórico, incluindo palavras longas e preservação do conteúdo salvo; verificar computador e celular.
-- [ ] 2.2 Comparar e organizar menu do piloto conforme a demo, verificando acessibilidade, estados e navegação em computador/celular; executar testes relevantes e registrar evidências. A revisão pessoal de uso é opcional.
+- [x] 2.1 Reproduzir e corrigir transbordamento de descrições no histórico, incluindo palavras longas e preservação do conteúdo salvo; verificar computador e celular.
+- [x] 2.2 Comparar e organizar menu do piloto conforme a demo, verificando acessibilidade, estados e navegação em computador/celular; executar testes relevantes e registrar evidências. A revisão pessoal de uso é opcional.
 
 ## E3 — Desenho de operação e implantação
 

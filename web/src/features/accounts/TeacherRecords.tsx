@@ -17,7 +17,8 @@ import type { Lesson } from '../../domain/models'
 import { formatDate, formatTimestamp, lessonTime } from '../../domain/dates'
 import { catalogLabel, materialLabel, materialsForLevel } from '../../domain/materials'
 import { nextCourseMaterial } from '../../domain/course-progress'
-import { FormError, Modal } from '../../shared/Modal'
+import { EmptyState, FormError, Modal } from '../../shared/Modal'
+import { Icon } from '../../shared/Icon'
 
 const recordSchema = z.object({
   id: z.string(),
@@ -308,50 +309,71 @@ export function TeacherHistoryPage({
     <section aria-label="Histórico de aulas">
       <div className="page-heading">
         <div>
+          <p className="eyebrow">CADA ENCONTRO CONTA</p>
           <h1>Histórico de aulas</h1>
-          <p className="muted">O que foi estudado em cada encontro.</p>
+          <p className="muted">O que foi estudado, para continuar de onde parou.</p>
         </div>
+        <span className="history-count">
+          {entries.length} {entries.length === 1 ? 'registro' : 'registros'}
+        </span>
       </div>
-      <label className="search-field">
-        <input
-          aria-label="Buscar no histórico"
-          placeholder="Buscar por conteúdo, material ou aluno…"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </label>
-      <label className="filter-label">
-        Aluno
-        <select
-          aria-label="Filtrar histórico por aluno"
-          value={student}
-          onChange={(event) => setStudent(event.target.value)}
-        >
-          <option value="">Todos os alunos</option>
-          {students.map(([id, name]) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          ))}
-        </select>
-      </label>
-      {!entries.length && <p>Nenhum registro corresponde à busca.</p>}
+      <div className="list-toolbar history-toolbar">
+        <label className="search-field">
+          <Icon name="search" size={18} />
+          <input
+            aria-label="Buscar no histórico"
+            placeholder="Buscar por conteúdo, material ou aluno…"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </label>
+        <label className="filter-label">
+          <span>Aluno</span>
+          <select
+            className="filter-select"
+            aria-label="Filtrar histórico por aluno"
+            value={student}
+            onChange={(event) => setStudent(event.target.value)}
+          >
+            <option value="">Todos os alunos</option>
+            {students.map(([id, name]) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      {!entries.length && (
+        <div className="panel">
+          <EmptyState
+            title="A próxima história começa em uma aula"
+            description="Nenhum registro corresponde a este filtro. Lance uma aula pela agenda ou ajuste sua busca."
+          />
+        </div>
+      )}
       <div className="history-list">
         {entries.map((item) => (
           <article className="history-card" key={item.id}>
-            <div className="history-date">
-              <strong>{formatDate(item.lesson.date)}</strong>
+            <div className="history-date" aria-label={formatDate(item.lesson.date)}>
+              <strong>{formatDate(item.lesson.date, { day: '2-digit' })}</strong>
+              <span>{formatDate(item.lesson.date, { month: 'short' }).replace('.', '')}</span>
+              <small>{item.lesson.date.slice(0, 4)}</small>
             </div>
             <div className="history-content">
               <div className="history-card-heading">
                 <h2>{item.studentName}</h2>
                 <span className="level-badge">{item.level}</span>
-                <span>{ATTENDANCE[item.attendance]}</span>
+                <span
+                  className={`status-badge ${item.attendance === 'attended' ? 'done' : 'absent'}`}
+                >
+                  {ATTENDANCE[item.attendance]}
+                </span>
               </div>
-              <p>{lessonTime(item.lesson.hour)} · Horário de Brasília</p>
+              <p className="record-time">{lessonTime(item.lesson.hour)} · Horário de Brasília</p>
               {item.materialSnapshot && (
                 <>
-                  <p>
+                  <p className="record-material">
                     {item.materialSnapshot.bookTitle && `${item.materialSnapshot.bookTitle} · `}
                     {catalogLabel(item.materialSnapshot)}
                   </p>
@@ -381,8 +403,10 @@ export function TeacherHistoryPage({
                 record={item}
                 onSaved={setRecords}
               />
-              {item.reason && <p>Motivo: {item.reason}</p>}
-              <p>Última atualização: {formatTimestamp(item.updatedAt)}</p>
+              {item.reason && <p className="record-reason">Motivo: {item.reason}</p>}
+              <p className="record-updated">
+                Última atualização: {formatTimestamp(item.updatedAt)}
+              </p>
             </div>
             <button
               className="button small"
