@@ -28,7 +28,7 @@ Essas limitações são aceitas apenas para a investigação e o preparo local. 
 
 ## Formato técnico a verificar
 
-A interface do piloto usa caminhos relativos `/api`. A preparação local serve a interface compilada e a API no mesmo serviço ASP.NET Core, preservando mesma origem, autenticação e ausência de CORS adicional. O Render suporta [imagens Docker](https://render.com/docs/docker). A aplicação compilada foi conferida localmente com dados fictícios; Docker e operação no Render ainda não foram verificados. [Evidências e roteiro](verification-3e3.md). A publicação exige autorização separada.
+A interface do piloto usa caminhos relativos `/api`. A preparação serve a interface compilada e a API no mesmo serviço ASP.NET Core, preservando mesma origem, autenticação e ausência de CORS adicional. O Render suporta [imagens Docker](https://render.com/docs/docker). A imagem foi verificada em runner temporário com dados fictícios; a operação no Render ainda não foi verificada. [Evidências](verification-3e3.md) · [Roteiro](pilot-deployment-runbook.md). A publicação exige autorização separada.
 
 O projeto Supabase existente continua como banco e Auth. A conexão precisa de TLS e segredos somente no servidor. Para IPv4, investigar pooler em modo sessão; a documentação distingue esse modo do modo transação, que não preserva bloqueios de sessão usados pelas migrações. Para migrações e backup, o Supabase recomenda conexão direta. Testar compatibilidade e acesso antes de depender deles; não aplicar migrações hospedadas sem autorização. [Conexões Supabase](https://supabase.com/docs/guides/database/connecting-to-postgres).
 
@@ -42,6 +42,6 @@ O [Supabase pode pausar projetos Free com pouca atividade por sete dias](https:/
 
 ## Próximas verificações
 
-1. Concluir a verificação da imagem Docker e da configuração da opção escolhida, sem publicar por inferência; registrar limites do que não puder ser testado.
+1. Imagem Docker e configuração preparadas e verificadas em ambiente temporário com dados fictícios; validar a operação hospedada posteriormente, sem publicar por inferência.
 2. Alinhar recuperação e investigar envio a alunos sem domínio, incluindo condições atuais e custos reais antes de propor contratação.
 3. Antes de qualquer publicação ou uso real, alinhar ações externas, conferir o projeto correto, backup, migrações, observabilidade, B4 e rollback; testar HTTPS, autenticação e isolamento no ambiente autorizado.

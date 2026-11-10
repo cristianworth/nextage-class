@@ -15,7 +15,8 @@ Acesso da professora, cadastro, agenda, lançamento e preparação tiveram aceit
 | [Histórico do roadmap](roadmap-history.md)                     | Evolução do planejamento e situações registradas em cada data             |
 | [Pendente de Teste](pending-human-testing.md)                  | Revisões pessoais opcionais e distinção das verificações reais necessárias |
 | [Operação e opções de hospedagem](hosting-options-3e.md)       | Alternativas, limitações e sinais para reavaliar a infraestrutura         |
-| [Verificação parcial do 3E3](verification-3e3.md)              | Preparo local, testes e limites da implantação                            |
+| [Verificação do preparo 3E3](verification-3e3.md)              | Imagem, testes e limites da implantação                                   |
+| [Roteiro de implantação](pilot-deployment-runbook.md)          | Configuração, verificação, migrações e recuo antes da liberação           |
 | [Decisões](decisions.md)                                       | Respostas validadas e regras de produto                                   |
 | [Consulta do aluno 2A](verification-2a.md)                     | Próximas aulas, histórico permitido, homework e evidências                |
 | [Acervo do aluno 2B](verification-2b.md)                       | Conteúdo compatível, continuidade, leitura e acesso após mudança de nível |

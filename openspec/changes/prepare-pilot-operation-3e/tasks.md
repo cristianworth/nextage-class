@@ -14,7 +14,7 @@
 ## E3 — Desenho de operação e implantação
 
 - [x] 3.1 Comparar opções atuais para API .NET, frontend, domínio, HTTPS, proxy `/api`, e-mail e banco já escolhido; apresentar custos e limites verificados, sem assumir contratação ou publicação. Alinhar com Cristian orçamento, disponibilidade e escolha antes de depender de fornecedor. [Comparação e limites](../../../docs/hosting-options-3e.md): Render Free escolhido para preparo local; envio e operação real seguem abertos.
-- [ ] 3.2 Preparar configuração e roteiro para a opção aprovada, com segredos externos, ambientes separados, observabilidade mínima, migrações, backup anterior, verificação e recuo; validar localmente ou em ambiente autorizado, sem publicar por inferência.
+- [x] 3.2 Preparar configuração e roteiro para a opção aprovada, com segredos externos, ambientes separados, observabilidade mínima, migrações, backup anterior, verificação e recuo; validar localmente ou em ambiente autorizado, sem publicar por inferência. [Roteiro](../../../docs/pilot-deployment-runbook.md) · [Evidências](../../../docs/verification-3e3.md).
 - [ ] 3.3 Definir com Cristian responsável, destino protegido, frequência, retenção, perda aceitável e tempo de recuperação; validar procedimento adequado ao ambiente aprovado, incluindo limites de recuperação de Auth/configuração. Não restaurar sobre dados existentes sem autorização específica.
 
 ## E4 — B4 real e envio
