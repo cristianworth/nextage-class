@@ -1,0 +1,37 @@
+name: Verify pilot image
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'global.json'
+      - 'api/**'
+      - 'database/migrations/**'
+      - 'web/**'
+      - 'scripts/verify-pilot-image.sh'
+      - '.github/workflows/pilot-image.yml'
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'global.json'
+      - 'api/**'
+      - 'database/migrations/**'
+      - 'web/**'
+      - 'scripts/verify-pilot-image.sh'
+      - '.github/workflows/pilot-image.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Build and verify with fictitious configuration
+        run: bash scripts/verify-pilot-image.sh
