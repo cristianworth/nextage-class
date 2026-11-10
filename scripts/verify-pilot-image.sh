@@ -57,4 +57,9 @@ check_status GET /api/unknown 404
 check_status POST /acesso 404
 curl -fsS "$base/" | grep -q '<div id="root">'
 test "$(docker exec "$container" id -u)" != 0
+if missing_config=$(docker run --rm -e Supabase__Url='https://auth.nextage.test' "$image" 2>&1); then
+  echo 'The application started without a database connection.' >&2
+  exit 1
+fi
+[[ "$missing_config" == *'ConnectionStrings__NextageClass'* ]]
 echo 'Pilot image passed isolated checks.'
