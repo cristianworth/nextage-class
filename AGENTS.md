@@ -38,9 +38,19 @@
 ## Development and version control
 
 - Use OpenSpec de forma proporcional. Uma alteração pequena não exige uma proposta de produto inteira.
-- Não crie branches adicionais sem pedido de Cristian. Cristian autorizou commits e push quando necessários, após as verificações pertinentes; agrupe alterações em entregas coesas. Essa autorização não inclui configurar remoto, contratar serviços ou publicar o piloto.
+- Para branches, commits, push e PR, siga o fluxo de contribuição abaixo. Preserve a autonomia cotidiana já registrada, as verificações pertinentes e as entregas coesas; ações externas continuam sujeitas às autorizações próprias.
 - Antes de commit ou merge, procure changelog e regras de versionamento. Se existir changelog, avalie a versão e pergunte sobre sua atualização, salvo autorização já dada para a entrega.
 - Preserve dados locais, credenciais, acervos privados, imagens de referência e arquivos temporários fora do histórico. A demo usa somente conteúdo fictício ou autorizado para publicação.
 - Valide o comportamento relevante e efeitos plausíveis. Revisão por IA e validação estrutural de OpenSpec não substituem testes ou conferência prática.
 - Não introduza frameworks, serviços ou abstrações extras sem uma necessidade demonstrada. A stack validada está em `docs/architecture.md`.
 - Mantenha nomes claros, responsabilidades coesas e regras fora dos componentes quando houver uma fronteira real. Use Clean Code de forma proporcional, sem camadas, interfaces ou padrões apenas por cerimônia. Trate erros e teste o comportamento relevante.
+
+## Contribution workflow
+
+- Use issue quando o trabalho solicitado ou aprovado precisar de acompanhamento; reaproveite issues existentes e preserve prioridades, dependências e critérios do roadmap. Não crie atividade artificial para uma mudança pequena.
+- Prepare uma branch curta a partir da referência remota atualizada de `master`, preservando alterações e commits locais alheios à entrega. Respeite o escopo autorizado no pedido para criar issues, branches e PRs.
+- Os commits e pushes necessários já autorizados continuam possíveis nas branches de trabalho após as verificações pertinentes. A autorização de uma entrega não se estende automaticamente a outras nem autoriza configurar remoto, contratar serviços, publicar o piloto ou executar novas ações externas.
+- Abra ou atualize um PR com problema, resultado, verificações, limitações e issue relacionada. Use rascunho enquanto houver revisão ou validação pendente; informe se a integração aciona a publicação existente da demo.
+- Integre somente após aprovação de Cristian para o diff revisado e confirmação das verificações aplicáveis ao SHA atual. Se o conteúdo mudar após a aprovação, apresente o novo diff e aguarde nova aprovação. Push direto em `master` exige autorização explícita.
+- Registre quando não houver CI aplicável: os filtros atuais podem excluir mudanças apenas documentais. Não altere CI nem dispare publicação só para obter um check. Quando uma integração autorizada acionar publicação, acompanhe a execução do commit integrado e confira o resultado; execução manual e publicação do piloto mantêm suas autorizações próprias.
+- A aprovação do diff para integração é distinta da revisão pessoal opcional de uso. Preserve os gates reais obrigatórios do B4/3E; testes simulados e a demo Pages não concluem a operação do piloto.
